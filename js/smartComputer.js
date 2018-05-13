@@ -1,94 +1,100 @@
-var smartComputer = function() {
-    var colorsCards = [[], [], [], []];
-    var typesCards = [[], [], [], [], [], [], []];
-    var allCards = [];
-    var takiMode = undefined;
-    var numberOfPlayers;
-    var lastCardInTaki = undefined;
-    var singleCardCounter = 0;
-    var turnsPlayed = 0;
-    var htmlPlayerDiv = enumCard.dives.COMPUTER_CARDS;
-    var pickColor = false;
+class SmartComputer extends Player{
 
-    function insertColor(playerCard) {
-        colorsCards[playerCard.getColor()].push(playerCard);
+  //  let this.allCards = [];
+//    let this.takiMode = undefined;
+
+ //   let this.singleCardCounter = 0;
+//    let this.turnsPlayedForStatistics = 0;
+//    let this.htmlPlayerDiv = enumCard.dives.COMPUTER_CARDS;
+
+    constructor(){
+        super(enumCard.dives.COMPUTER_CARDS);
+        this.colorsCards = [[], [], [], []];
+        this.typesCards = [[], [], [], [], [], [], []];
+        this.numberOfPlayers = undefined;
+        this.lastCardInTaki = undefined;
+        this.pickedColor = false;
     }
 
-    function insertType(playerCard) {
-        typesCards[playerCard.getSign()].push(playerCard);
+    insertColor(playerCard) {
+        this.colorsCards[playerCard.getColor()].push(playerCard);
     }
 
-    function setAllCards(cards) {
-        for(var i = 0; i < cards.length; ++i){
+    insertType(playerCard) {
+        this.typesCards[playerCard.getSign()].push(playerCard);
+    }
+
+    setAllCards(cards) {
+        for(let i = 0; i < cards.length; ++i){
             if(cards[i].getColor() !== undefined)
-                insertColor(cards[i]);
-            insertType(cards[i]);
-            allCards.push(cards[i]);
+                this.insertColor(cards[i]);
+            this.insertType(cards[i]);
+            this.allCards.push(cards[i]);
         }
     }
 
-    function colorsLeftAmount() {
-        var colors = 0;
-        for(var i = 0; i < colorsCards.length; ++i){
-            if(colorsCards[i].length > 0)
+    colorsLeftAmount() {
+        let colors = 0;
+        for(let i = 0; i < this.colorsCards.length; ++i){
+            if(this.colorsCards[i].length > 0)
                 colors++;
         }
         return colors;
     }
 
-    function equal(parameterOne, parameterTwo) {
+    equal(parameterOne, parameterTwo) {
         return parameterOne === parameterTwo;
     }
 
-    function different(parameterOne, parameterTwo) {
+    different(parameterOne, parameterTwo) {
         return parameterOne !== parameterTwo;
     }
 
-    function typeCardWithLeastSameColorInHand(type) {
-        var pickedCard = undefined;
-        for(var i = 0; i < typesCards[type].length; ++i) {
-            var currentCard = typesCards[type][i];
+    typeCardWithLeastSameColorInHand(type) {
+        let pickedCard = undefined;
+        for(let i = 0; i < this.typesCards[type].length; ++i) {
+            let currentCard = this.typesCards[type][i];
             if(pickedCard === undefined)
                 pickedCard = currentCard;
-            else if(colorsCards[pickedCard.getColor()].length > colorsCards[currentCard.getColor()].length)
+            else if(this.colorsCards[pickedCard.getColor()].length > this.colorsCards[currentCard.getColor()].length)
                 pickedCard = currentCard;
         }
         return pickedCard;
     }
 
-    function typeAndColorMatch(type, color, matchFunc) {
-        for(var i = 0; i < typesCards[type].length; ++i){
-            if(matchFunc(typesCards[type][i].getColor(), color))
-                return typesCards[type][i];
+    typeAndColorMatch(type, color, matchFunc) {
+        for(let i = 0; i < this.typesCards[type].length; ++i){
+            if(matchFunc(this.typesCards[type][i].getColor(), color))
+                return this.typesCards[type][i];
         }
         return undefined;
     }
 
-    function typeOrColorMatch(type, lastGameCard, matchFunc) {
-        var pickedCard = typeAndColorMatch(type, lastGameCard.getColor(), matchFunc);
+    typeOrColorMatch(type, lastGameCard, matchFunc) {
+        let pickedCard = this.typeAndColorMatch(type, lastGameCard.getColor(), matchFunc);
         if( pickedCard === undefined && type === lastGameCard.getSign()){
-            return typeCardWithLeastSameColorInHand(type);
+            return this.typeCardWithLeastSameColorInHand(type);
         }
         return pickedCard;
     }
 
-    function connectionNumber(color, matchFunc) {
-        var pickedCard;
-        for(var i = 0; i < colorsCards[color].length; ++i){
-            if(colorsCards[color][i].getSign() === enumCard.enumTypes.NUMBER) {
-                pickedCard = cardNumberInDifferentColor(colorsCards[color][i]);
+    connectionNumber(color, matchFunc) {
+        let pickedCard;
+        for(let i = 0; i < this.colorsCards[color].length; ++i){
+            if(this.colorsCards[color][i].getSign() === enumCard.enumTypes.NUMBER) {
+                pickedCard = this.cardNumberInDifferentColor(this.colorsCards[color][i]);
                 if (matchFunc(pickedCard, undefined)) {
-                        return colorsCards[color][i];
+                        return this.colorsCards[color][i];
                 }
             }
         }
         return undefined;
     }
 
-    function cardNumberInDifferentColor(lastGameCard) {
-        //var cards = [];
-        for(var i = 0; i < typesCards[enumCard.enumTypes.NUMBER].length; ++i){
-            var numberCard = typesCards[enumCard.enumTypes.NUMBER][i];
+    cardNumberInDifferentColor(lastGameCard) {
+        //let cards = [];
+        for(let i = 0; i < this.typesCards[enumCard.enumTypes.NUMBER].length; ++i){
+            let numberCard = this.typesCards[enumCard.enumTypes.NUMBER][i];
             if(numberCard.getColor() !== lastGameCard.getColor() && numberCard.number === lastGameCard.number)
                 return numberCard;
         }
@@ -96,248 +102,257 @@ var smartComputer = function() {
         return undefined;
     }
 
-    function findColorCardNotInGivenType(color, type) {
-        for(var i = 0; i < colorsCards[color].length; ++i){
-            if(colorsCards[color][i].getSign() !== type)
-                return colorsCards[color][i];
+    findColorCardNotInGivenType(color, type) {
+        for(let i = 0; i < this.colorsCards[color].length; ++i){
+            if(this.colorsCards[color][i].getSign() !== type)
+                return this.colorsCards[color][i];
         }
         return undefined;
     }
 
-    function regularOperationWithTwoPlayers(lastGameCard) {
-        var pickedCard;
-        if(typeAndColorMatch(enumCard.enumTypes.STOP, lastGameCard.getColor(), different) === undefined){
-            pickedCard = typeAndColorMatch(enumCard.enumTypes.STOP, lastGameCard.getColor(), equal);
+    regularOperationWithTwoPlayers(lastGameCard) {
+        let pickedCard;
+        if(this.typeAndColorMatch(enumCard.enumTypes.STOP, lastGameCard.getColor(), this.different) === undefined){
+            pickedCard = this.typeAndColorMatch(enumCard.enumTypes.STOP, lastGameCard.getColor(), this.equal);
             if(pickedCard !== undefined)
                 return pickedCard;
         }
 
-        pickedCard = connectionNumber(lastGameCard.getColor(), equal);
+        pickedCard = this.connectionNumber(lastGameCard.getColor(), this.equal);
         if(pickedCard !== undefined)
             return pickedCard;
-        pickedCard = connectionNumber(lastGameCard.getColor(), different);
+        pickedCard = this.connectionNumber(lastGameCard.getColor(), this.different);
         if(pickedCard !== undefined)
             return pickedCard;
         if (lastGameCard.getSign() === enumCard.enumTypes.NUMBER) {
-            pickedCard = cardNumberInDifferentColor(lastGameCard);
+            pickedCard = this.cardNumberInDifferentColor(lastGameCard);
             if (pickedCard !== undefined)
                 return pickedCard;
         }
-        pickedCard = typeOrColorMatch(enumCard.enumTypes.TWO_PLUS, lastGameCard, equal);
+        pickedCard = this.typeOrColorMatch(enumCard.enumTypes.TWO_PLUS, lastGameCard, this.equal);
         if(pickedCard !== undefined)
             return pickedCard;
-        pickedCard = typeOrColorMatch(enumCard.enumTypes.STOP, lastGameCard, equal);
+        pickedCard = this.typeOrColorMatch(enumCard.enumTypes.STOP, lastGameCard, this.equal);
         if(pickedCard !== undefined)
             return pickedCard;
-        return typeOrColorMatch(enumCard.enumTypes.PLUS, lastGameCard, equal);
+        return this.typeOrColorMatch(enumCard.enumTypes.PLUS, lastGameCard, this.equal);
     }
 
-    function regularOperationWithMorePlayers(lastGameCard) {
-        var pickedCard;
-        pickedCard = connectionNumber(lastGameCard.getColor(), equal);
+    regularOperationWithMorePlayers(lastGameCard) {
+        let pickedCard;
+        pickedCard = this.connectionNumber(lastGameCard.getColor(), this.equal);
         if (pickedCard !== undefined)
             return pickedCard;
-        pickedCard = connectionNumber(lastGameCard.getColor(), different());
+        pickedCard = this.connectionNumber(lastGameCard.getColor(), this.different());
         if (pickedCard !== undefined)
             return pickedCard;
         if (lastGameCard.getSign() === enumCard.enumTypes.NUMBER) {
-        pickedCard = cardNumberInDifferentColor(lastGameCard);
+        pickedCard = this.cardNumberInDifferentColor(lastGameCard);
         if (pickedCard !== undefined)
             return pickedCard;
         }
-        pickedCard = typeOrColorMatch(enumCard.enumTypes.PLUS, lastGameCard, equal);
+        pickedCard = this.typeOrColorMatch(enumCard.enumTypes.PLUS, lastGameCard, this.equal);
         if(pickedCard !== undefined)
             return pickedCard;
-        pickedCard = typeOrColorMatch(enumCard.enumTypes.STOP, lastGameCard, equal);
+        pickedCard = this.typeOrColorMatch(enumCard.enumTypes.STOP, lastGameCard, this.equal);
         if(pickedCard !== undefined)
             return pickedCard;
-        return typeOrColorMatch(enumCard.enumTypes.TWO_PLUS, lastGameCard, equal);
+        return this.typeOrColorMatch(enumCard.enumTypes.TWO_PLUS, lastGameCard, this.equal);
     }
 
-    function colorCardInTaki(lastGameCard) {
-        var currentCard;
-        for(var i = 0; i < colorsCards[lastGameCard.getColor()].length; ++i){
-            currentCard = colorsCards[lastGameCard.getColor()][i];
-            if(currentCard.getId() !== lastCardInTaki.getId() && currentCard.doValidation(lastGameCard)) {
+    colorCardInTaki(lastGameCard) {
+        let currentCard;
+        for(let i = 0; i < this.colorsCards[lastGameCard.getColor()].length; ++i){
+            currentCard = this.colorsCards[lastGameCard.getColor()][i];
+            if(currentCard.getId() !== this.lastCardInTaki.getId() && currentCard.doValidation(lastGameCard)) {
                 return currentCard;
             }
         }
 
-        if(lastCardInTaki.doValidation(lastGameCard)){
-            currentCard = lastCardInTaki;
-            lastCardInTaki = undefined;
+        if(this.lastCardInTaki.doValidation(lastGameCard)){
+            currentCard = this.lastCardInTaki;
+            this.lastCardInTaki = undefined;
             return currentCard;
         }
 
         return undefined;
     }
 
-    function takiOperationWithTwoPlayers(lastGameCard) {
-        if(typeAndColorMatch(enumCard.enumTypes.PLUS, lastGameCard.getColor(), different) !== undefined){
-            lastCardInTaki = typeAndColorMatch(enumCard.enumTypes.PLUS, lastGameCard.getColor(), equal);
-            if(lastCardInTaki !== undefined)
+    takiOperationWithTwoPlayers(lastGameCard) {
+        if(this.typeAndColorMatch(enumCard.enumTypes.PLUS, lastGameCard.getColor(), this.different) !== undefined){
+            this.lastCardInTaki = this.typeAndColorMatch(enumCard.enumTypes.PLUS, lastGameCard.getColor(), this.equal);
+            if(this.lastCardInTaki !== undefined)
                 return;
         }
-        if(typeAndColorMatch(enumCard.enumTypes.STOP, lastGameCard.getColor(), different) !== undefined){
-            lastCardInTaki = typeAndColorMatch(enumCard.enumTypes.STOP, lastGameCard.getColor(), equal);
-            if(lastCardInTaki !== undefined)
+        if(this.typeAndColorMatch(enumCard.enumTypes.STOP, lastGameCard.getColor(), this.different) !== undefined){
+            this.lastCardInTaki = this.typeAndColorMatch(enumCard.enumTypes.STOP, lastGameCard.getColor(), this.equal);
+            if(this.lastCardInTaki !== undefined)
                 return;
         }
-        lastCardInTaki = connectionNumber(lastGameCard.getColor(), different);
-        if(lastCardInTaki !== undefined)
+        this.lastCardInTaki = this.connectionNumber(lastGameCard.getColor(), this.different);
+        if(this.lastCardInTaki !== undefined)
             return;
-        lastCardInTaki = typeAndColorMatch(enumCard.enumTypes.TWO_PLUS, lastGameCard.getColor(), equal);
-        if(lastCardInTaki !== undefined)
+        this.lastCardInTaki = this.typeAndColorMatch(enumCard.enumTypes.TWO_PLUS, lastGameCard.getColor(), this.equal);
+        if(this.lastCardInTaki !== undefined)
             return;
-        lastCardInTaki = findColorCardNotInGivenType(lastGameCard.getColor(), enumCard.enumTypes.PLUS);
-        if(lastCardInTaki !== undefined)
+        this.lastCardInTaki = this.findColorCardNotInGivenType(lastGameCard.getColor(), enumCard.enumTypes.PLUS);
+        if(this.lastCardInTaki !== undefined)
             return;
-        if(colorsCards[lastGameCard.getColor()].length > 0)
-            lastCardInTaki = colorsCards[lastGameCard.getColor()][0];
+        if(this.colorsCards[lastGameCard.getColor()].length > 0)
+            this.lastCardInTaki = this.colorsCards[lastGameCard.getColor()][0];
         else
-            lastCardInTaki = undefined;
+            this.lastCardInTaki = undefined;
     }
 
-    function takiOperationWithMorePlayers(lastGameCard) {
-        if(typeAndColorMatch(enumCard.enumTypes.PLUS, lastGameCard.getColor(), different) !== undefined){
-            lastCardInTaki = typeAndColorMatch(enumCard.enumTypes.PLUS, lastGameCard.getColor(), equal);
-            if(lastCardInTaki !== undefined)
+    takiOperationWithMorePlayers(lastGameCard) {
+        if(this.typeAndColorMatch(enumCard.enumTypes.PLUS, lastGameCard.getColor(), this.different) !== undefined){
+            this.lastCardInTaki = this.typeAndColorMatch(enumCard.enumTypes.PLUS, lastGameCard.getColor(), this.equal);
+            if(this.lastCardInTaki !== undefined)
                 return;
         }
-        lastCardInTaki = typeAndColorMatch(enumCard.enumTypes.STOP, lastGameCard.getColor(), equal);
-        if(lastCardInTaki !== undefined)
+        this.lastCardInTaki = this.typeAndColorMatch(enumCard.enumTypes.STOP, lastGameCard.getColor(), this.equal);
+        if(this.lastCardInTaki !== undefined)
             return;
-        lastCardInTaki = connectionNumber(lastGameCard.getColor(), different);
-        if(lastCardInTaki !== undefined)
+        this.lastCardInTaki = this.connectionNumber(lastGameCard.getColor(), this.different);
+        if(this.lastCardInTaki !== undefined)
             return;
-        lastCardInTaki = findColorCardNotInGivenType(lastGameCard.getColor(), enumCard.enumTypes.PLUS);
-        if(lastCardInTaki !== undefined)
+        this.lastCardInTaki = this.findColorCardNotInGivenType(lastGameCard.getColor(), enumCard.enumTypes.PLUS);
+        if(this.lastCardInTaki !== undefined)
             return;
-        if(colorsCards[lastGameCard.getColor()].length > 0)
-            lastCardInTaki = colorsCards[lastGameCard.getColor()][0];
+        if(this.colorsCards[lastGameCard.getColor()].length > 0)
+            this.lastCardInTaki = this.colorsCards[lastGameCard.getColor()][0];
         else
-            lastCardInTaki = undefined;
+            this.lastCardInTaki = undefined;
     }
 
-    function removeAllCardAppearances(card) {
+
+    removeCard(stock, card) {
+        for (let i = 0; i < stock.length; ++i) {
+            if (stock[i] === card) {
+                stock.splice(i, 1);
+            }
+        }
+    }
+
+    removeAllCardAppearances(card) {
         if(card.getColor() !== undefined)
-            removeCard(colorsCards[card.getColor()], card);
-        removeCard(typesCards[card.getSign()], card);
-        removeCard(allCards, card);
+            this.removeCard(this.colorsCards[card.getColor()], card);
+        this.removeCard(this.typesCards[card.getSign()], card);
+        this.removeCard(this.allCards, card);
     }
 
-    function firstAvailableCard(lastGameCard) {
-        for(var i = 0; i < allCards.length; ++i){
-            if(allCards[i].doValidation(lastGameCard))
-                return allCards[i];
+    firstAvailableCard(lastGameCard) {
+        for(let i = 0; i < this.allCards.length; ++i){
+            if(this.allCards[i].doValidation(lastGameCard))
+                return this.allCards[i];
         }
         return undefined;
     }
 
-    function regularOperation(lastGameCard) {
-        var pickedCard = undefined;
-        if(typeAndColorMatch(enumCard.enumTypes.PLUS, lastGameCard.getColor(), different) === undefined){
-            pickedCard = typeAndColorMatch(enumCard.enumTypes.PLUS, lastGameCard.getColor(), equal);
+    regularOperation(lastGameCard) {
+        let pickedCard = undefined;
+        if(this.typeAndColorMatch(enumCard.enumTypes.PLUS, lastGameCard.getColor(), this.different) === undefined){
+            pickedCard = this.typeAndColorMatch(enumCard.enumTypes.PLUS, lastGameCard.getColor(), this.equal);
             if(pickedCard !== undefined)
                 return pickedCard;
         }
-        if (numberOfPlayers === 2)
-            pickedCard = regularOperationWithTwoPlayers(lastGameCard);
-        else if (numberOfPlayers > 2)
-            pickedCard = regularOperationWithMorePlayers(lastGameCard);
+        if (this.numberOfPlayers === 2)
+            pickedCard = this.regularOperationWithTwoPlayers(lastGameCard);
+        else if (this.numberOfPlayers > 2)
+            pickedCard = this.regularOperationWithMorePlayers(lastGameCard);
         return pickedCard;
     }
 
-    function signOperation(lastGameCard) {
-        var differentColorType;
+    signOperation(lastGameCard) {
+        let differentColorType;
         if (lastGameCard.getSign() !== enumCard.enumTypes.PLUS && lastGameCard.getSign() !== enumCard.enumTypes.STOP)
             return undefined;
-        differentColorType = typeCardWithLeastSameColorInHand(lastGameCard.getSign());
-        if (colorsCards[lastGameCard.getColor()].length > 0) {
+        differentColorType = this.typeCardWithLeastSameColorInHand(lastGameCard.getSign());
+        if (this.colorsCards[lastGameCard.getColor()].length > 0) {
             if (differentColorType === undefined ||
-                colorsCards[lastGameCard.getColor()].length <= colorsCards[differentColorType.getColor()].length)
-                return regularOperation(lastGameCard);
+                this.colorsCards[lastGameCard.getColor()].length <= this.colorsCards[differentColorType.getColor()].length)
+                return this.regularOperation(lastGameCard);
         }
         return differentColorType;
     }
 
-    function superTakiExecute(lastGameCard) {
-        var pickedCard = undefined;
-        if(colorsLeftAmount() === 1 && colorsCards[lastGameCard.getColor()].length > 0 &&
-            typesCards[enumCard.enumTypes.SUPER_TAKI].length > 0){
-            pickedCard = typesCards[enumCard.enumTypes.SUPER_TAKI][0];
+    superTakiExecute(lastGameCard) {
+        let pickedCard = undefined;
+        if(this.colorsLeftAmount() === 1 && this.colorsCards[lastGameCard.getColor()].length > 0 &&
+            this.typesCards[enumCard.enumTypes.SUPER_TAKI].length > 0){
+            pickedCard = this.typesCards[enumCard.enumTypes.SUPER_TAKI][0];
         }
         return pickedCard;
     }
 
-    function takiOperation(lastGameCard) {
-        var pickedCard;
-        if(takiMode !== undefined){
-            if(lastCardInTaki === undefined) {
-                if (numberOfPlayers === 2)
-                    takiOperationWithTwoPlayers(lastGameCard);
-                else if (numberOfPlayers > 2)
-                    takiOperationWithMorePlayers(lastGameCard);
+    takiOperation(lastGameCard) {
+        let pickedCard;
+        if(this.takiMode !== undefined){
+            if(this.lastCardInTaki === undefined) {
+                if (this.numberOfPlayers === 2)
+                    this.takiOperationWithTwoPlayers(lastGameCard);
+                else if (this.numberOfPlayers > 2)
+                    this.takiOperationWithMorePlayers(lastGameCard);
             }
-            pickedCard = colorCardInTaki(lastGameCard);
+            pickedCard = this.colorCardInTaki(lastGameCard);
         }else{
-            pickedCard = typeAndColorMatch(enumCard.enumTypes.TAKI, lastGameCard.getColor(), equal);
+            pickedCard = this.typeAndColorMatch(enumCard.enumTypes.TAKI, lastGameCard.getColor(), this.equal);
         }
         return pickedCard;
     }
 
-    function plusTwoOperation(lastGameCard) {
+    plusTwoOperation(lastGameCard) {
         if(lastGameCard.getSign() === enumCard.enumTypes.TWO_PLUS && lastGameCard.isActive())
-            return typeCardWithLeastSameColorInHand(enumCard.enumTypes.TWO_PLUS);
+            return this.typeCardWithLeastSameColorInHand(enumCard.enumTypes.TWO_PLUS);
         else
             return undefined;
     }
 
-    function operation(lastGameCard){
-        var pickedCard;
-        pickedCard = plusTwoOperation(lastGameCard);
+    operation(lastGameCard){
+        let pickedCard;
+        pickedCard = this.plusTwoOperation(lastGameCard);
         if(pickedCard === undefined && lastGameCard.isActive())
             return undefined;
         else if(pickedCard === undefined)
-            pickedCard = takiOperation(lastGameCard);
+            pickedCard = this.takiOperation(lastGameCard);
         if(pickedCard === undefined)
-            pickedCard = superTakiExecute(lastGameCard);
+            pickedCard = this.superTakiExecute(lastGameCard);
         if(pickedCard === undefined)
-            pickedCard = signOperation(lastGameCard);
+            pickedCard = this.signOperation(lastGameCard);
         if(pickedCard === undefined)
-            pickedCard = regularOperation(lastGameCard);
+            pickedCard = this.regularOperation(lastGameCard);
         if(pickedCard === undefined){
-            if (typesCards[enumCard.enumTypes.CHANGE_COLOR].length > 0)
-                pickedCard = typesCards[enumCard.enumTypes.CHANGE_COLOR][0];
+            if (this.typesCards[enumCard.enumTypes.CHANGE_COLOR].length > 0)
+                pickedCard = this.typesCards[enumCard.enumTypes.CHANGE_COLOR][0];
         }
         if(pickedCard === undefined)
-            pickedCard = firstAvailableCard(lastGameCard);
+            pickedCard = this.firstAvailableCard(lastGameCard);
         return pickedCard;
     }
 
 
-    function addCard(cardsToAdd) {
-        for(var i = 0; i < cardsToAdd.length; ++i){
+    addCard(cardsToAdd) {
+        for(let i = 0; i < cardsToAdd.length; ++i){
             if(cardsToAdd[i].getColor() !== undefined)
-                insertColor(cardsToAdd[i]);
-            insertType(cardsToAdd[i]);
-            allCards.push(cardsToAdd[i]);
+                this.insertColor(cardsToAdd[i]);
+            this.insertType(cardsToAdd[i]);
+            this.allCards.push(cardsToAdd[i]);
             cardsToAdd[i].setParent(enumCard.dives.COMPUTER_CARDS, false);
             cardsToAdd[i].changeImage(false);
         }
     }
 
-    function takiWithConnection() {
-        var color, tempCard;
-        for (var i = 0; i < typesCards[enumCard.enumTypes.TAKI].length; ++i) {
-            color = typesCards[enumCard.enumTypes.TAKI][i].getColor();
-            if (typeAndColorMatch(enumCard.enumTypes.PLUS, color, different) !== undefined) {
-                tempCard = typeAndColorMatch(enumCard.enumTypes.PLUS, color, equal);
+    takiWithConnection() {
+        let color, tempCard;
+        for (let i = 0; i < this.typesCards[enumCard.enumTypes.TAKI].length; ++i) {
+            color = this.typesCards[enumCard.enumTypes.TAKI][i].getColor();
+            if (this.typeAndColorMatch(enumCard.enumTypes.PLUS, color, this.different) !== undefined) {
+                tempCard = this.typeAndColorMatch(enumCard.enumTypes.PLUS, color, this.equal);
                 if (tempCard !== undefined)
                     return color;
-            } else if (numberOfPlayers === 2) {
-                if (typeAndColorMatch(enumCard.enumTypes.STOP, color, different) !== undefined) {
-                    tempCard = typeAndColorMatch(enumCard.enumTypes.STOP, color, equal);
+            } else if (this.numberOfPlayers === 2) {
+                if (this.typeAndColorMatch(enumCard.enumTypes.STOP, color, this.different) !== undefined) {
+                    tempCard = this.typeAndColorMatch(enumCard.enumTypes.STOP, color, this.equal);
                     if (tempCard !== undefined)
                         return color;
                 }
@@ -345,29 +360,29 @@ var smartComputer = function() {
         }
     }
 
-    function takiWithNumberConnection() {
-        var color, tempCard;
-        for (var i = 0; i < typesCards[enumCard.enumTypes.TAKI].length; ++i) {
-            color = typesCards[enumCard.enumTypes.TAKI][i].getColor();
-            tempCard = connectionNumber(color, different);
+    takiWithNumberConnection() {
+        let color, tempCard;
+        for (let i = 0; i < this.typesCards[enumCard.enumTypes.TAKI].length; ++i) {
+            color = this.typesCards[enumCard.enumTypes.TAKI][i].getColor();
+            tempCard = this.connectionNumber(color, this.different);
             if (tempCard !== undefined)
                 return color;
         }
     }
 
-    function colorWithConnection(){
-        var color, tempCard;
-        for (var i = 0; i < colorsCards.length; ++i) {
-            if(colorsCards[i].length === 0)
+    colorWithConnection(){
+        let color, tempCard;
+        for (let i = 0; i < this.colorsCards.length; ++i) {
+            if(this.colorsCards[i].length === 0)
                 continue;
             color = i;
-            if (typeAndColorMatch(enumCard.enumTypes.PLUS, color, different) !== undefined) {
-                tempCard = typeAndColorMatch(enumCard.enumTypes.PLUS, color, equal);
+            if (this.typeAndColorMatch(enumCard.enumTypes.PLUS, color, this.different) !== undefined) {
+                tempCard = this.typeAndColorMatch(enumCard.enumTypes.PLUS, color, this.equal);
                 if (tempCard !== undefined)
                     return color;
-            } else if (numberOfPlayers === 2) {
-                if (typeAndColorMatch(enumCard.enumTypes.STOP, color, different) !== undefined) {
-                    tempCard = typeAndColorMatch(enumCard.enumTypes.STOP, color, equal);
+            } else if (this.numberOfPlayers === 2) {
+                if (this.typeAndColorMatch(enumCard.enumTypes.STOP, color, this.different) !== undefined) {
+                    tempCard = this.typeAndColorMatch(enumCard.enumTypes.STOP, color, this.equal);
                     if (tempCard !== undefined)
                         return color;
                 }
@@ -377,165 +392,134 @@ var smartComputer = function() {
         return undefined;
     }
 
-    function colorWithNumberConnection() {
-        var color, tempCard;
-        for (var i = 0; i < colorsCards.length; ++i) {
-            if(colorsCards[i].length === 0)
+    colorWithNumberConnection() {
+        let color, tempCard;
+        for (let i = 0; i < this.colorsCards.length; ++i) {
+            if(this.colorsCards[i].length === 0)
                 continue;
             color = i;
-            tempCard = connectionNumber(color, different);
+            tempCard = this.connectionNumber(color, this.different);
             if (tempCard !== undefined)
                 return color;
         }
         return undefined;
     }
 
-    function minimumCardsInColor() {
-        var minimumLength = undefined;
-        for (var i = 0; i < colorsCards.length; ++i) {
-            if (colorsCards[i].length === 0)
+    minimumCardsInColor() {
+        let minimumLength = undefined;
+        for (let i = 0; i < this.colorsCards.length; ++i) {
+            if (this.colorsCards[i].length === 0)
                 continue;
             if(minimumLength === undefined)
                 minimumLength = i;
-            else if(colorsCards[minimumLength].length > colorsCards[i].length)
+            else if(this.colorsCards[minimumLength].length > this.colorsCards[i].length)
                 minimumLength = i;
         }
 
         return minimumLength;
     }
 
-    function getColorToChange() {
-        var color;
-        color = takiWithConnection();
+    getColorToChange() {
+        let color;
+        color = this.takiWithConnection();
         if(color !== undefined)
             return color;
-        color = takiWithNumberConnection();
+        color = this.takiWithNumberConnection();
         if(color !== undefined)
             return color;
-        if (typesCards[enumCard.enumTypes.TAKI].length > 0) {
-            return typesCards[enumCard.enumTypes.TAKI][0].getColor();
+        if (this.typesCards[enumCard.enumTypes.TAKI].length > 0) {
+            return this.typesCards[enumCard.enumTypes.TAKI][0].getColor();
         }
-        color = colorWithConnection();
+        color = this.colorWithConnection();
         if(color !== undefined)
             return color;
-        color = colorWithNumberConnection();
+        color = this.colorWithNumberConnection();
         if(color !== undefined)
             return color;
-        color = minimumCardsInColor();
+        color = this.minimumCardsInColor();
         if(color !== undefined)
             return color;
         return enumCard.enumColor.YELLOW;
 
     }
 
-    return{
-        setCards: function(cards, playersAmount){
-            numberOfPlayers = playersAmount;
-            setAllCards(cards);
-            for(var i = 0; i < cards.length; ++i){
-                cards[i].setParent(enumCard.dives.COMPUTER_CARDS, false);
-                cards[i].changeImage(false);
-            }
-        },
 
-        pullCardFromStock: function(cardsToAdd){
-            addCard(cardsToAdd);
-        },
+    
+    
+    
+    
+        setCards(cards, playersAmount){
+            this.numberOfPlayers = playersAmount;
+            this.setAllCards(cards);
+            super.setCardsPlace(enumCard.dives.COMPUTER_CARDS, false);
+        }
 
-        pickCard: function(lastGameCard){
-           return operation(lastGameCard);
-        },
+        pullCardFromStock(cardsToAdd){
+            this.addCard(cardsToAdd);
+        }
 
-        increasePlayerTurns: function () {
-            turnsPlayed += 1;
-        },
+        pickCard(lastGameCard){
+           return this.operation(lastGameCard);
+        }
 
-        resetPlayerClock: function(){
+        resetPlayerClock(){
             return 0;
-        },
+        }
 
-        calculateAVG: function () {
-            return 0;
-        },
+        calculateAVG() {
+            return this.averageTimePlayed;
+        }
 
-        getAmountOfCards: function(){
-            return allCards.length;
-        },
+        doOperation(card, lastCard){
+            this.removeAllCardAppearances(card);
+            return super.doOperation(card, lastCard);
+        }
 
-        getAverageTimePlayed: function(){
-            return 0;
-        },
-
-        doOperation: function(card, lastCard) {
-            var promote = card.doOperation(this, lastCard);
+/*        doOperation: function(card, lastCard) {
             removeAllCardAppearances(card);
-            changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), allCards.length);
-            if (takiMode !== undefined) {
-                if(takiModeChecker(allCards, takiMode)) {
+            changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), this.allCards.length);
+            let promote = card.doOperation(this, lastCard);
+            if (this.takiMode !== undefined) {
+                if(takiModeChecker(this.allCards, this.takiMode)) {
                     promote = enumCard.enumResult.CONTINUE_TURN;
                     card.setActive(false);
                 }
                 else{
-                    takiMode = undefined;
+                    this.takiMode = undefined;
                     if(promote === enumCard.enumResult.CONTINUE_TURN)
                         promote = enumCard.enumResult.NEXT_TURN;
                 }
             }
-            if (allCards.length === 1)
-                singleCardCounter++;
+            if (this.allCards.length === 1)
+                this.singleCardCounter++;
             return promote;
-        },
+        },*/
 
-        pullApproval: function (lastCard){
-            return pullApproval(allCards, lastCard);
-        },
 
-        getCard: function (id) {
-            searchCard(allCards, id);
-        },
 
-        getHtmlDiv: function () {
-            return htmlPlayerDiv;
-        },
-        isComputer: function () {
+
+
+
+        isComputer() {
             return true;
-        },
-        getSingleCardCounter: function() {
-            return singleCardCounter;
-        },
-
-        isDraggable: function () {
-            return false;
-        },
-
-        getTurnsPlayed: function(){
-            return turnsPlayed;
-        },
-      
-        pickColor: function () {
-            pickColor = true;
-            return enumCard.enumResult.CONTINUE_TURN;
-        },
-
-        getColor: function () {
-            pickColor = false;
-            return getColorToChange();
-        },
-
-        setTakiMode: function (card) {
-            takiMode = card;
-        },
-
-        getAllCards: function(){
-            return allCards;
-        },
-
-        colorToPick: function () {
-            return pickColor;
-        },
-
-        getTakiMode: function () {
-            return takiMode;
         }
-    }
-};
+
+        isDraggable() {
+            return false;
+        }
+
+        pickColor() {
+            this.pickedColor = true;
+            return enumCard.enumResult.CONTINUE_TURN;
+        }
+
+        getColor() {
+            this.pickedColor = false;
+            return this.getColorToChange();
+        }
+
+        colorToPick() {
+            return this.pickedColor;
+        }
+
+}

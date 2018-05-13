@@ -3,7 +3,7 @@ function Computer() {
 
     function pickCard() {
         //need to pick card from my stock and put in stock
-        game.dropValidation(); //why?
+        Game.dropValidation(); //why?
     }
 
     function doTwoPlusInHand() {

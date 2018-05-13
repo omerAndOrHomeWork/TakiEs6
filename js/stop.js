@@ -1,11 +1,11 @@
-class Plus extends Card{
+class Stop extends Card{
 
     constructor(theColor, theSign, theId){
         super(theColor, theSign, theId);
     }
 
     doOperation() {
-        return enumCard.enumResult.EXTRA_TURN;
+        return enumCard.enumResult.JUMP_TURN;
     }
 
     doValidation(lastCard) {

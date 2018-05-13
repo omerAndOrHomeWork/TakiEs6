@@ -1,18 +1,18 @@
-function SuperTaki() {
-    /**
-     * @return {number}
-     */
-    function superTakiOperation() {
-        return -1;
+class SuperTaki extends Card{
+
+    constructor(theColor, theSign, theId){
+        super(theColor, theSign, theId);
     }
 
-    /**
-     * @return {boolean}
-     */
-    function superTakiValidation(card) {
-        return !card.active;
+    doOperation(player, lastCard) {
+        this.setColor(lastCard.getColor());
+        this.setImage(getUniqueCss(Object.keys(enumCard.enumColor)[this.getColor()],
+            Object.keys(enumCard.enumTypes)[enumCard.enumTypes.TAKI],'_'));
+        player.setTakiMode(this);
+        return enumCard.enumResult.CONTINUE_TURN;
     }
 
-    Card.call(this, color, Card.enumTypes.SUPER_TAKI, superTakiValidation, superTakiOperation, false);
+    doValidation(lastCard) {
+        return !lastCard.isActive();
+    }
 }
-inherits(Taki, Card);

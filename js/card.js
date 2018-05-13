@@ -1,104 +1,103 @@
-function Card(theColor, theSign, theValidation, theOperation, theId) {
-    var color = theColor;
-    var sign = theSign;
-    var validation = theValidation;
-    var operation = theOperation;
-    var active = false;
-    var id = theId;
-    var htmlCard;
-    var uniqueCardImage;
-    var closeCardImage;
+class Card{
 
-    function setUniqueImage(imgName) {
-        var colorName;
-        if( color !== undefined)
-            colorName = Object.keys(enumCard.enumColor)[color].toLowerCase();
+
+    constructor (theColor, theSign, theId){
+        this.color = theColor;
+        this.sign = theSign;
+        this.active = false;
+        this.id = theId;
+        this.htmlCard = undefined;
+        this.uniqueCardImage = undefined;
+        this.closeCardImage = undefined;
+    }
+
+
+    setUniqueImage(imgName) {
+        let colorName;
+        if( this.color !== undefined)
+            colorName = Object.keys(enumCard.enumColor)[this.color].toLowerCase();
         else
             colorName = "other";
-        uniqueCardImage.setAttribute("src", "../Images/" + colorName + "/" + imgName.toLowerCase() + ".png");
+        this.uniqueCardImage.setAttribute("src", "../Images/" + colorName + "/" + imgName.toLowerCase() + ".png");
 
     }
 
-    function setHtmlElement(imgName) {
-        htmlCard = document.createElement("a");
-        htmlCard.setAttribute("id", id);
-        closeCardImage =  document.createElement("img");
-        closeCardImage.src = enumCard.images.CLOSE_CARD;
-        uniqueCardImage = document.createElement("img");
-        setUniqueImage(imgName);
+    setHtmlElement(imgName) {
+        this.htmlCard = document.createElement("a");
+        this.htmlCard.setAttribute("id", this.id);
+        this.closeCardImage =  document.createElement("img");
+        this.closeCardImage.src = enumCard.images.CLOSE_CARD;
+        this.uniqueCardImage = document.createElement("img");
+        this.setUniqueImage(imgName);
     }
 
-    function setHtmlEvent(draggable) {
-        htmlCard.ondragstart = function (event) {
-            var pickColorId = document.getElementById(enumCard.dives.PICK_COLOR);
+    setHtmlEvent(draggable) {
+        this.htmlCard.ondragstart = function (event) {
+            let pickColorId = document.getElementById(enumCard.dives.PICK_COLOR);
             if(!draggable || pickColorId.style.visibility === "visible")
                 return false;
-            htmlCard.draggable = true;
-            event.dataTransfer.setData("Text", id);
+            this.draggable = true;
+            event.dataTransfer.setData("Text", this.id);
         };
     }
 
-    return{
-
-        doValidation: function(lastCard){
-            return validation(lastCard, this);
-        },
-
-        doOperation: function(player, lastCard){
-            return operation(player, this, lastCard);
-        },
-
-        isActive: function (){
-            return active;
-        },
-
-        getId: function () {
-            return id;
-        },
-
-        setParent: function (parentHolder, draggable) {
-            document.getElementById(parentHolder).appendChild(htmlCard);
-            setHtmlEvent(draggable);
-        },
-
-        setElement: function (theUniqueCard) {
-            setHtmlElement(theUniqueCard);
-            setHtmlEvent(false);
-            document.getElementById(enumCard.dives.STOCK).appendChild(htmlCard);
-        },
-
-        changeImage: function (openCard){
-            while (htmlCard.firstChild) {
-                htmlCard.removeChild(htmlCard.firstChild);
-            }
-            if(openCard)
-                htmlCard.appendChild(uniqueCardImage);
-            else
-                htmlCard.appendChild(closeCardImage);
-        },
-
-        getSign: function(){
-            return sign;
-        },
-
-        getColor: function () {
-            return color;
-        },
-
-        getElement: function () {
-            return htmlCard;
-        },
-
-        setColor: function (theColor) {
-          color = theColor;
-        },
-
-        setImage: function (imgName) {
-            setUniqueImage(imgName);
-        },
-
-        setActive: function (activeness) {
-            active = activeness;
-        }
+    get HtmlCard() {
+        return this.htmlCard;
     }
+
+
+
+
+    isActive (){
+        return this.active;
+    }
+
+    getId() {
+        return this.id;
+    }
+
+    setParent (parentHolder, draggable) {
+        document.getElementById(parentHolder).appendChild(this.htmlCard);
+        this.setHtmlEvent(draggable);
+    }
+
+    setElement (theUniqueCard) {
+        this.setHtmlElement(theUniqueCard);
+        this.setHtmlEvent(false);
+        document.getElementById(enumCard.dives.STOCK).appendChild(this.htmlCard);
+    };
+
+    changeImage (openCard){
+        while (this.htmlCard.firstChild) {
+            this.htmlCard.removeChild(this.htmlCard.firstChild);
+        }
+        if(openCard)
+            this.htmlCard.appendChild(this.uniqueCardImage);
+        else
+            this.htmlCard.appendChild(this.closeCardImage);
+    };
+
+    getSign (){
+        return this.sign;
+    };
+
+    getColor () {
+        return this.color;
+    };
+
+    getElement() {
+        return this.htmlCard;
+    };
+
+    setColor(theColor) {
+        this.color = theColor;
+    };
+
+    setImage(imgName) {
+        this.setUniqueImage(imgName);
+    };
+
+    setActive(activeness) {
+        this.active = activeness;
+    };
 }

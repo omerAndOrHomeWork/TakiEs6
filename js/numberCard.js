@@ -1,21 +1,15 @@
-function NumberCard(number, color) {
-    this.number = number;
+class NumberCard extends Card{
 
-    var numberOperation = function () {
-        return 1;
-    };
-
-    function numberValidation(card) {
-        return !card.active && (card.color === this.color || card.sign === this.sign);
-
+    constructor(theColor, theSign, theId){
+        super(theColor, theSign, theId);
     }
 
- //   function color(card) {
-// }
+    doOperation() {
+        return enumCard.enumResult.NEXT_TURN;
+    }
 
-    Card.call(this, color, Card.enumTypes.NUMBER, numberValidation, numberOperation, false);
-
-
-    inherits(NumberCard, Card);
+    doValidation(lastCard) {
+        return !lastCard.isActive() && (lastCard.getColor() === this.getColor() || lastCard.number === this.number);
+    }
 }
 

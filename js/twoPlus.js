@@ -1,15 +1,15 @@
-function TwoPlus(color) {
+class TwoPlus extends Card{
 
-    var twoPlusOperation = function () {
-        return 1;
-    };
-
-    function twoPlusValidation(card) {
-        return (card.color === this.color || card.sign === this.sign);
+    constructor(theColor, theSign, theId){
+        super(theColor, theSign, theId);
     }
 
-    Card.call(this, color, Card.TWO_PLUS, numberValidation, numberOperation, false);
+    doOperation(player) {
+        this.setActive(true);
+        return enumCard.enumResult.NEXT_TURN;
+    }
 
-    inherits(TwoPlus, Card);
+    doValidation(lastCard) {
+        return (lastCard.getColor() === this.getColor() || lastCard.getSign() === this.getSign());
+    }
 }
-

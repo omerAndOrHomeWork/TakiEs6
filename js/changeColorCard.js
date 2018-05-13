@@ -1,24 +1,14 @@
-function ChangeColorCard() {
+class ChangeColorCard extends Card{
 
-    /**
-     * @return {number}
-     */
-    function changeColorOperation() {
-        //hide = false
-        //TODO: create 4 buttons and connect it to game(functionally)
-        return 1;
+    constructor(theColor, theSign, theId){
+        super(theColor, theSign, theId);
     }
 
-    /**
-     * @return {boolean}
-     */
-
-    function changeColorValidation(card) {
-        return !card.isActive();
+    doOperation(player) {
+        return player.pickColor();
     }
 
-    Card.call(this, null, Card.enumTypes.CHANGE_COLOR, ChangeColorValidation, ChangeColorOperation, false);
+    doValidation(lastCard) {
+        return !lastCard.isActive();
+    }
 }
-
-
-// inherits(Stop, Card);
