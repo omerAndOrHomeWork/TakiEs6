@@ -1,48 +1,55 @@
-var game = (function() {
-    var gameCards = [];
-    var turn = 0;
-    var players = [player(), smartComputer()];
-    var amountOfCardsToTakeFromStock = 1;
-    var gameStatistics;
-    var endGame = false;
+class Game{
+/*    gameCards;
+    turn;
+    players;
+    amountOfCardsToTakeFromStock;
+    gameStatistics;
+    endGame;*/
 
-    function changeTurn(promote) {
-        players[turn].increasePlayerTurns();
-        players[turn].calculateAVG();
-        players[turn].resetPlayerClock();
-        turn = (turn + promote) % players.length;
-        gameStatistics.updateStatistics();
+    constructor(){
+        this.gameCards = [];
+        this.turn = 0;
+        this.players = [new HumanPlayer(), new SmartComputer()];
+        this.amountOfCardsToTakeFromStock = 1;
+        this.endGame = false;
+    }
+    
+    changeTurn(promote) {
+        this.players[this.turn].increasePlayerTurns();
+        this.players[this.turn].calculateAVG();
+        this.players[this.turn].resetPlayerClock();
+        this.turn = (this.turn + promote) % this.players.length;
+        this.gameStatistics.updateStatistics();
     }
 
-    function calcAmountCardsToTake(card){
-        if(card.getSign() === enumCard.enumTypes.TWO_PLUS) {
-            if (amountOfCardsToTakeFromStock % 2 === 0)
-                amountOfCardsToTakeFromStock += 2;
+    calcAmountCardsToTake(card) {
+        if (card.getSign() === enumCard.enumTypes.TWO_PLUS) {
+            if (this.amountOfCardsToTakeFromStock % 2 === 0)
+                this.amountOfCardsToTakeFromStock += 2;
             else
-                amountOfCardsToTakeFromStock = 2;
-        }else
-            amountOfCardsToTakeFromStock = 1;
+                this.amountOfCardsToTakeFromStock = 2;
+        } else
+            this.amountOfCardsToTakeFromStock = 1;
     }
 
-    function partition() {
-        var gameStartCard = stock.getValidOpenCard();
-        setCards(gameCards, gameStartCard);
-        gameCards[0].setParent(enumCard.dives.OPEN_CARDS, false);
-        for(var i=0; i < players.length; ++i)
-            players[i].setCards(stock.getCards(8), players.length);
+    partition() {
+        let gameStartCard = stock.getValidOpenCard();
+        setCards(this.gameCards, gameStartCard);
+        this.gameCards[0].setParent(enumCard.dives.OPEN_CARDS, false);
+        this.players.forEach(p => p.setCards(stock.getCards(8), this.players.length));
     }
 
-    function colorPicked(pickedColor) {
-        gameCards[gameCards.length - 1].setColor(pickedColor);
-        gameCards[gameCards.length - 1].setImage(getUniqueCss(Object.keys(enumCard.enumColor)[pickedColor],
-            Object.keys(enumCard.enumTypes)[enumCard.enumTypes.CHANGE_COLOR],'_'));
+    colorPicked(pickedColor) {
+        this.gameCards[this.gameCards.length - 1].setColor(pickedColor);
+        this.gameCards[this.gameCards.length - 1].setImage(getUniqueCss(Object.keys(enumCard.enumColor)[pickedColor],
+            Object.keys(enumCard.enumTypes)[enumCard.enumTypes.CHANGE_COLOR], '_'));
         document.getElementById(enumCard.dives.PICK_COLOR).style.visibility = "hidden";
-        changeTurn(enumCard.enumResult.NEXT_TURN);
-        setTimeout(computerOperation,2000);
+        this.changeTurn(enumCard.enumResult.NEXT_TURN);
+        setTimeout(this.computerOperation, 2000);
     }
 
-    function setEventsListener() {
-        var drop = document.getElementById(enumCard.dives.OPEN_CARDS);
+    setEventsListener() {
+        let drop = document.getElementById(enumCard.dives.OPEN_CARDS);
         drop.draggable = false;
         drop.ondragover = function (ev) {
             ev.preventDefault();
@@ -50,59 +57,67 @@ var game = (function() {
 
         drop.ondrop = function (event) {
             event.preventDefault();
-            var pickColorId = document.getElementById(enumCard.dives.PICK_COLOR);
-            if(pickColorId.style.visibility === "visible")
+            let pickColorId = document.getElementById(enumCard.dives.PICK_COLOR);
+            if (pickColorId.style.visibility === "visible")
                 return false;
-            var id = event.dataTransfer.getData("Text");
-            var card = players[turn].getCard(id);
+            let id = event.dataTransfer.getData("Text");
+            let card = game.players[game.turn].getCard(id);
             if (card !== undefined) {
-                dropValidation(id, card);
+                game.dropValidation(id, card);
             }
         };
 
-        var click =  document.getElementById(enumCard.dives.STOCK);
-        click.onclick = function(event) {
+        let click = document.getElementById(enumCard.dives.STOCK);
+        click.onclick = function (event) {
             event.preventDefault();
-            var pickColorId = document.getElementById(enumCard.dives.PICK_COLOR);
-            if(pickColorId.style.visibility === "visible")
+            let pickColorId = document.getElementById(enumCard.dives.PICK_COLOR);
+            if (pickColorId.style.visibility === "visible")
                 return false;
-            if(!players[turn].isComputer())
-                pullCardValidation(players[turn]);
+            if (!game.players[game.turn].isComputer())
+                game.pullCardValidation(game.players[game.turn]);
         };
-        click.ondragstart = function () { return false; };
 
-        var blue = document.getElementById(enumCard.dives.BLUE_PICK);
+        click.ondragstart = () => false;
+
+        let blue = document.getElementById(enumCard.dives.BLUE_PICK);
+
+        blue.onclick = (ev) => {
+            ev.preventDefault();
+            game.colorPicked(enumCard.enumColor.BLUE);
+        };
+
+
         blue.onclick = function (ev) {
             ev.preventDefault();
-            colorPicked(enumCard.enumColor.BLUE);
+            game.colorPicked(enumCard.enumColor.BLUE);
         };
 
-        var green = document.getElementById(enumCard.dives.GREEN_PICK);
+        let green = document.getElementById(enumCard.dives.GREEN_PICK);
         green.onclick = function (ev) {
             ev.preventDefault();
-            colorPicked(enumCard.enumColor.GREEN);
+            game.colorPicked(enumCard.enumColor.GREEN);
         };
 
-        var red = document.getElementById(enumCard.dives.RED_PICK);
+        let red = document.getElementById(enumCard.dives.RED_PICK);
         red.onclick = function (ev) {
             ev.preventDefault();
-            colorPicked(enumCard.enumColor.RED);
+            game.colorPicked(enumCard.enumColor.RED);
         };
 
-        var yellow = document.getElementById(enumCard.dives.YELLOW_PICK);
+        let yellow = document.getElementById(enumCard.dives.YELLOW_PICK);
         yellow.onclick = function (ev) {
             ev.preventDefault();
-            colorPicked(enumCard.enumColor.YELLOW);
+            game.colorPicked(enumCard.enumColor.YELLOW);
         };
 
         window.onresize = function () {
-            changeMerging(document.getElementById(enumCard.dives.PLAYER_CARDS), players[0].getAllCards().length);
-            changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), players[1].getAllCards().length);
+            changeMerging(document.getElementById(enumCard.dives.PLAYER_CARDS), game.players[0].getAllCards().length);
+            changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), game.players[1].getAllCards().length);
         };
     }
 
-    function endGameMode(massage) {
-        endGame = true;
+    endGameMode(massage) {
+        this.endGame = true;
         document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "hidden";
         document.getElementById(enumCard.dives.PICK_COLOR).style.visibility = "hidden";
         document.getElementById(enumCard.dives.END_GAME_MODE).style.visibility = "visible";
@@ -110,138 +125,137 @@ var game = (function() {
         document.getElementById(enumCard.dives.MASSAGE).innerText = massage + " win!";
     }
 
-    function dropValidation(id, card) {
-        if (takiPermission(players[turn], card) && card.doValidation(gameCards[gameCards.length - 1])){
-            var promote = players[turn].doOperation(card, gameCards[gameCards.length - 1]);
-            document.getElementById(enumCard.dives.OPEN_CARDS).removeChild(gameCards[gameCards.length - 1].getElement());
+    dropValidation(id, card) {
+        if (takiPermission(this.players[this.turn], card) && card.doValidation(this.gameCards[this.gameCards.length - 1])) {
+            let promote = this.players[this.turn].doOperation(card, this.gameCards[this.gameCards.length - 1]);
+            document.getElementById(enumCard.dives.OPEN_CARDS).removeChild(this.gameCards[this.gameCards.length - 1].getElement());
             card.setParent(enumCard.dives.OPEN_CARDS, false);
-            gameCards[gameCards.length - 1].setActive(false);
+            this.gameCards[this.gameCards.length - 1].setActive(false);
             card.changeImage(true);
-            gameCards.push(card);
-            calcAmountCardsToTake(card);
-            if(players[turn].getAmountOfCards() === 0 && card.getSign() !== enumCard.enumTypes.PLUS){
-                endGameMode(Object.keys(enumCard.enumPlayer)[turn]);
+            this.gameCards.push(card);
+            this.calcAmountCardsToTake(card);
+            if (this.players[this.turn].getAmountOfCards() === 0 && card.getSign() !== enumCard.enumTypes.PLUS) {
+                this.endGameMode(Object.keys(enumCard.enumPlayer)[this.turn]);
             }
-            if(promote !== enumCard.enumResult.CONTINUE_TURN)
-                changeTurn(promote);
-            setTimeout(computerOperation,2000);
+            if (promote !== enumCard.enumResult.CONTINUE_TURN)
+                this.changeTurn(promote);
+            setTimeout(this.computerOperation, 2000);
         }
     }
 
-    function refreshStockAndOpenCards() {
-        if(gameCards.length === 1) {
-            endGameMode("TIE! nobody ");
-        }else {
+    refreshStockAndOpenCards() {
+        if (this.gameCards.length === 1) {
+            this.endGameMode("TIE! nobody ");
+        } else {
             removeAllCards(enumCard.dives.OPEN_CARDS);
-            var lastCard = gameCards.pop();
-            stock.makeStockAgain(gameCards);
-            gameCards = undefined;
-            gameCards = [];
-            gameCards.push(lastCard);
+            let lastCard = this.gameCards.pop();
+            stock.makeStockAgain(this.gameCards);
+            this.gameCards = undefined;
+            this.gameCards = [];
+            this.gameCards.push(lastCard);
             lastCard.setParent(enumCard.dives.OPEN_CARDS);
             stock.changeStockImage();
         }
     }
 
-    function pullCardValidation(player) {
-        if(player === players[turn] && player.pullApproval(gameCards[gameCards.length-1])){
+    pullCardValidation(player) {
+        if (player === this.players[this.turn] && player.pullApproval(this.gameCards[this.gameCards.length - 1])) {
             stock.changeStockImage();
-            gameCards[gameCards.length - 1].setActive(false);
+            this.gameCards[this.gameCards.length - 1].setActive(false);
             player.setTakiMode(undefined);
-            var cardsFromStock = stock.getCards(amountOfCardsToTakeFromStock);
-            if(stock.getLength() <= amountOfCardsToTakeFromStock){
-                refreshStockAndOpenCards();
+            let cardsFromStock = stock.getCards(this.amountOfCardsToTakeFromStock);
+            if (stock.getLength() <= this.amountOfCardsToTakeFromStock) {
+                this.refreshStockAndOpenCards();
             }
-            amountOfCardsToTakeFromStock = 1;
+            this.amountOfCardsToTakeFromStock = 1;
             player.pullCardFromStock(cardsFromStock);
-            for(var i = 0; i < cardsFromStock.length; ++i)
+            for (let i = 0; i < cardsFromStock.length; ++i)
                 cardsFromStock[i].setParent(player.getHtmlDiv(), player.isDraggable());
-            changeTurn(enumCard.enumResult.NEXT_TURN);
-            setTimeout(computerOperation,2000);
+            this.changeTurn(enumCard.enumResult.NEXT_TURN);
+            setTimeout(this.computerOperation, 2000);
         }
     }
 
-    function computerOperation(){
-        if(!endGame && players[turn].isComputer()){
-            if(players[turn].colorToPick()) {
-                var color = players[turn].getColor();
-                colorPicked(color);
-            }else {
-                var card = players[turn].pickCard(gameCards[gameCards.length - 1]);
+    computerOperation() {
+        if (!game.endGame && game.players[game.turn].isComputer()) {
+            if (game.players[game.turn].colorToPick()) {
+                let color = game.players[game.turn].getColor();
+                game.colorPicked(color);
+            } else {
+                let card = game.players[game.turn].pickCard(game.gameCards[game.gameCards.length - 1]);
                 if (card === undefined)
-                    pullCardValidation(players[turn]);
+                    game.pullCardValidation(game.players[game.turn]);
                 else {
-                    dropValidation(players[turn], card);
+                    game.dropValidation(game.players[game.turn], card);
                 }
             }
         }
     }
 
-    function removeHTMLElements(){
+    removeHTMLElements() {
         removeAllCards(enumCard.dives.COMPUTER_CARDS);
         removeAllCards(enumCard.dives.PLAYER_CARDS);
         removeAllCards(enumCard.dives.OPEN_CARDS);
         removeAllCards(enumCard.dives.STATISTICS);
     }
-    function resetDivsAttributes(){
+
+    resetDivsAttributes() {
         document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "visible";
         document.getElementById(enumCard.dives.END_GAME_MODE).style.visibility = "hidden";
         document.getElementById(enumCard.dives.STOCK_AND_OPEN_CARDS).style.visibility = "visible";
         document.getElementById(enumCard.dives.MASSAGE).innerText = '';
     }
 
-    function getGameCards() {
-        var allCards = [];
-        takeCards(allCards, players[0].getAllCards());
-        takeCards(allCards, players[1].getAllCards());
-        takeCards(allCards, gameCards);
+    getGameCards() {
+        let allCards = [];
+        takeCards(allCards, this.players[0].getAllCards());
+        takeCards(allCards, this.players[1].getAllCards());
+        takeCards(allCards, this.gameCards);
         return allCards;
     }
 
-    function initialGameAndStatistics(){
-        turn = 0;
-        partition();
-        gameStatistics = new statistics(players);
-        gameStatistics.setStatistics();
-        gameStatistics.updateStatistics();
-        setEventsListener();
+    initialGameAndStatistics() {
+        this.turn = 0;
+        this.partition();
+        this.gameStatistics = new statistics(this.players);
+        this.gameStatistics.setStatistics();
+        this.gameStatistics.updateStatistics();
+        this.setEventsListener();
     }
 
-    return{
-        startGame: function () {
+        startGame() {
             document.getElementById("Enter_Game").style.visibility = "hidden";
             document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "visible";
             stock.setGame();
-            initialGameAndStatistics();
-            gameStatistics.initialStatisticsTitle();
-            setTimeout(computerOperation,2000);
-        },
-
-        restartGame: function(){
-            event.preventDefault();
-            endGame = false;
-            removeHTMLElements();
-            resetDivsAttributes();
-            var allCards;
-            allCards = getGameCards();
-            var playerAverageTurnTime = players[0].getAverageTimePlayed();
-            var playerTurn = players[0].getTurnsPlayed();
-            players[0] = undefined;
-            players[1] = undefined;
-            gameCards = undefined;
-            players = undefined;
-            gameCards = [];
-            stock.makeStockAgain(allCards);
-            players = [player(), smartComputer()];
-            gameStatistics = undefined;
-            players[0].setAverageTimePlayed(playerAverageTurnTime);
-            players[0].setTurnsPlayed(playerTurn);
-            initialGameAndStatistics();
-            setTimeout(computerOperation,2000);
-        },
-
-        quitGame: function(){
-            endGameMode("PLAYER quit! COMPUTER");
+            this.initialGameAndStatistics();
+            this.gameStatistics.initialStatisticsTitle();
+            setTimeout(this.computerOperation, 2000);
         }
-    }
-})();
+
+        restartGame() {
+            event.preventDefault();
+            this.endGame = false;
+            this.removeHTMLElements();
+            this.resetDivsAttributes();
+            let allCards;
+            allCards = this.getGameCards();
+            let playerAverageTurnTime = this.players[0].getAverageTimePlayed();
+            let playerTurn = this.players[0].getTurnsPlayed();
+            this.players[0] = undefined;
+            this.players[1] = undefined;
+            this.gameCards = undefined;
+            this.players = undefined;
+            this.gameCards = [];
+            stock.makeStockAgain(allCards);
+            this.players = [new HumanPlayer(), new SmartComputer()];
+            this.gameStatistics = undefined;
+            this.players[0].setAverageTimePlayed(playerAverageTurnTime);
+            this.players[0].setTurnsPlayed(playerTurn);
+            this.initialGameAndStatistics();
+            setTimeout(this.computerOperation, 2000);
+        }
+
+        quitGame() {
+            this.endGameMode("PLAYER quit! COMPUTER");
+        }
+}
