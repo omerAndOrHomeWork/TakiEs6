@@ -337,8 +337,9 @@ class SmartComputer extends Player{
                 this.insertColor(cardsToAdd[i]);
             this.insertType(cardsToAdd[i]);
             this.allCards.push(cardsToAdd[i]);
-            cardsToAdd[i].setParent(enumCard.dives.COMPUTER_CARDS, false);
-            cardsToAdd[i].changeImage(false);
+/*            cardsToAdd[i].setParent(enumCard.dives.COMPUTER_CARDS, false);
+            cardsToAdd[i].changeImage(false);*/
+            super.addCards(cardsToAdd);
         }
     }
 
@@ -443,37 +444,32 @@ class SmartComputer extends Player{
 
     }
 
+    setCards(cards, playersAmount){
+        this.numberOfPlayers = playersAmount;
+        this.setAllCards(cards);
+        super.setCardsPlace();
+    }
 
-    
-    
-    
-    
-        setCards(cards, playersAmount){
-            this.numberOfPlayers = playersAmount;
-            this.setAllCards(cards);
-            super.setCardsPlace(enumCard.dives.COMPUTER_CARDS, false);
-        }
+    pullCardFromStock(cardsToAdd){
+        this.addCard(cardsToAdd);
+    }
 
-        pullCardFromStock(cardsToAdd){
-            this.addCard(cardsToAdd);
-        }
+    pickCard(lastGameCard){
+       return this.operation(lastGameCard);
+    }
 
-        pickCard(lastGameCard){
-           return this.operation(lastGameCard);
-        }
+    resetPlayerClock(){
+        return 0;
+    }
 
-        resetPlayerClock(){
-            return 0;
-        }
+    calculateAVG() {
+        return this.averageTimePlayed;
+    }
 
-        calculateAVG() {
-            return this.averageTimePlayed;
-        }
-
-        doOperation(card, lastCard){
-            this.removeAllCardAppearances(card);
-            return super.doOperation(card, lastCard);
-        }
+    doOperation(card, lastCard){
+        this.removeAllCardAppearances(card);
+        return super.doOperation(card, lastCard);
+    }
 
 /*        doOperation: function(card, lastCard) {
             removeAllCardAppearances(card);
@@ -495,31 +491,26 @@ class SmartComputer extends Player{
             return promote;
         },*/
 
+    isComputer() {
+        return true;
+    }
 
+    isDraggable() {
+        return false;
+    }
 
+    pickColor() {
+        this.pickedColor = true;
+        return enumCard.enumResult.CONTINUE_TURN;
+    }
 
+    getColor() {
+        this.pickedColor = false;
+        return this.getColorToChange();
+    }
 
-
-        isComputer() {
-            return true;
-        }
-
-        isDraggable() {
-            return false;
-        }
-
-        pickColor() {
-            this.pickedColor = true;
-            return enumCard.enumResult.CONTINUE_TURN;
-        }
-
-        getColor() {
-            this.pickedColor = false;
-            return this.getColorToChange();
-        }
-
-        colorToPick() {
-            return this.pickedColor;
-        }
+    colorToPick() {
+        return this.pickedColor;
+    }
 
 }

@@ -45,7 +45,7 @@ class HumanPlayer extends Player{
     setCards(theCards) {
         this.allCards = theCards;
         setInterval(this.calcCurrentTurn.bind(this),1000);
-        super.setCardsPlace(enumCard.dives.PLAYER_CARDS, true);
+        super.setCardsPlace();
 
     }
 
@@ -54,7 +54,7 @@ class HumanPlayer extends Player{
     }
 
     increasePlayerTurns() {
-        this.turnsPlayed+=1;
+        this.turnsPlayed += 1;
         super.increasePlayerTurns();
     }
 
@@ -88,6 +88,7 @@ class HumanPlayer extends Player{
 
     pullCardFromStock(cardsToSet) {
         setCards(this.allCards, cardsToSet);
+        super.addCards(cardsToSet);
     }
 
 

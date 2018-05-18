@@ -21,25 +21,29 @@ export default class CardHolderReact extends React.Component {
         this.setState({cards: theCards});
     }
 
-    removeCard(index){
+    removeCard(id){
         let theCards = this.state.cards;
-        theCards.splice(index, 1);
+        for (let i = 0; i < theCards.length; ++i) {
+            if (theCards[i].id === id) {
+                theCards.splice(i, 1);
+            }
+        }
+
         this.setState({cards: theCards});
     }
 
     eachCard(card, i) {
         return(
-          <CardReact removeCard = {this.removeCard} isDraggable = {this.props.isDraggable} key = {card.id} index = {i} openImg = {this.props.open} image = {card.image} id = {card.id}>
+          <CardReact isDraggable = {this.props.isDraggable} key = {card.id} index = {i} openImg = {this.props.open} image = {card.image} id = {card.id}>
           </CardReact>
         );
     }
 
     render() {
         return(
-            <div className={this.props.cssClass}>
+            <div>
                 {this.state.cards.map(this.eachCard)}
             </div>
         );
     }
-
 }

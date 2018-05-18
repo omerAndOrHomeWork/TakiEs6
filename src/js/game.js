@@ -40,7 +40,8 @@ class Game{
     partition() {
         let gameStartCard = stock.getValidOpenCard();
         setCards(this.gameCards, gameStartCard);
-        this.gameCards[0].setParent(enumCard.dives.OPEN_CARDS, false);
+        this.openCardsComponent.setCard({image: gameStartCard.uniqueCardImage, id: gameStartCard.id});
+        // this.gameCards[0].setParent(enumCard.dives.OPEN_CARDS, false);
         this.players.forEach(p => p.setCards(stock.getCards(8), this.players.length));
     }
 
@@ -148,14 +149,22 @@ class Game{
         document.getElementById(enumCard.dives.MASSAGE).innerText = massage + " win!";
     }
 
-    dropValidation(id, card) {
+    setDrop(id){
+        let card = this.players[this.turn].getCard(id);
+        if (card !== undefined) {
+            this.dropValidation(card);
+        }
+    }
+
+    dropValidation(card) {
         if (takiPermission(this.players[this.turn], card) && card.doValidation(this.gameCards[this.gameCards.length - 1])) {
             let promote = this.players[this.turn].doOperation(card, this.gameCards[this.gameCards.length - 1]);
             document.getElementById(enumCard.dives.OPEN_CARDS).removeChild(this.gameCards[this.gameCards.length - 1].getElement());
-            card.setParent(enumCard.dives.OPEN_CARDS, false);
+/*            card.setParent(enumCard.dives.OPEN_CARDS, false);
+            card.changeImage(true);*/
             this.gameCards[this.gameCards.length - 1].setActive(false);
-            card.changeImage(true);
             this.gameCards.push(card);
+            this.openCardsComponent.setCard({image: card.uniqueCardImage, id: card.id});
             this.calcAmountCardsToTake(card);
             if (this.players[this.turn].getAmountOfCards() === 0 && card.getSign() !== enumCard.enumTypes.PLUS) {
                 this.endGameMode(Object.keys(enumCard.enumPlayer)[this.turn]);
@@ -176,7 +185,7 @@ class Game{
             this.gameCards = undefined;
             this.gameCards = [];
             this.gameCards.push(lastCard);
-            lastCard.setParent(enumCard.dives.OPEN_CARDS);
+            this.openCardsComponent.setCard({image: lastCard.uniqueCardImage, id: lastCard.id});
             stock.changeStockImage();
         }
     }
@@ -192,8 +201,8 @@ class Game{
             }
             this.amountOfCardsToTakeFromStock = 1;
             player.pullCardFromStock(cardsFromStock);
-            for (let i = 0; i < cardsFromStock.length; ++i)
-                cardsFromStock[i].setParent(player.getHtmlDiv(), player.isDraggable());
+/*            for (let i = 0; i < cardsFromStock.length; ++i)
+                cardsFromStock[i].setParent(player.getHtmlDiv(), player.isDraggable());*/
             this.changeTurn(enumCard.enumResult.NEXT_TURN);
             setTimeout(this.computerOperation, 2000);
         }

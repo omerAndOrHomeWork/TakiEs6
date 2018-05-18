@@ -1,6 +1,5 @@
 class Card{
 
-
     constructor (theColor, theSign, theId){
         this.color = theColor;
         this.sign = theSign;
@@ -9,8 +8,8 @@ class Card{
         this.htmlCard = undefined;
         this.uniqueCardImage = undefined;
         this.closeCardImage = undefined;
+        this.currentParent = undefined;
     }
-
 
     setUniqueImage(imgName) {
         let colorName;
@@ -23,11 +22,11 @@ class Card{
     }
 
     setHtmlElement(imgName) {
-        this.htmlCard = document.createElement("a");
+/*        this.htmlCard = document.createElement("a");
         this.htmlCard.setAttribute("id", this.id);
         this.closeCardImage =  document.createElement("img");
         this.closeCardImage.src = enumCard.images.CLOSE_CARD;
-        this.uniqueCardImage = document.createElement("img");
+        this.uniqueCardImage = document.createElement("img");*/
         this.setUniqueImage(imgName);
     }
 
@@ -45,9 +44,6 @@ class Card{
         return this.htmlCard;
     }
 
-
-
-
     isActive (){
         return this.active;
     }
@@ -56,18 +52,19 @@ class Card{
         return this.id;
     }
 
-    setParent (parentHolder, draggable) {
+/*    setParent (parentHolder, draggable) {
+
         document.getElementById(parentHolder).appendChild(this.htmlCard);
         this.setHtmlEvent(draggable);
-    }
+    }*/
 
     setElement (theUniqueCard) {
         this.setHtmlElement(theUniqueCard);
-        this.setHtmlEvent(false);
-        document.getElementById(enumCard.dives.STOCK).appendChild(this.htmlCard);
+        // this.setHtmlEvent(false);
+        // document.getElementById(enumCard.dives.STOCK).appendChild(this.htmlCard);
     };
 
-    changeImage (openCard){
+/*    changeImage (openCard){
         //careReact.changeImage(openCard);
         while (this.htmlCard.firstChild) {
             this.htmlCard.removeChild(this.htmlCard.firstChild);
@@ -76,7 +73,7 @@ class Card{
             this.htmlCard.appendChild(this.uniqueCardImage);
         else
             this.htmlCard.appendChild(this.closeCardImage);
-    };
+    };*/
 
     getSign (){
         return this.sign;

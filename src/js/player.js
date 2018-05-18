@@ -53,7 +53,7 @@ Player.prototype.removeCardAppearances = function () {
 
     getCard(id) {
         let cardToReturn = undefined;
-       this.allCards.some(card => {
+        this.allCards.some(card => {
             if (card.getId().toString() === id) {
                 cardToReturn = card;
                 return true;
@@ -93,11 +93,22 @@ Player.prototype.removeCardAppearances = function () {
         return this.averageTimePlayed;
     }
 
-    setCardsPlace(placeHolder, open){
+
+
+    setCardsPlace(){
+        let cardsReact = [];
         this.allCards.forEach(card => {
-            card.setParent(placeHolder, open);
-            card.changeImage(open);
+            cardsReact.push({image: card.uniqueCardImage, id: card.id});
         });
+        this.component.setCards(cardsReact);
+    }
+
+    addCards(cardsToAdd) {
+        let cardsReact = [];
+        cardsToAdd.forEach(card => {
+            cardsReact.push({image: card.uniqueCardImage, id: card.id});
+        });
+        this.component.setCards(cardsReact);
     }
 
     getSingleCardCounter(){
@@ -106,6 +117,7 @@ Player.prototype.removeCardAppearances = function () {
 
 
     doOperation(card, lastCard) {
+        this.component.remove(card.id);
         changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), this.allCards.length);
         let promote = card.doOperation(this, lastCard);
         if (this.takiMode !== undefined) {

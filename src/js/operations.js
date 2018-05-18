@@ -61,9 +61,9 @@ function getUniqueCss(color,type,separator){
 }
 
 function setCards(stock, cards) {
-    for(var i = 0; i < cards.length; ++i){
+    for(let i = 0; i < cards.length; ++i){
         stock.push(cards[i]);
-        cards[i].changeImage(true);
+        // cards[i].changeImage(true);
     }
 }
 
