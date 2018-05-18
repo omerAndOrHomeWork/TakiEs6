@@ -50,8 +50,8 @@ export default class BoardReact extends React.Component {
                 <div><button id="Quit_Game" type="button" onClick={this.props.game.quitGame()} style="visibility: hidden">Quit Game</button></div>
                 <Statistics/>
                 <OpenCards/>
-                <CardsHolder isDraggable = {true} open = {true} ref="playerHolder"/>/*player*/
-                <CardsHolder isDraggable = {false} open = {false} ref="computerHolder"/>/*computer*/
+                <CardsHolder isDraggable = {true} open = {true} className = "playerCards" ref="playerHolder"/>/*player*/
+                <CardsHolder isDraggable = {false} open = {false} className = "computerCards" ref="computerCards"/>/*computer*/
                 <Stack/>
                 {/*{this.state.cardsHolder.map(BoardReact.eachCardHolder)}*/}
             </div>

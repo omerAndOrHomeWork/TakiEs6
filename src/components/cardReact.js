@@ -26,15 +26,15 @@ export default class CardReact extends React.Component {
 
     onDragStart(ev) {
         let changeColorReact = ReactDOM.findDOMNode(React.Component());
-        if(changeColorReact.visibility === "visible" && !this.state.draggable)
+        if(changeColorReact.visibility === "visible" && !this.props.isDraggable)
             return false;
         this.draggable = true;
-        ev.dataTransfer.setData("Text", this.state.id);
+        ev.dataTransfer.setData("Text", this.props.id);
     }
 
     render() {
         return(
-            <a  onDragStart={this.onDragStart}>
+            <a onDragStart={this.onDragStart}>
                 <img src={this.props.open? this.props.image : CloseCard}/>
             </a>
         );
