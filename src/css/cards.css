@@ -1,0 +1,140 @@
+body {
+ background: #87CEEB;
+}
+
+@media all and (min-height: 768px) and (min-width: 680px) {
+    img {
+        height: 110px;
+        width: 80px;
+    }
+}
+
+@media all and (min-height: 768px) and (min-width: 720px) {
+    img {
+        height: 120px;
+        width: 83px;
+    }
+}
+
+@media all and (min-height: 768px) and (min-width: 760px) {
+    img {
+        height: 120px;
+        width: 86px;
+    }
+}
+
+@media all and (min-height: 768px) and (min-width: 800px) {
+    img {
+        height: 140px;
+        width: 90px;
+    }
+}
+
+img{
+    margin-right: -5%;
+}
+
+#playerCards {
+    bottom: 2%;
+    left: 30%;
+    position: absolute;
+}
+
+#computerCards {
+    position: absolute;
+    top: 2%;
+    left: 30%;
+    margin: auto;
+}
+
+#computerCards .closeCard{
+    height: 140px;
+    width: 90px;
+    float: left;
+}
+
+#openCards{
+    position: absolute;
+    top:35%;
+    left: 40%;
+}
+
+#stockCards{
+    position: absolute;
+    height: 137px;
+    width: 111px;
+    top:35%;
+    left: 55%;
+}
+
+#pickColor{
+    visibility: hidden;
+}
+
+#yellowPicker{
+    position: absolute;
+    top:42%;
+    left: 29%;
+    height: 30px;
+    width: 30px;
+    background: yellow;
+}
+
+#redPicker{
+    position: absolute;
+    left: 27%;
+    top:40%;
+    height: 30px;
+    width: 30px;
+    background: #FF0000;
+}
+
+#bluePicker{
+    position: absolute;
+    top:42%;
+    left: 25%;
+    height: 30px;
+    width: 30px;
+    background:	#000080;
+}
+
+#greenPicker{
+    position: absolute;
+    top:45%;
+    left: 27%;
+    height: 30px;
+    width: 30px;
+    background: #008000;
+
+}
+
+#Enter_Game{
+    background: #32CD32;
+    font-size: 15px;
+    color: white;
+}
+
+#massage{
+    position: absolute;
+    top: 40%;
+    left: 45%;
+    font-size:30px;
+}
+
+#restartGame{
+    position: absolute;
+    font-size: 15px;
+    background: #32CD32;
+    color: white;
+    top: 35%;
+    left: 40%;
+}
+
+#endGame{
+    position: absolute;
+    font-size: 15px;
+    background: #32CD32;
+    color: white;
+    top:35%;
+    left: 55%;
+}
