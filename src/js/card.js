@@ -12,13 +12,15 @@ class Card{
     }
 
     setUniqueImage(imgName) {
+/*
         let colorName;
         if( this.color !== undefined)
             colorName = Object.keys(enumCard.enumColor)[this.color].toLowerCase();
         else
             colorName = "other";
         this.uniqueCardImage.setAttribute("src", "../src/Images/" + colorName + "/" + imgName.toLowerCase() + ".png");
-
+*/
+        this.uniqueCardImage = imgName;
     }
 
     setHtmlElement(imgName) {
