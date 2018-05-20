@@ -2,7 +2,7 @@ function Computer() {
     var cards = [];
 
     function pickCard() {
-        //need to pick card from my stock and put in stock
+        //need to pick card from my stack and put in stack
         Game.dropValidation(); //why?
     }
 

@@ -26,7 +26,6 @@ export default class CardHolderReact extends React.Component {
 
     allowDrop(ev) {
         ev.preventDefault();
-        //TODO: make game to answer if its allow to drup
     }
 
     Drop(ev) {

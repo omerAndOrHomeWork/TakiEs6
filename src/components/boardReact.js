@@ -5,8 +5,6 @@ import OpenCards from './openCardsReact'
 import Stack from './stackReact'
 import CardsHolder from './cardsHolderReact'
 
-
-
 export default class BoardReact extends React.Component {
     constructor(args) {
         super(...args);
@@ -22,8 +20,12 @@ export default class BoardReact extends React.Component {
     componentDidMount() {
         if(this.state.gameStat === "gaming") {
             this.game = new Game();
-            this.game.setComponents(this.refs.playerHolder, this.refs.computerHolder);
+            this.game.setComponents(this.refs.playerHolder, this.refs.computerHolder
+                ,this.refs.openCardHolder, this.refs.stackHolder,
+                this.refs.statisticsHolder, this);
             this.game.startGame();
+        }else if(this.state.gameStat === "restarted"){
+            this.game.restartGame();
         }
     }
 
@@ -47,12 +49,12 @@ export default class BoardReact extends React.Component {
     gameRender(){
         return(
             <div className="container-fluid">
-                <div><button id="Quit_Game" type="button" onClick={this.props.game.quitGame()} style="visibility: hidden">Quit Game</button></div>
-                <Statistics/>
-                <OpenCards/>
+                <div><button id="Quit_Game" type="button" onClick={this.game.quitGame()} style="visibility: hidden">Quit Game</button></div>
+                <Statistics ref="statisticsHolder"/>
+                <OpenCards ref="openCardHolder"/>
                 <CardsHolder isDraggable = {true} open = {true} className = "playerCards" ref="playerHolder"/>/*player*/
                 <CardsHolder isDraggable = {false} open = {false} className = "computerCards" ref="computerCards"/>/*computer*/
-                <Stack/>
+                <Stack ref="stackHolder"/>
                 {/*{this.state.cardsHolder.map(BoardReact.eachCardHolder)}*/}
             </div>
         );

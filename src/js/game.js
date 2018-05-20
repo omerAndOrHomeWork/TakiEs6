@@ -12,11 +12,20 @@ class Game{
         this.players = [new HumanPlayer(), new SmartComputer()];
         this.amountOfCardsToTakeFromStock = 1;
         this.endGame = false;
+
+
+
+        this.computerOperation = this.computerOperation.bind(this);
     }
 
-    setComponents(playerHolder, computerHolder) {
+    setComponents(playerHolder, computerHolder, openCardHolder,
+                  stackHolder, statisticsHolder, boardHolder) {
         this.players[0].setComponent(playerHolder);
         this.players[1].setComponent(computerHolder);
+        this.openCardsComponent = openCardHolder;
+        this.stackComponent = stackHolder;
+        this.gameStatistics.setComponent(statisticsHolder);
+        this.boardComponent = boardHolder;
     }
     
     changeTurn(promote) {
@@ -38,11 +47,11 @@ class Game{
     }
 
     partition() {
-        let gameStartCard = stock.getValidOpenCard();
+        let gameStartCard = stack.getValidOpenCard();
         setCards(this.gameCards, gameStartCard);
         this.openCardsComponent.setCard({image: gameStartCard.uniqueCardImage, id: gameStartCard.id});
         // this.gameCards[0].setParent(enumCard.dives.OPEN_CARDS, false);
-        this.players.forEach(p => p.setCards(stock.getCards(8), this.players.length));
+        this.players.forEach(p => p.setCards(stack.getCards(8), this.players.length));
     }
 
     colorPicked(pickedColor) {
@@ -55,25 +64,7 @@ class Game{
     }
 
     setEventsListener() {
-       /* let drop = document.getElementById(enumCard.dives.OPEN_CARDS);
-        drop.draggable = false;
-        drop.ondragover = function (ev) {
-            ev.preventDefault();
-        };
-
-        drop.ondrop = function (event) {
-            event.preventDefault();
-            let pickColorId = document.getElementById(enumCard.dives.PICK_COLOR);
-            if (pickColorId.style.visibility === "visible")
-                return false;
-            let id = event.dataTransfer.getData("Text");
-            let card = game.players[game.turn].getCard(id);
-            if (card !== undefined) {
-                game.dropValidation(id, card);
-            }
-        };*/
-
-        let drop = new C;
+        let drop = document.getElementById(enumCard.dives.OPEN_CARDS);
         drop.draggable = false;
         drop.ondragover = function (ev) {
             ev.preventDefault();
@@ -90,6 +81,7 @@ class Game{
                 game.dropValidation(id, card);
             }
         };
+
 
         let click = document.getElementById(enumCard.dives.STOCK);
         click.onclick = function (event) {
@@ -181,22 +173,23 @@ class Game{
         } else {
             removeAllCards(enumCard.dives.OPEN_CARDS);
             let lastCard = this.gameCards.pop();
-            stock.makeStockAgain(this.gameCards);
+            stack.makeStockAgain(this.gameCards);
             this.gameCards = undefined;
             this.gameCards = [];
             this.gameCards.push(lastCard);
             this.openCardsComponent.setCard({image: lastCard.uniqueCardImage, id: lastCard.id});
-            stock.changeStockImage();
+            stack.changeStockImage();//TODO: delete this method
+            this.stackComponent.changeImage(stack.getLength());//TODO: take it to react
         }
     }
 
     pullCardValidation(player) {
         if (player === this.players[this.turn] && player.pullApproval(this.gameCards[this.gameCards.length - 1])) {
-            stock.changeStockImage();
+            stack.changeStockImage();
             this.gameCards[this.gameCards.length - 1].setActive(false);
             player.setTakiMode(undefined);
-            let cardsFromStock = stock.getCards(this.amountOfCardsToTakeFromStock);
-            if (stock.getLength() <= this.amountOfCardsToTakeFromStock) {
+            let cardsFromStock = stack.getCards(this.amountOfCardsToTakeFromStock);
+            if (stack.getLength() <= this.amountOfCardsToTakeFromStock) {
                 this.refreshStockAndOpenCards();
             }
             this.amountOfCardsToTakeFromStock = 1;
@@ -209,16 +202,16 @@ class Game{
     }
 
     computerOperation() {
-        if (!game.endGame && game.players[game.turn].isComputer()) {
-            if (game.players[game.turn].colorToPick()) {
-                let color = game.players[game.turn].getColor();
-                game.colorPicked(color);
+        if (!this.endGame && this.players[this.turn].isComputer()) {
+            if (this.players[this.turn].colorToPick()) {
+                let color = this.players[this.turn].getColor();
+                this.colorPicked(color);
             } else {
-                let card = game.players[game.turn].pickCard(game.gameCards[game.gameCards.length - 1]);
+                let card = this.players[this.turn].pickCard(this.gameCards[this.gameCards.length - 1]);
                 if (card === undefined)
-                    game.pullCardValidation(game.players[game.turn]);
+                    this.pullCardValidation(this.players[this.turn]);
                 else {
-                    game.dropValidation(game.players[game.turn], card);
+                    this.dropValidation(this.players[this.turn], card);
                 }
             }
         }
@@ -258,7 +251,7 @@ class Game{
         startGame() {
             document.getElementById("Enter_Game").style.visibility = "hidden";
             document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "visible";
-            stock.setGame();
+            stack.setGame();
             this.initialGameAndStatistics();
             this.gameStatistics.initialStatisticsTitle();
             setTimeout(this.computerOperation, 2000);
@@ -278,7 +271,7 @@ class Game{
             this.gameCards = undefined;
             this.players = undefined;
             this.gameCards = [];
-            stock.makeStockAgain(allCards);
+            stack.makeStockAgain(allCards);
             this.players = [new HumanPlayer(), new SmartComputer()];
             this.gameStatistics = undefined;
             this.players[0].setAverageTimePlayed(playerAverageTurnTime);

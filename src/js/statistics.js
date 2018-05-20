@@ -1,40 +1,46 @@
-var statistics = function(thePlayersGame) {
-    var turnsCounter = -1;
-    var playersGame = thePlayersGame;
-    var singleCardPlayers = [];
-    var htmlDivsPlayers = new Array(playersGame.length);
-    var gameClock = new clock();
-    gameClock.run();
-    return{
-        initialStatisticsTitle: function(){
-            var gameName = document.createElement("h3");
-            gameName.innerText = "Game Statistics:";
-            document.getElementById("sidebar").insertBefore(gameName,document.getElementById(enumCard.dives.STATISTICS));
-        },
+class statistics {
+    
+    constructor(thePlayersGame){
+        this.playersGame = thePlayersGame;
+        this.turnsCounter = -1;
+        this.singleCardPlayers = [];
+        this.htmlDivsPlayers = new Array(playersGame.length);
+        this.gameClock = new clock();
+        this.statisticsComponent;
+        gameClock.run();
+    }
+    /*
+    initialStatisticsTitle() {
+        document.getElementById("sidebar").insertBefore(gameName, document.getElementById(enumCard.dives.STATISTICS));
+    }
+    */
 
-        setStatistics:function(){
+/*
+     SetStatistics() {
+         for (let i = 0; i < htmlDivsPlayers.length; ++i) {
+             htmlDivsPlayers[i] = document.createElement("div");
+             htmlDivsPlayers[i].setAttribute("id", Object.keys(enumCard.enumPlayer)[i]);
+             document.getElementById(enumCard.dives.STATISTICS).appendChild(htmlDivsPlayers[i]);
+         }
+     }
+*/
 
-            for(var i = 0; i <htmlDivsPlayers.length;++i){
-                htmlDivsPlayers[i] = document.createElement("div");
-                htmlDivsPlayers[i].setAttribute("id",Object.keys(enumCard.enumPlayer)[i]);
-                document.getElementById(enumCard.dives.STATISTICS).appendChild(htmlDivsPlayers[i]);
-            }
-        },
+     updateStatistics() {
+        let massages = [];
+        this.turnsCounter++;
+         massages[0] = "\n" + "Turns played totally :" + this.turnsCounter;
+         for (let i = 1; i <= this.playersGame.length; ++i) {
+             this.singleCardPlayers[i] = this.playersGame[i].getSingleCardCounter();
+             let playerLocal = "\n\n" + Object.keys(enumCard.enumPlayer)[i] + ":\n";
+             playerLocal += "Turns played: " + this.playersGame[i].getTurnsPlayed() + "\n";
+             playerLocal += "Single cards times: " + this.playersGame[i].getSingleCardCounter() + "\n";
+             playerLocal += "Average turn time: " + Math.round(this.playersGame[i].getAverageTimePlayed() * 100) / 100 + " sec";
+             massages[i].innerText = playerLocal;
+         }
+         this.statisticsComponent.changeMassage(massages);
+     }
 
-        updateStatistics: function () {
-            turnsCounter++;
-            htmlDivsPlayers[0].innerHTML = "\n" + "Turns played totally :" + turnsCounter;
-            for(var i = 0; i < playersGame.length; ++i) {
-                singleCardPlayers[i] = playersGame[i].getSingleCardCounter();
-                var playerLocal = "\n\n" + Object.keys(enumCard.enumPlayer)[i] + ":\n";
-                playerLocal += "Turns played: " + playersGame[i].getTurnsPlayed() + "\n";
-                playerLocal += "Single cards times: " + playersGame[i].getSingleCardCounter() + "\n";
-                playerLocal += "Average turn time: " + Math.round(playersGame[i].getAverageTimePlayed()*100)/100 + " sec";
-                if(i === 0)
-                    htmlDivsPlayers[i].innerText += playerLocal;
-                else
-                    htmlDivsPlayers[i].innerText = playerLocal;
-            }
-        }
-    };
-};
+     setComponent(statisticsHolder) {
+         this.statisticsComponent = statisticsHolder;
+     }
+}

@@ -4,6 +4,7 @@ import CloseCard from './../Images/other/close_card.png'
 
 export default class CardReact extends React.Component {
 
+
     constructor(args) {
         super(...args);
 /*        this.props = {
@@ -26,7 +27,7 @@ export default class CardReact extends React.Component {
 
     onDragStart(ev) {
         let changeColorReact = ReactDOM.findDOMNode(React.Component());
-        if(changeColorReact.visibility === "visible" && !this.props.isDraggable)
+        if(changeColorReact.visibility === "visible" || !this.props.isDraggable)
             return false;
         this.draggable = true;
         ev.dataTransfer.setData("Text", this.props.id);

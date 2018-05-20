@@ -96,11 +96,12 @@ Player.prototype.removeCardAppearances = function () {
 
 
     setCardsPlace(){
-        let cardsReact = [];
+/*        let cardsReact = [];
         this.allCards.forEach(card => {
             cardsReact.push({image: card.uniqueCardImage, id: card.id});
         });
-        this.component.setCards(cardsReact);
+        this.component.setCards(cardsReact);*/
+        this.addCards(this.allCards);
     }
 
     addCards(cardsToAdd) {
