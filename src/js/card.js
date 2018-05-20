@@ -12,15 +12,12 @@ class Card{
     }
 
     setUniqueImage(imgName) {
-/*
         let colorName;
         if( this.color !== undefined)
             colorName = Object.keys(enumCard.enumColor)[this.color].toLowerCase();
         else
             colorName = "other";
-        this.uniqueCardImage.setAttribute("src", "../src/Images/" + colorName + "/" + imgName.toLowerCase() + ".png");
-*/
-        this.uniqueCardImage = imgName;
+        this.uniqueCardImage = "../src/Images/" + colorName + "/" + imgName.toLowerCase() + ".png";
     }
 
     setHtmlElement(imgName) {
@@ -33,13 +30,13 @@ class Card{
     }
 
     setHtmlEvent(draggable) {
-        this.htmlCard.ondragstart = function (event) {
+/*        this.htmlCard.ondragstart = function (event) {
             let pickColorId = document.getElementById(enumCard.dives.PICK_COLOR);
             if(!draggable || pickColorId.style.visibility === "visible")
                 return false;
             this.draggable = true;
             event.dataTransfer.setData("Text", this.id);
-        };
+        };*/
     }
 
     get HtmlCard() {

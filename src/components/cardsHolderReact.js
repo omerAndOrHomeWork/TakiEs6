@@ -6,9 +6,11 @@ export default class CardHolderReact extends React.Component {
     constructor(args) {
         super(...args);
         this.state = {
-            cards : [undefined]
+            cards : []
             // cards : [new CardReact(takiImage, 0)]
         };
+        this.eachCard = this.eachCard.bind(this);
+
     }
 
     setCards(cards) {
@@ -39,11 +41,25 @@ export default class CardHolderReact extends React.Component {
         );
     }
 
-    render() {
+    renderWithCard() {
         return(
             <div>
                 {this.state.cards.map(this.eachCard)}
             </div>
         );
+    }
+    renderWithoutCard(){
+        return(
+            <div>
+            </div>
+        );
+    }
+
+
+    render() {
+        if(this.state.cards === undefined)
+            return this.renderWithoutCard();
+        else
+            return this.renderWithCard();
     }
 }

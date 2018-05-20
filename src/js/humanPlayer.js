@@ -101,8 +101,13 @@ class HumanPlayer extends Player{
     }
 
     pickColor() {
-        let pickColorId = document.getElementById(enumCard.dives.PICK_COLOR);
-        pickColorId.style.visibility = "visible";
+        // pickColorId.style.visibility = "visible";
+        // let pickColorId = document.getElementById(enumCard.dives.PICK_COLOR);
+        this.pickColorComponent.setToVisible();
         return enumCard.enumResult.CONTINUE_TURN;
+    }
+
+    setPickColorComponent(pickColorHolder) {
+        this.pickColorComponent = pickColorHolder;
     }
 }

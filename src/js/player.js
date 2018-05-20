@@ -119,7 +119,8 @@ Player.prototype.removeCardAppearances = function () {
 
     doOperation(card, lastCard) {
         this.component.remove(card.id);
-        changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), this.allCards.length);
+       //TODO: CHANGE RESIZE METHOD
+        // changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), this.allCards.length);
         let promote = card.doOperation(this, lastCard);
         if (this.takiMode !== undefined) {
             if(takiModeChecker(this.allCards, this.takiMode)) {

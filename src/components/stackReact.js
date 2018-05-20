@@ -43,7 +43,7 @@ export default class StackReact extends React.Component {
         if (changeColorReact.style.visibility === "visible")
             return false;
 
-        if (!this.game.players[this.game.turn].isComputer())
-            this.game.pullCardValidation(this.game.players[this.game.turn]);
+        if (!this.props.game.players[this.game.turn].isComputer())
+            this.props.game.pullCardValidation(this.game.players[this.game.turn]);
     }
 }
