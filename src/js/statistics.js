@@ -4,10 +4,10 @@ class statistics {
         this.playersGame = thePlayersGame;
         this.turnsCounter = -1;
         this.singleCardPlayers = [];
-        this.htmlDivsPlayers = new Array(playersGame.length);
-        this.gameClock = new clock();
-        this.statisticsComponent;
-        gameClock.run();
+        this.htmlDivsPlayers = new Array(this.playersGame.length);
+        // this.gameClock = new clock();
+        // this.statisticsComponent;
+        // gameClock.run();
     }
     /*
     initialStatisticsTitle() {
@@ -29,13 +29,13 @@ class statistics {
         let massages = [];
         this.turnsCounter++;
          massages[0] = "\n" + "Turns played totally :" + this.turnsCounter;
-         for (let i = 1; i <= this.playersGame.length; ++i) {
+         for (let i = 0; i < this.playersGame.length; ++i) {
              this.singleCardPlayers[i] = this.playersGame[i].getSingleCardCounter();
              let playerLocal = "\n\n" + Object.keys(enumCard.enumPlayer)[i] + ":\n";
              playerLocal += "Turns played: " + this.playersGame[i].getTurnsPlayed() + "\n";
              playerLocal += "Single cards times: " + this.playersGame[i].getSingleCardCounter() + "\n";
              playerLocal += "Average turn time: " + Math.round(this.playersGame[i].getAverageTimePlayed() * 100) / 100 + " sec";
-             massages[i].innerText = playerLocal;
+             massages.push(playerLocal);
          }
          this.statisticsComponent.changeMassage(massages);
      }

@@ -1,4 +1,4 @@
-class Game{
+export default class Game{
 /*    gameCards;
     turn;
     players;
@@ -19,13 +19,17 @@ class Game{
     }
 
     setComponents(playerHolder, computerHolder, openCardHolder,
-                  stackHolder, statisticsHolder, boardHolder) {
+                  stackHolder, statisticsHolder, pickColorHolder, boardHolder) {
         this.players[0].setComponent(playerHolder);
         this.players[1].setComponent(computerHolder);
         this.openCardsComponent = openCardHolder;
         this.stackComponent = stackHolder;
-        this.gameStatistics.setComponent(statisticsHolder);
+        this.gameStatisticsComponent = statisticsHolder;
         this.boardComponent = boardHolder;
+        this.players.forEach(p => {
+            if(!p.isComputer())
+                p.setPickColorComponent(pickColorHolder);
+        });
     }
     
     changeTurn(promote) {
@@ -58,13 +62,13 @@ class Game{
         this.gameCards[this.gameCards.length - 1].setColor(pickedColor);
         this.gameCards[this.gameCards.length - 1].setImage(getUniqueCss(Object.keys(enumCard.enumColor)[pickedColor],
             Object.keys(enumCard.enumTypes)[enumCard.enumTypes.CHANGE_COLOR], '_'));
-        document.getElementById(enumCard.dives.PICK_COLOR).style.visibility = "hidden";
+        // document.getElementById(enumCard.dives.PICK_COLOR).style.visibility = "hidden";
         this.changeTurn(enumCard.enumResult.NEXT_TURN);
         setTimeout(this.computerOperation, 2000);
     }
 
     setEventsListener() {
-        let drop = document.getElementById(enumCard.dives.OPEN_CARDS);
+/*        let drop = document.getElementById(enumCard.dives.OPEN_CARDS);
         drop.draggable = false;
         drop.ondragover = function (ev) {
             ev.preventDefault();
@@ -91,10 +95,11 @@ class Game{
                 return false;
             if (!game.players[game.turn].isComputer())
                 game.pullCardValidation(game.players[game.turn]);
-        };
+        };*/
 
-        click.ondragstart = () => false;
+        // click.ondragstart = () => false;
 
+/*
         let blue = document.getElementById(enumCard.dives.BLUE_PICK);
 
         blue.onclick = (ev) => {
@@ -125,20 +130,23 @@ class Game{
             ev.preventDefault();
             game.colorPicked(enumCard.enumColor.YELLOW);
         };
+*/
 
-        window.onresize = function () {
+//TODO: make this method react way
+/*        window.onresize = function () {
             changeMerging(document.getElementById(enumCard.dives.PLAYER_CARDS), game.players[0].getAllCards().length);
             changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), game.players[1].getAllCards().length);
-        };
+        };*/
     }
 
     endGameMode(massage) {
         this.endGame = true;
-        document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "hidden";
-        document.getElementById(enumCard.dives.PICK_COLOR).style.visibility = "hidden";
-        document.getElementById(enumCard.dives.END_GAME_MODE).style.visibility = "visible";
-        document.getElementById(enumCard.dives.STOCK_AND_OPEN_CARDS).style.visibility = "hidden";
-        document.getElementById(enumCard.dives.MASSAGE).innerText = massage + " win!";
+        this.boardComponent.makeEndGame(massage);
+        // document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "hidden";
+        // document.getElementById(enumCard.dives.PICK_COLOR).style.visibility = "hidden";
+        // document.getElementById(enumCard.dives.END_GAME_MODE).style.visibility = "visible";
+        // document.getElementById(enumCard.dives.STOCK_AND_OPEN_CARDS).style.visibility = "hidden";
+        // document.getElementById(enumCard.dives.MASSAGE).innerText = massage + " win!";
     }
 
     setDrop(id){
@@ -151,7 +159,7 @@ class Game{
     dropValidation(card) {
         if (takiPermission(this.players[this.turn], card) && card.doValidation(this.gameCards[this.gameCards.length - 1])) {
             let promote = this.players[this.turn].doOperation(card, this.gameCards[this.gameCards.length - 1]);
-            document.getElementById(enumCard.dives.OPEN_CARDS).removeChild(this.gameCards[this.gameCards.length - 1].getElement());
+            // document.getElementById(enumCard.dives.OPEN_CARDS).removeChild(this.gameCards[this.gameCards.length - 1].getElement());
 /*            card.setParent(enumCard.dives.OPEN_CARDS, false);
             card.changeImage(true);*/
             this.gameCards[this.gameCards.length - 1].setActive(false);
@@ -171,14 +179,14 @@ class Game{
         if (this.gameCards.length === 1) {
             this.endGameMode("TIE! nobody ");
         } else {
-            removeAllCards(enumCard.dives.OPEN_CARDS);
+            //removeAllCards(enumCard.dives.OPEN_CARDS);
             let lastCard = this.gameCards.pop();
             stack.makeStockAgain(this.gameCards);
             this.gameCards = undefined;
             this.gameCards = [];
             this.gameCards.push(lastCard);
             this.openCardsComponent.setCard({image: lastCard.uniqueCardImage, id: lastCard.id});
-            stack.changeStockImage();//TODO: delete this method
+            //stack.changeStockImage();//TODO: delete this method
             this.stackComponent.changeImage(stack.getLength());//TODO: take it to react
         }
     }
@@ -218,17 +226,17 @@ class Game{
     }
 
     removeHTMLElements() {
-        removeAllCards(enumCard.dives.COMPUTER_CARDS);
+/*        removeAllCards(enumCard.dives.COMPUTER_CARDS);
         removeAllCards(enumCard.dives.PLAYER_CARDS);
         removeAllCards(enumCard.dives.OPEN_CARDS);
-        removeAllCards(enumCard.dives.STATISTICS);
+        removeAllCards(enumCard.dives.STATISTICS);*/
     }
 
     resetDivsAttributes() {
-        document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "visible";
+/*        document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "visible";
         document.getElementById(enumCard.dives.END_GAME_MODE).style.visibility = "hidden";
         document.getElementById(enumCard.dives.STOCK_AND_OPEN_CARDS).style.visibility = "visible";
-        document.getElementById(enumCard.dives.MASSAGE).innerText = '';
+        document.getElementById(enumCard.dives.MASSAGE).innerText = '';*/
     }
 
     getGameCards() {
@@ -243,17 +251,17 @@ class Game{
         this.turn = 0;
         this.partition();
         this.gameStatistics = new statistics(this.players);
-        this.gameStatistics.setStatistics();
+        this.gameStatistics.setComponent(this.gameStatisticsComponent);
         this.gameStatistics.updateStatistics();
         this.setEventsListener();
     }
 
         startGame() {
-            document.getElementById("Enter_Game").style.visibility = "hidden";
-            document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "visible";
+            // document.getElementById("Enter_Game").style.visibility = "hidden";
+            // document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "visible";
             stack.setGame();
             this.initialGameAndStatistics();
-            this.gameStatistics.initialStatisticsTitle();
+            //this.gameStatistics.initialStatisticsTitle();
             setTimeout(this.computerOperation, 2000);
         }
 

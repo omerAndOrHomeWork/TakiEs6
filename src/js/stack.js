@@ -8,13 +8,13 @@ let stack = (function () {
     let htmlStock;
 
     function createDeck() {
-        let stockImage = document.createElement("img");
-        htmlStock = document.createElement("div");
+       // let stockImage = document.createElement("img");
+        //htmlStock = document.createElement("div");
 
-        htmlStock.appendChild(stockImage);
-        stockImage.src = enumCard.images.MANY_CLOSE_CARDS;
-        htmlStock.setAttribute("id", enumCard.dives.STOCK);
-        document.getElementById(enumCard.dives.STOCK_AND_OPEN_CARDS).appendChild(htmlStock);
+       // htmlStock.appendChild(stockImage);
+        //stockImage.src = enumCard.images.MANY_CLOSE_CARDS;
+        //htmlStock.setAttribute("id", enumCard.dives.STOCK);
+        //document.getElementById(enumCard.dives.STOCK_AND_OPEN_CARDS).appendChild(htmlStock);
         for (let number = 0; number < twoCardsNumber.length; ++number) {
             for (let color = 0; color < colorNumber.length; ++color) {
                 css = getUniqueCss(Object.keys(enumCard.enumColor)[color], twoCardsNumber[number].toString(), '_');
@@ -65,14 +65,10 @@ let stack = (function () {
             cards[cards.length - 1].setElement(css);
         }
 
-        let blue_change_color = document.createElement("img");
-        let green_change_color = document.createElement("img");
-        let red_change_color = document.createElement("img");
-        let yellow_change_color = document.createElement("img");
-        blue_change_color.src = "../src/Images/blue/blue_change_color.png";
-        green_change_color.src = "../src/Images/green/green_change_color.png";
-        red_change_color.src = "../src/Images/red/red_change_color.png";
-        yellow_change_color.src = "../src/Images/yellow/yellow_change_color.png";
+/*        let blue_change_color = "../src/Images/blue/blue_change_color.png";
+        let green_change_color = "../src/Images/green/green_change_color.png";
+        let red_change_color = "../src/Images/red/red_change_color.png";
+        let yellow_change_color = "../src/Images/yellow/yellow_change_color.png";*/
     }
 
     function getRandomInt(min, max) {
@@ -135,7 +131,7 @@ let stack = (function () {
             return cards;
         },
 
-        changeStockImage: function () {
+/*        changeStockImage: function () {
             let stockHtml = document.getElementById(enumCard.dives.STOCK);
             let stockImage = document.createElement("img");
             while (stockHtml.firstChild) {
@@ -152,6 +148,6 @@ let stack = (function () {
             else {
                 stockImage.src = enumCard.images.CLOSE_CARD;
             }
-        }
+        }*/
     };
 })();
