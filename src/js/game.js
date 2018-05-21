@@ -53,7 +53,7 @@ export default class Game{
     partition() {
         let gameStartCard = stack.getValidOpenCard();
         setCards(this.gameCards, gameStartCard);
-        this.openCardsComponent.setCard({image: gameStartCard.uniqueCardImage, id: gameStartCard.id});
+        this.openCardsComponent.setCard({image: gameStartCard[0].uniqueCardImage, id: gameStartCard[0].id});
         // this.gameCards[0].setParent(enumCard.dives.OPEN_CARDS, false);
         this.players.forEach(p => p.setCards(stack.getCards(8), this.players.length));
     }

@@ -13,6 +13,7 @@ export default class StackReact extends React.Component {
         this.state = {
             image:  MANY_CLOSE_CARDS
         };
+        this.handleClick = this.handleClick.bind(this);
     }
 
     changeImage(stackLength){
@@ -39,11 +40,11 @@ export default class StackReact extends React.Component {
 
     handleClick(ev) {
         ev.preventDefault();
-        let changeColorReact = ReactDOM.findDOMNode(React.Component());
-        if (changeColorReact.style.visibility === "visible")
+        let changeColorReact = this.props.pickColorRef.current;
+        if (changeColorReact.state.visible === "visible")
             return false;
 
-        if (!this.props.game.players[this.game.turn].isComputer())
-            this.props.game.pullCardValidation(this.game.players[this.game.turn]);
+        if (!this.props.game.players[this.props.game.turn].isComputer())
+            this.props.game.pullCardValidation(this.props.game.players[this.props.game.turn]);
     }
 }

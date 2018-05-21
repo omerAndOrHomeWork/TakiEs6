@@ -21,13 +21,20 @@ export default class BoardReact extends React.Component {
         this.makeStartGame = this.makeStartGame.bind(this);
         this.makeRestartGame = this.makeRestartGame.bind(this);
 
+        this.playerHolder = React.createRef();
+        this.computerHolder = React.createRef();
+        this.openCardHolder = React.createRef();
+        this.stackHolder = React.createRef();
+        this.statisticsHolder = React.createRef();
+        this.pickColorHolder =  React.createRef();
+
     }
 
     componentDidUpdate() {
         if(this.state.gameState === "firstGame") {
-            this.props.game.setComponents(this.refs.playerHolder, this.refs.computerHolder
-                ,this.refs.openCardHolder, this.refs.stackHolder,
-                this.refs.statisticsHolder, this.refs.pickColorHolder, this);
+            this.props.game.setComponents(this.playerHolder.current, this.computerHolder.current
+                ,this.openCardHolder.current, this.stackHolder.current,
+                this.statisticsHolder.current, this.pickColorHolder.current, this);
             this.props.game.startGame();
         }
     }
@@ -70,17 +77,23 @@ export default class BoardReact extends React.Component {
         );
     }
 
+    /*        this.playerHolder = React.createRef();
+        this.computerHolder = React.createRef();
+        this.openCardHolder = React.createRef();
+        this.stackHolder = React.createRef();
+        this.statisticsHolder = React.createRef();
+        this.pickColorHolder =  React.createRef();*/
+
     gameRender(){
         return(
-            <div className="container-fluid" onLoad={this.setGame}>
+            <div className="container-fluid" onLoad={this.setGame} onChange={console.log("change")}>
                 <div><button id="Quit_Game" type="button" style={{visibility : "hidden"}} onClick={this.props.game.quitGame}>Quit Game</button></div>
-                <Statistics ref="statisticsHolder"/>
-                <OpenCards game = {this.props.game} ref="openCardHolder"/>
-                <CardsHolder isDraggable = {true} open = {true} className = "playerCards" ref="playerHolder"/>/*player*/
-                <CardsHolder isDraggable = {false} open = {false} className = "computerCards" ref="computerHolder"/>/*computer*/
-                <PickColor ref="pickColorHolder" game = {this.props.game}/>
-                <Stack game = {this.props.game} ref="stackHolder"/>
-                {/*{this.state.cardsHolder.map(BoardReact.eachCardHolder)}*/}
+                <Statistics ref= {this.statisticsHolder}/>
+                <OpenCards game = {this.props.game} open = {true} ref= {this.openCardHolder}/>
+                <CardsHolder pickColorRef = {this.pickColorHolder} isDraggable = {true} open = {true} className = "playerCards" ref= {this.playerHolder}/>/*player*/
+                <CardsHolder isDraggable = {false} open = {false} className = "computerCards" ref= {this.computerHolder}/>/*computer*/
+                <PickColor ref= {this.pickColorHolder} game = {this.props.game}/>
+                <Stack pickColorRef = {this.pickColorHolder} game = {this.props.game} ref= {this.stackHolder}/>
             </div>
         );
     }

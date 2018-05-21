@@ -19,7 +19,6 @@ export default class StatisticsReact extends React.Component {
     changeMassage(newMassages){
         //TODO: OMER WILL ASK OFER HOW TODO
         this.setState({massages : newMassages});
-
     }
 
     renderWithoutCard(){
@@ -29,13 +28,23 @@ export default class StatisticsReact extends React.Component {
         );
     }
 
+/*
+    shouldComponentUpdate(nextProps, nextState){
+
+    }
+    componentWillUpdate(nextProps, nextState){
+
+    }
+*/
+
+
     renderWithCard() {
         return(
             <div>
                 <h2>Statistics:</h2>
-                <Clock/>
+                {/*<Clock/>*/}
                 <h3>Game Statistics:</h3>
-                    {this.state.massages.map(this.eachMassage)}
+                {this.state.massages.map(this.eachMassage)}
             </div>
         );
     }

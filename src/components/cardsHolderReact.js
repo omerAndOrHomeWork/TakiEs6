@@ -36,7 +36,7 @@ export default class CardHolderReact extends React.Component {
 
     eachCard(card, i) {
         return(
-          <CardReact isDraggable = {this.props.isDraggable} key = {card.id} index = {i} openImg = {this.props.open} image = {card.image} id = {card.id}>
+          <CardReact pickColorRef = {this.props.pickColorRef} isDraggable = {this.props.isDraggable} key = {card.id} index = {i} openImg = {this.props.open} image = {card.image} id = {card.id}>
           </CardReact>
         );
     }
@@ -48,18 +48,24 @@ export default class CardHolderReact extends React.Component {
             </div>
         );
     }
-    renderWithoutCard(){
+    static renderWithoutCard(){
         return(
             <div>
+                <b>fff</b>
             </div>
         );
     }
 
 
     render() {
-        if(this.state.cards === undefined)
-            return this.renderWithoutCard();
+        if(this.state.cards.length === 0)
+            return CardHolderReact.renderWithoutCard();
         else
             return this.renderWithCard();
+        /*return(
+            <div>
+                {this.state.cards.length === 0 ? this.state.cards.map(this.eachCard) : ""}
+            </div>
+        );*/
     }
 }

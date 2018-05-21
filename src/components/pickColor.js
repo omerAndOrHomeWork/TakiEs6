@@ -1,0 +1,52 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import CardReact from './cardReact';
+import enumCard from './../js/enumCard'
+
+export default class PickColorReact extends React.Component {
+    constructor(args) {
+        super(...args);
+        this.state = {
+            visible: "hidden"
+        };
+    }
+
+    setToVisible(){
+        this.setState({visible: "visible"});
+    }
+
+    render() {
+        return(
+            <div id = "pickColor" style={{visibility : this.state.visible}}>
+                <button id="yellowPicker" onClick={this.yellowPicked}/>
+                <button id="bluePicker" onClick={this.bluePicked}/>
+                <button id="greenPicker" onClick={this.greenPicked}/>
+                <button id="redPicker" onClick={this.redPicked}/>
+            </div>
+        );
+    }
+
+    bluePicked(ev) {
+        ev.preventDefault();
+        this.props.game.colorPicked(enumCard.enumColor.BLUE);
+        this.setState({visible: "hidden"});
+    }
+
+    yellowPicked(ev) {
+        ev.preventDefault();
+        this.props.game.colorPicked(enumCard.enumColor.YELLOW);
+        this.setState({visible: "hidden"});
+    }
+
+    greenPicked(ev) {
+        ev.preventDefault();
+        this.props.game.colorPicked(enumCard.enumColor.GREEN);
+        this.setState({visible: "hidden"});
+    }
+
+    redPicked(ev) {
+        ev.preventDefault();
+        this.props.game.colorPicked(enumCard.enumColor.RED);
+        this.setState({visible: "hidden"});
+    }
+}

@@ -12,6 +12,8 @@ export default class CardReact extends React.Component {
             openCard: openCard,
             closeCardImage: CloseCard
         };*/
+        this.onDragStart = this.onDragStart.bind(this);
+
     }
 
 /*    setDraggable(draggable){
@@ -26,8 +28,8 @@ export default class CardReact extends React.Component {
     }*/
 
     onDragStart(ev) {
-        let changeColorReact = ReactDOM.findDOMNode(React.Component());
-        if(changeColorReact.visibility === "visible" && !this.props.isDraggable)
+        let changeColorReact = this.props.pickColorRef.current;
+        if(changeColorReact.state.visible === "visible" && !this.props.isDraggable)
             return false;
         this.draggable = true;
         ev.dataTransfer.setData("Text", this.props.id);

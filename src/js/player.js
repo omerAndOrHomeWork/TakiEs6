@@ -118,7 +118,7 @@ Player.prototype.removeCardAppearances = function () {
 
 
     doOperation(card, lastCard) {
-        this.component.remove(card.id);
+        this.component.removeCard(card.id);
        //TODO: CHANGE RESIZE METHOD
         // changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), this.allCards.length);
         let promote = card.doOperation(this, lastCard);

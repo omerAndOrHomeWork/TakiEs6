@@ -9,16 +9,18 @@ export default class CardHolderReact extends React.Component {
             card : undefined
             // cards : [new CardReact(takiImage, 0)]
         };
+
+        this.Drop = this.Drop.bind(this);
     }
 
     setCard(card){
-        this.setState({cards: card});
+        this.setState({card: card});
     }
 
     renderWithCard(){
         return(
             <div onDragOver={this.allowDrop} onDrop = {this.Drop}>
-                <CardReact isDraggable = {false} key = {this.state.card.id} index = {i} openImg = {this.props.open} image = {this.state.card.image} id = {this.state.card.id}>
+                <CardReact isDraggable = {false} key = {this.state.card.id} openImg = {this.props.open} image = {this.state.card.image} id = {this.state.card.id}>
                 </CardReact>
             </div>
         );
@@ -34,7 +36,7 @@ export default class CardHolderReact extends React.Component {
         if (this.state.card === undefined)
             return this.renderWithoutCard();
         else
-            this.renderWithCard()
+            return this.renderWithCard()
     }
 
     allowDrop(ev) {
@@ -42,7 +44,7 @@ export default class CardHolderReact extends React.Component {
     }
 
     Drop(ev) {
-        let id = event.dataTransfer.getData("Text");
+        let id = ev.dataTransfer.getData("Text");
         this.props.game.setDrop(id);
     }
 }
