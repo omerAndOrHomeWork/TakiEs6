@@ -1,9 +1,19 @@
+import {enumCard} from './enumCard'
+import {getUniqueCss} from './operations'
+import ChangeColorCard from './changeColorCard'
+import NumberCard from './numberCard'
+import Plus from './plus'
+import Stop from './stop'
+import SuperTaki from './superTaki'
+import Taki from './taki'
+import TwoPlus from './twoPlus'
+
 let stack = (function () {
     let cards = [];
     let twoCardsNumber = [1, 3, 4, 5, 6, 7, 8, 9];
     let colorNumber = [enumCard.enumColor.RED, enumCard.enumColor.BLUE,
         enumCard.enumColor.GREEN, enumCard.enumColor.YELLOW];
-    let id = 0;
+    var id = 0;
     let css;
     let htmlStock;
 
@@ -149,5 +159,22 @@ let stack = (function () {
                 stockImage.src = enumCard.images.CLOSE_CARD;
             }
         }*/
+        getStackImage: function () {
+            let img;
+            if (stack.getLength() > 30) {
+                img = enumCard.images.MANY_CLOSE_CARDS;
+            }
+            else if (stack.getLength() > 10) {
+                img = enumCard.images.FEW_CLOSE_CARDS;
+
+            }
+            else {
+                img = enumCard.images.CLOSE_CARD;
+            }
+
+            return img;
+        }
     };
 })();
+
+export {stack}

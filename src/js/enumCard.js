@@ -43,3 +43,6 @@ const enumCard = (function () {
         })
     }
 })();
+
+export {enumCard}
+

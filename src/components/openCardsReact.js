@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import CardReact from './cardReact';
 
 export default class CardHolderReact extends React.Component {
-    constructor(args) {
+/*    constructor(args) {
         super(...args);
         this.state = {
             card : undefined
@@ -37,6 +37,29 @@ export default class CardHolderReact extends React.Component {
             return this.renderWithoutCard();
         else
             return this.renderWithCard()
+    }
+
+    allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    Drop(ev) {
+        let id = ev.dataTransfer.getData("Text");
+       this.props.game.setDrop(id);
+       //  setTimeout(this.props.game.setDrop, id,2000);
+    }*/
+
+    constructor(args) {
+        super(...args);
+        this.Drop = this.Drop.bind(this);
+    }
+
+    render() {
+        return(
+            <div onDragOver={this.allowDrop} onDrop = {this.Drop} id = {"openCards"}>
+                <CardReact isDraggable = {false} key = {this.props.card.id} openImg = {this.props.open} image = {this.props.card.image} id = {this.props.card.id}/>
+            </div>
+        );
     }
 
     allowDrop(ev) {

@@ -1,9 +1,9 @@
-var clock = function() {
-    var cur_date = new Date(0,0);
-    var hours = cur_date.getHours();
-    var minutes = cur_date.getMinutes();
-    var seconds = cur_date.getSeconds();
-    var clockHtml = document.createElement("div");
+let clock = function() {
+    let cur_date = new Date(0,0);
+    let hours = cur_date.getHours();
+    let minutes = cur_date.getMinutes();
+    let seconds = cur_date.getSeconds();
+    let clockHtml = document.createElement("div");
     clockHtml.setAttribute("id",enumCard.dives.CLOCK);
     document.getElementById(enumCard.dives.STATISTICS).appendChild(clockHtml);
 

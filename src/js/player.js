@@ -1,4 +1,7 @@
-class Player{
+import {enumCard} from './enumCard'
+import {takiModeChecker} from './operations'
+
+export default class Player{
 /*    allCards = [];
     singleCardCounter;
     averageTimePlayed;
@@ -34,6 +37,11 @@ Player.prototype.removeCardAppearances = function () {
 
     setComponent(component){
         this.component = component;
+    }
+
+    setManager(playerManagement, index){
+        this.playerManagement = playerManagement;
+        this.playerIndex = index;
     }
 
     increasePlayerTurns(){
@@ -101,15 +109,17 @@ Player.prototype.removeCardAppearances = function () {
             cardsReact.push({image: card.uniqueCardImage, id: card.id});
         });
         this.component.setCards(cardsReact);*/
+        this.playerManagement.playersCards[this.playerIndex] = [];
         this.addCards(this.allCards);
     }
 
     addCards(cardsToAdd) {
         let cardsReact = [];
         cardsToAdd.forEach(card => {
-            cardsReact.push({image: card.uniqueCardImage, id: card.id});
+            this.playerManagement.playersCards[this.playerIndex].push({image: card.uniqueCardImage, id: card.id});
         });
-        this.component.setCards(cardsReact);
+        //this.component.setCards(cardsReact);
+        // this.playerManagement.playersCards[this.playerIndex].push(cardsReact);
     }
 
     getSingleCardCounter(){
@@ -118,7 +128,15 @@ Player.prototype.removeCardAppearances = function () {
 
 
     doOperation(card, lastCard) {
-        this.component.removeCard(card.id);
+        // this.component.removeCard(card.id);
+        for(let i = 0; i < this.playerManagement.playersCards[this.playerIndex].length; ++i){
+            if (this.playerManagement.playersCards[this.playerIndex][i].id === card.id) {
+                this.playerManagement.playersCards[this.playerIndex].splice(i, 1);
+                break;
+            }
+        }
+
+
        //TODO: CHANGE RESIZE METHOD
         // changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), this.allCards.length);
         let promote = card.doOperation(this, lastCard);

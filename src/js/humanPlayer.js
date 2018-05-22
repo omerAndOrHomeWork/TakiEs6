@@ -1,4 +1,8 @@
-class HumanPlayer extends Player{
+import Player from './player'
+import {enumCard} from './enumCard'
+import {setCards} from './operations'
+
+export default class HumanPlayer extends Player{
  //   allCards = [];
   //  averageTimePlayed = 0;
   //  turnsPlayed = 0;
@@ -16,7 +20,7 @@ class HumanPlayer extends Player{
 
     
     
-    removeCard(card) {
+        removeCard(card) {
         for (let i = 0; i < this.allCards.length; ++i) {
             if (this.allCards[i] === card) {
                 this.allCards.splice(i, 1);
@@ -103,7 +107,11 @@ class HumanPlayer extends Player{
     pickColor() {
         // pickColorId.style.visibility = "visible";
         // let pickColorId = document.getElementById(enumCard.dives.PICK_COLOR);
-        this.pickColorComponent.setToVisible();
+
+
+        //this.pickColorComponent.setToVisible();
+        this.playerManagement.pickColorVidibility = "visible";
+
         return enumCard.enumResult.CONTINUE_TURN;
     }
 

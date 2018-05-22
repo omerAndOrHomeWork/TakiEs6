@@ -1,3 +1,11 @@
+import HumanPlayer from './humanPlayer'
+import SmartComputer from './smartComputer'
+import statistics from './statistics'
+import {stack} from './stack'
+import {enumCard} from './enumCard'
+import {setCards, takiPermission, takeCards, getUniqueCss} from './operations'
+// import StateManagement from './stateMAnagement'
+
 export default class Game{
 /*    gameCards;
     turn;
@@ -20,8 +28,8 @@ export default class Game{
 
     setComponents(playerHolder, computerHolder, openCardHolder,
                   stackHolder, statisticsHolder, pickColorHolder, boardHolder) {
-        this.players[0].setComponent(playerHolder);
-        this.players[1].setComponent(computerHolder);
+        this.players[0].setManager(playerHolder);
+        this.players[1].setManager(computerHolder);
         this.openCardsComponent = openCardHolder;
         this.stackComponent = stackHolder;
         this.gameStatisticsComponent = statisticsHolder;
@@ -38,6 +46,7 @@ export default class Game{
         this.players[this.turn].resetPlayerClock();
         this.turn = (this.turn + promote) % this.players.length;
         this.gameStatistics.updateStatistics();
+        this.stateManagement.renderGame();
     }
 
     calcAmountCardsToTake(card) {
@@ -53,16 +62,23 @@ export default class Game{
     partition() {
         let gameStartCard = stack.getValidOpenCard();
         setCards(this.gameCards, gameStartCard);
-        this.openCardsComponent.setCard({image: gameStartCard[0].uniqueCardImage, id: gameStartCard[0].id});
+
+        //this.openCardsComponent.setCard({image: gameStartCard[0].uniqueCardImage, id: gameStartCard[0].id});
+        this.stateManagement.openCard = {image: gameStartCard[0].uniqueCardImage, id: gameStartCard[0].id};
+
         // this.gameCards[0].setParent(enumCard.dives.OPEN_CARDS, false);
         this.players.forEach(p => p.setCards(stack.getCards(8), this.players.length));
     }
 
     colorPicked(pickedColor) {
+        this.stateManagement.pickColorVidibility = "hidden";
         this.gameCards[this.gameCards.length - 1].setColor(pickedColor);
         this.gameCards[this.gameCards.length - 1].setImage(getUniqueCss(Object.keys(enumCard.enumColor)[pickedColor],
             Object.keys(enumCard.enumTypes)[enumCard.enumTypes.CHANGE_COLOR], '_'));
         // document.getElementById(enumCard.dives.PICK_COLOR).style.visibility = "hidden";
+
+        this.stateManagement.openCard =
+            {image: this.gameCards[this.gameCards.length - 1].uniqueCardImage, id: this.gameCards[this.gameCards.length - 1].id};
         this.changeTurn(enumCard.enumResult.NEXT_TURN);
         setTimeout(this.computerOperation, 2000);
     }
@@ -140,8 +156,9 @@ export default class Game{
     }
 
     endGameMode(massage) {
+        let newMsg = massage + " win!";
         this.endGame = true;
-        this.boardComponent.makeEndGame(massage);
+        this.stateManagement.endGame(newMsg);
         // document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "hidden";
         // document.getElementById(enumCard.dives.PICK_COLOR).style.visibility = "hidden";
         // document.getElementById(enumCard.dives.END_GAME_MODE).style.visibility = "visible";
@@ -164,13 +181,19 @@ export default class Game{
             card.changeImage(true);*/
             this.gameCards[this.gameCards.length - 1].setActive(false);
             this.gameCards.push(card);
-            this.openCardsComponent.setCard({image: card.uniqueCardImage, id: card.id});
+
+            //this.openCardsComponent.setCard({image: card.uniqueCardImage, id: card.id});
+            this.stateManagement.openCard = {image: card.uniqueCardImage, id: card.id};
+
             this.calcAmountCardsToTake(card);
             if (this.players[this.turn].getAmountOfCards() === 0 && card.getSign() !== enumCard.enumTypes.PLUS) {
                 this.endGameMode(Object.keys(enumCard.enumPlayer)[this.turn]);
             }
-            if (promote !== enumCard.enumResult.CONTINUE_TURN)
+            else if (promote !== enumCard.enumResult.CONTINUE_TURN)
                 this.changeTurn(promote);
+            else
+                this.stateManagement.renderGame();
+            //setTimeout(this.computerOperation, 2000);
             setTimeout(this.computerOperation, 2000);
         }
     }
@@ -179,21 +202,27 @@ export default class Game{
         if (this.gameCards.length === 1) {
             this.endGameMode("TIE! nobody ");
         } else {
-            //removeAllCards(enumCard.dives.OPEN_CARDS);
             let lastCard = this.gameCards.pop();
             stack.makeStockAgain(this.gameCards);
             this.gameCards = undefined;
             this.gameCards = [];
             this.gameCards.push(lastCard);
-            this.openCardsComponent.setCard({image: lastCard.uniqueCardImage, id: lastCard.id});
-            //stack.changeStockImage();//TODO: delete this method
-            this.stackComponent.changeImage(stack.getLength());//TODO: take it to react
+
+
+            //this.openCardsComponent.setCard({image: lastCard.uniqueCardImage, id: lastCard.id});
+            this.stateManagement.openCard = {image: lastCard.uniqueCardImage, id: lastCard.id};
+            //this.stackComponent.changeImage(stack.getLength());//TODO: take it to react
+            this.stateManagement.stackImage = stack.getStackImage();
+
         }
     }
 
     pullCardValidation(player) {
         if (player === this.players[this.turn] && player.pullApproval(this.gameCards[this.gameCards.length - 1])) {
-            stack.changeStockImage();
+
+            //this.stackComponent.changeImage(stack.getLength());//TODO: take it to react
+            this.stateManagement.stackImage = stack.getStackImage();
+
             this.gameCards[this.gameCards.length - 1].setActive(false);
             player.setTakiMode(undefined);
             let cardsFromStock = stack.getCards(this.amountOfCardsToTakeFromStock);
@@ -202,8 +231,6 @@ export default class Game{
             }
             this.amountOfCardsToTakeFromStock = 1;
             player.pullCardFromStock(cardsFromStock);
-/*            for (let i = 0; i < cardsFromStock.length; ++i)
-                cardsFromStock[i].setParent(player.getHtmlDiv(), player.isDraggable());*/
             this.changeTurn(enumCard.enumResult.NEXT_TURN);
             setTimeout(this.computerOperation, 2000);
         }
@@ -219,7 +246,7 @@ export default class Game{
                 if (card === undefined)
                     this.pullCardValidation(this.players[this.turn]);
                 else {
-                    this.dropValidation(this.players[this.turn], card);
+                    this.dropValidation(card);
                 }
             }
         }
@@ -251,9 +278,12 @@ export default class Game{
         this.turn = 0;
         this.partition();
         this.gameStatistics = new statistics(this.players);
-        this.gameStatistics.setComponent(this.gameStatisticsComponent);
+        this.gameStatistics.setManager(this.stateManagement);
         this.gameStatistics.updateStatistics();
         this.setEventsListener();
+        this.stateManagement.stackImage = stack.getStackImage();
+        this.stateManagement.renderGame();
+
     }
 
         startGame() {
@@ -284,6 +314,8 @@ export default class Game{
             this.gameStatistics = undefined;
             this.players[0].setAverageTimePlayed(playerAverageTurnTime);
             this.players[0].setTurnsPlayed(playerTurn);
+            this.players[0].setManager(this.stateManagement, 0);
+            this.players[1].setManager(this.stateManagement, 1);
             this.initialGameAndStatistics();
             setTimeout(this.computerOperation, 2000);
         }
@@ -291,4 +323,16 @@ export default class Game{
         quitGame() {
             this.endGameMode("PLAYER quit! COMPUTER");
         }
+
+    setManager(stateManagement) {
+        this.stateManagement = stateManagement;
+        this.players[0].setManager(stateManagement, 0);
+        this.players[1].setManager(stateManagement, 1);
+
+        // this.openCardsComponent = stateManagement;
+/*        this.players.forEach(p => {
+            if(!p.isComputer())
+                p.setPickColorComponent(stateManagement.pickColorVidibility);
+        });*/
+    }
 }
