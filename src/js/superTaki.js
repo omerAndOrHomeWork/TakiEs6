@@ -1,4 +1,7 @@
-class SuperTaki extends Card{
+import Card from "./card";
+import {enumCard} from './enumCard'
+import {getUniqueCss} from './operations'
+export default class SuperTaki extends Card{
 
     constructor(theColor, theSign, theId){
         super(theColor, theSign, theId);

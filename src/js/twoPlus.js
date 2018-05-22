@@ -1,10 +1,12 @@
-class TwoPlus extends Card{
+import Card from "./card";
+import {enumCard} from './enumCard'
+export default class TwoPlus extends Card{
 
     constructor(theColor, theSign, theId){
         super(theColor, theSign, theId);
     }
 
-    doOperation(player) {
+    doOperation() {
         this.setActive(true);
         return enumCard.enumResult.NEXT_TURN;
     }

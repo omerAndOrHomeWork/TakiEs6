@@ -20,8 +20,8 @@
 }*/
 
 function takiModeChecker(cards, takiMode) {
-    var foundColor = false;
-    for (var i = 0; i < cards.length; ++i) {
+    let foundColor = false;
+    for (let i = 0; i < cards.length; ++i) {
         if (cards[i].getColor() === takiMode.getColor()) {
             foundColor = true;
             break;
@@ -49,7 +49,7 @@ function takiModeChecker(cards, takiMode) {
 }*/
 
 function removeAllCards(placeHOlder) {
-    var deleteElement = document.getElementById(placeHOlder);
+    let deleteElement = document.getElementById(placeHOlder);
 
     while (deleteElement.hasChildNodes()) {
         deleteElement.removeChild(deleteElement.childNodes[0]);
@@ -68,20 +68,20 @@ function setCards(stock, cards) {
 }
 
 function takeCards(stock, cardsToTake) {
-    for(var i = 0; i < cardsToTake.length; ++i){
+    for(let i = 0; i < cardsToTake.length; ++i){
         stock.push(cardsToTake[i]);
     }
 }
 
 function takiPermission(player, card) {
-    var taki = player.getTakiMode();
+    let taki = player.getTakiMode();
     return ( taki === undefined || (taki !== undefined && taki.getColor() === card.getColor()));
 }
 
 function changeMerging(placeHolder, cardsLength){
-    var images = placeHolder.getElementsByTagName("img");
-    var factor = 0;
-    var size;
+    let images = placeHolder.getElementsByTagName("img");
+    let factor = 0;
+    let size;
     if(window.innerWidth < 720)
         factor -= 4;
     else if(window.innerWidth < 760)
@@ -99,8 +99,10 @@ function changeMerging(placeHolder, cardsLength){
     else
         size = -5;
     size += factor;
-    var marge = size.toString() + "%";
-    for (var i = 0; i < images.length; i++) {
+    let marge = size.toString() + "%";
+    for (let i = 0; i < images.length; i++) {
         images[i].style.marginRight= marge;
     }
 }
+
+export {takiModeChecker, getUniqueCss, setCards, takeCards, takiPermission}

@@ -1,4 +1,5 @@
-class statistics {
+import {enumCard} from './enumCard'
+export default class statistics {
     
     constructor(thePlayersGame){
         this.playersGame = thePlayersGame;
@@ -37,10 +38,11 @@ class statistics {
              playerLocal += "Average turn time: " + Math.round(this.playersGame[i].getAverageTimePlayed() * 100) / 100 + " sec";
              massages.push(playerLocal);
          }
-         this.statisticsComponent.changeMassage(massages);
+         // this.statisticsComponent.changeMassage(massages);
+         this.manager.statisticsMassages = massages;
      }
 
-     setComponent(statisticsHolder) {
-         this.statisticsComponent = statisticsHolder;
+     setManager(statisticsManager) {
+         this.manager = statisticsManager;
      }
 }

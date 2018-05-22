@@ -1,4 +1,6 @@
-class Card{
+import {enumCard} from './enumCard'
+
+export default class Card{
 
     constructor (theColor, theSign, theId){
         this.color = theColor;

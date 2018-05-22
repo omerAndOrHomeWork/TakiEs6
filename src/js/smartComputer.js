@@ -1,4 +1,7 @@
-class SmartComputer extends Player{
+import Player from './player'
+import {enumCard} from './enumCard'
+
+export default class SmartComputer extends Player{
 
   //  let this.allCards = [];
 //    let this.takiMode = undefined;
@@ -339,8 +342,8 @@ class SmartComputer extends Player{
             this.allCards.push(cardsToAdd[i]);
 /*            cardsToAdd[i].setParent(enumCard.dives.COMPUTER_CARDS, false);
             cardsToAdd[i].changeImage(false);*/
-            super.addCards(cardsToAdd);
         }
+        super.addCards(cardsToAdd);
     }
 
     takiWithConnection() {

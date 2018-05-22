@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import CardReact from './cardReact';
 
 export default class CardHolderReact extends React.Component {
-    constructor(args) {
+/*    constructor(args) {
         super(...args);
         this.state = {
             cards : []
@@ -16,10 +16,10 @@ export default class CardHolderReact extends React.Component {
     setCards(cards) {
         let theCards = this.state.cards;
         cards.forEach(card => theCards.push(card));
-        /*card.openCard(true);
+        /!*card.openCard(true);
         card.setDraggable(true);
         card.setRemove(this.removeCard);
-        //theCards.forEach(c => c.openCard(true));*/
+        //theCards.forEach(c => c.openCard(true));*!/
         this.setState({cards: theCards});
     }
 
@@ -36,7 +36,7 @@ export default class CardHolderReact extends React.Component {
 
     eachCard(card, i) {
         return(
-          <CardReact isDraggable = {this.props.isDraggable} key = {card.id} index = {i} openImg = {this.props.open} image = {card.image} id = {card.id}>
+          <CardReact pickColorRef = {this.props.pickColorRef} isDraggable = {this.props.isDraggable} key = {card.id} index = {i} openImg = {this.props.open} image = {card.image} id = {card.id}>
           </CardReact>
         );
     }
@@ -48,18 +48,47 @@ export default class CardHolderReact extends React.Component {
             </div>
         );
     }
-    renderWithoutCard(){
+    static renderWithoutCard(){
         return(
             <div>
+                <b>fff</b>
             </div>
         );
     }
 
 
     render() {
-        if(this.state.cards === undefined)
-            return this.renderWithoutCard();
+        if(this.state.cards.length === 0)
+            return CardHolderReact.renderWithoutCard();
         else
             return this.renderWithCard();
+        /!*return(
+            <div>
+                {this.state.cards.length === 0 ? this.state.cards.map(this.eachCard) : ""}
+            </div>
+        );*!/
+    }*/
+
+    constructor(args) {
+        super(...args);
+
+        this.eachCard = this.eachCard.bind(this);
+    }
+
+
+
+    eachCard(card, i) {
+        return(
+            <CardReact pickColorRef = {this.props.pickColorRef} isDraggable = {this.props.isDraggable} key = {card.id} index = {i} openImg = {this.props.open} image = {card.image} id = {card.id}>
+            </CardReact>
+        );
+    }
+
+    render() {
+        return(
+            <div className={"player"} id = {this.props.cssId}>
+                {this.props.cards.map(this.eachCard)}
+            </div>
+        );
     }
 }

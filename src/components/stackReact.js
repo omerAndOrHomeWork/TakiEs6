@@ -7,12 +7,12 @@ import CLOSE_CARDS from './../Images/other/close_card.png'
 
 export default class StackReact extends React.Component {
 
-
-    constructor(args) {
+/*    constructor(args) {
         super(...args);
         this.state = {
             image:  MANY_CLOSE_CARDS
         };
+        this.handleClick = this.handleClick.bind(this);
     }
 
     changeImage(stackLength){
@@ -39,11 +39,34 @@ export default class StackReact extends React.Component {
 
     handleClick(ev) {
         ev.preventDefault();
-        let changeColorReact = ReactDOM.findDOMNode(React.Component());
-        if (changeColorReact.style.visibility === "visible")
+        let changeColorReact = this.props.pickColorRef.current;
+        if (changeColorReact.state.visible === "visible")
             return false;
 
-        if (!this.props.game.players[this.game.turn].isComputer())
-            this.props.game.pullCardValidation(this.game.players[this.game.turn]);
+        if (!this.props.game.players[this.props.game.turn].isComputer())
+            this.props.game.pullCardValidation(this.props.game.players[this.props.game.turn]);
+    }*/
+
+    constructor(args) {
+        super(...args);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    render() {
+        return(
+            <a onClick={this.handleClick} id = {"stockCards"}>
+                <img src={this.props.img}/>
+            </a>
+        );
+    }
+
+    handleClick(ev) {
+        ev.preventDefault();
+        let changeColorReact = this.props.pickColorRef.current;
+        if (changeColorReact.props.visible === "visible")
+            return false;
+
+        if (!this.props.game.players[this.props.game.turn].isComputer())
+            this.props.game.pullCardValidation(this.props.game.players[this.props.game.turn]);
     }
 }
