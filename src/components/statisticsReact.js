@@ -69,7 +69,7 @@ export default class StatisticsReact extends React.Component {
         return(
             <div id = {"statistics"}>
                 <h2>Statistics:</h2>
-                {/*<Clock/>*/}
+                {<Clock/>}
                 <h3>Game Statistics:</h3>
                 {this.props.msg.map(this.eachMassage)}
             </div>
@@ -78,7 +78,7 @@ export default class StatisticsReact extends React.Component {
 
     eachMassage(msg, i) {
         return(
-            <h3 key={i}>{msg}</h3>
+            <p key={i}>{msg}</p>
         );
     }
 }

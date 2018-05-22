@@ -10,10 +10,20 @@ export default class ClockReact extends React.Component {
             minutes : 0,
             seconds : 0
         };
-
         this.updateTime = this.updateTime.bind(this);
-        setInterval(this.updateTime(1), 1000);
+        setInterval(() => this.updateTime(1), 1000);
     }
+
+/*
+    componentDidMount() {
+        this.intervalID = this.updateTime(1),1000);
+    }
+    componentWillUnmount() {
+        clearInterval(this.intervalID);
+    }
+*/
+
+
     updateTime(secs) {
         let seconds = this.state.seconds;
         let minutes = this.state.minutes;

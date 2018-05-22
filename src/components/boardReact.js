@@ -146,7 +146,7 @@ export default class BoardReact extends React.Component {
     gameRender(){
         return(
             <div className="container-fluid" onLoad={this.setGame} onChange={console.log("change")}>
-                <div><button id="Quit_Game" type="button" style={{visibility : "hidden"}} onClick={this.props.manager.setQuitGame}>Quit Game</button></div>
+                <div><button id="Quit_Game" type="button" style={{visibility : "visible"}} onClick={this.props.manager.setQuitGame}>Quit Game</button></div>
                 <Statistics msg= {this.props.manager.statisticsMassages}/>
                 <OpenCards card =  {this.props.manager.openCard} open = {true} game = {this.props.game}/>
                 <CardsHolder cards = {this.props.manager.playersCards[0]} pickColorRef = {this.pickColorHolder} isDraggable = {true} open = {true} cssId = "playerCards" />
@@ -160,7 +160,7 @@ export default class BoardReact extends React.Component {
     endGameRender(){
         return(
             <div id = {"endGameMode"}>
-                <b>{this.props.manager.massage}</b>
+                <p id ="massage">{this.props.manager.massage}</p>
                 <button id={"restartGame"} onClick={this.restart}>Restart Game</button>
                 <button id={"endGame"} onClick={window.close}>Exit Game</button>
             </div>
