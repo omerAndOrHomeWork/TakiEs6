@@ -33,9 +33,12 @@ export default class statistics {
          for (let i = 0; i < this.playersGame.length; ++i) {
              this.singleCardPlayers[i] = this.playersGame[i].getSingleCardCounter();
              let playerLocal = "\n\n" + Object.keys(enumCard.enumPlayer)[i] + ":\n";
-             playerLocal += "Turns played: " + this.playersGame[i].getTurnsPlayed() + "\n";
-             playerLocal += "Single cards times: " + this.playersGame[i].getSingleCardCounter() + "\n";
-             playerLocal += "Average turn time: " + Math.round(this.playersGame[i].getAverageTimePlayed() * 100) / 100 + " sec";
+             massages.push(playerLocal);
+             playerLocal = "Turns played: " + this.playersGame[i].getTurnsPlayed() + "\n";
+             massages.push(playerLocal);
+             playerLocal = "Single cards times: " + this.playersGame[i].getSingleCardCounter() + "\n";
+             massages.push(playerLocal);
+             playerLocal = "Average turn time: " + Math.round(this.playersGame[i].getAverageTimePlayed() * 100) / 100 + " sec";
              massages.push(playerLocal);
          }
          // this.statisticsComponent.changeMassage(massages);

@@ -10,6 +10,8 @@ export default class  StateManagement{
         this.gameState =  "start";
         this.setStartGame = this.setStartGame.bind(this);
         this.setRestartStartGame = this.setRestartStartGame.bind(this);
+        this.setQuitGame = this.setQuitGame.bind(this);
+
         // this.handleClick = this.handleClick.bind(this);
 
     }
