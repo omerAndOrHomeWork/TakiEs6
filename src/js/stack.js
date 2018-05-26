@@ -115,7 +115,7 @@ let stack = (function () {
             return undefined;
         },
 
-        makeStockAgain: function (allCards) {
+        initializeStock: function (allCards) {
             let css;
             for (let i = 0; i < allCards.length; ++i) {
                 if (allCards[i].getSign() === enumCard.enumTypes.CHANGE_COLOR || allCards[i].getSign() === enumCard.enumTypes.SUPER_TAKI) {

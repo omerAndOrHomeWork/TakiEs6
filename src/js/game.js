@@ -20,10 +20,11 @@ export default class Game{
         this.players = [new HumanPlayer(), new SmartComputer()];
         this.amountOfCardsToTakeFromStock = 1;
         this.endGame = false;
-
-
-
+        this.tournament = false;
+        //this.quitMode = false;
         this.computerOperation = this.computerOperation.bind(this);
+        this.prev = this.prev.bind(this);
+        this.next = this.next.bind(this);
     }
 
     setComponents(playerHolder, computerHolder, openCardHolder,
@@ -46,7 +47,7 @@ export default class Game{
         this.players[this.turn].resetPlayerClock();
         this.turn = (this.turn + promote) % this.players.length;
         this.gameStatistics.updateStatistics();
-        this.stateManagement.renderGame();
+        this.render();
     }
 
     calcAmountCardsToTake(card) {
@@ -155,10 +156,51 @@ export default class Game{
         };*/
     }
 
+    tournamentGameEnd(massage) {
+        let score = this.players[(this.turn + 1) % this.players.length].getLoserScore();
+        this.players[this.turn].updateTournamentScore();
+        this.gameNumber++;
+        if(this.gameNumber === 3){
+            endTournament(massage);
+        }else
+            this.stateManagement.endGameInTournamentRender(massage);
+    }
+
+    //TODO: push massages on tournament
+    endTournament(massage){
+        this.stateManagement.endTournamentRender(massage);
+    }
+
+    prev(){
+        if(this.turnIndex -1 >= 0) {
+            this.stateManagement.takeValues(this.savesStates[--this.turnIndex]);
+        }else{
+            this.stateManagement.error = "start game window";
+        }//TODO: if not, show massage
+        this.stateManagement.renderGame();
+    }
+
+    next(){
+        if(this.turnIndex + 1 < this.savesStates.length) {
+            this.stateManagement.takeValues(this.savesStates[++this.turnIndex]);
+        }else
+            this.stateManagement.error = "end game window";
+        this.stateManagement.renderGame();
+    }//TODO: if not, show massage    }
+
     endGameMode(massage) {
-        let newMsg = massage + " win!";
-        this.endGame = true;
-        this.stateManagement.endGame(newMsg);
+        let newMsg = [];
+        newMsg[0] = massage + " win!";
+        if(this.tournament)
+            this.tournamentGameEnd(newMsg);
+        else {
+            if(this.quitMode === undefined)
+                this.savesStates.push(this.stateManagement.clone());
+            this.turnIndex = this.savesStates.length - 1;
+            // let newMsg = massage + " win!";
+            this.endGame = true;
+            this.stateManagement.endGame(newMsg);
+        }
         // document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "hidden";
         // document.getElementById(enumCard.dives.PICK_COLOR).style.visibility = "hidden";
         // document.getElementById(enumCard.dives.END_GAME_MODE).style.visibility = "visible";
@@ -192,7 +234,7 @@ export default class Game{
             else if (promote !== enumCard.enumResult.CONTINUE_TURN)
                 this.changeTurn(promote);
             else
-                this.stateManagement.renderGame();
+                this.render();
             //setTimeout(this.computerOperation, 2000);
             setTimeout(this.computerOperation, 2000);
         }
@@ -200,10 +242,11 @@ export default class Game{
 
     refreshStockAndOpenCards() {
         if (this.gameCards.length === 1) {
+
             this.endGameMode("TIE! nobody ");
         } else {
             let lastCard = this.gameCards.pop();
-            stack.makeStockAgain(this.gameCards);
+            stack.initializeStock(this.gameCards);
             this.gameCards = undefined;
             this.gameCards = [];
             this.gameCards.push(lastCard);
@@ -283,7 +326,10 @@ export default class Game{
         this.setEventsListener();
         this.stateManagement.stackImage = stack.getStackImage();
         this.stateManagement.renderGame();
-
+        if(!this.tournament) {
+            this.savesStates = [];
+            this.savesStates.push(this.stateManagement.clone());
+        }
     }
 
         startGame() {
@@ -295,6 +341,12 @@ export default class Game{
             setTimeout(this.computerOperation, 2000);
         }
 
+        startTournament(){
+            this.tournament = true;
+            this.gameNumber = 1;
+            this.startGame();
+        }
+
         restartGame() {
             event.preventDefault();
             this.endGame = false;
@@ -304,23 +356,25 @@ export default class Game{
             allCards = this.getGameCards();
             let playerAverageTurnTime = this.players[0].getAverageTimePlayed();
             let playerTurn = this.players[0].getTurnsPlayed();
-            this.players[0] = undefined;
-            this.players[1] = undefined;
+            this.players[0].clear();
+            this.players[1].clear();
             this.gameCards = undefined;
-            this.players = undefined;
+ //           this.players = undefined;
             this.gameCards = [];
-            stack.makeStockAgain(allCards);
-            this.players = [new HumanPlayer(), new SmartComputer()];
+            stack.initializeStock(allCards);
+   //         this.players = [new HumanPlayer(), new SmartComputer()];
             this.gameStatistics = undefined;
             this.players[0].setAverageTimePlayed(playerAverageTurnTime);
             this.players[0].setTurnsPlayed(playerTurn);
-            this.players[0].setManager(this.stateManagement, 0);
-            this.players[1].setManager(this.stateManagement, 1);
+       //     this.players[0].setManager(this.stateManagement, 0);
+         //   this.players[1].setManager(this.stateManagement, 1);
             this.initialGameAndStatistics();
             setTimeout(this.computerOperation, 2000);
         }
 
         quitGame() {
+            this.quitMode = true;
+            this.tournament = false;
             this.endGameMode("PLAYER quit! COMPUTER");
         }
 
@@ -335,4 +389,17 @@ export default class Game{
                 p.setPickColorComponent(stateManagement.pickColorVidibility);
         });*/
     }
+
+    render() {
+        if(!this.tournament)
+            this.savesStates.push(this.stateManagement.clone());
+        this.stateManagement.renderGame();
+    }
 }
+
+//TODO: ONdRAGsTART OF CARD
+//TODO: end the methods, both tournament
+//TODO: end the methods, for scores
+//TODO: handle all restarts pf all games
+//TODO: animation
+//TODO: debug
