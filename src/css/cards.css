@@ -114,10 +114,18 @@ img{
     color: white;
 }
 
+#Quit_Game{
+    background: #32CD32;
+    font-size: 15px;
+    color: white;
+}
+
+
 #massage{
     position: absolute;
     top: 40%;
     left: 45%;
+    font-weight: bold;
     font-size:30px;
 }
 
