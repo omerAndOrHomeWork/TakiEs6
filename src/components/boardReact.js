@@ -118,8 +118,12 @@ export default class BoardReact extends React.Component {
     constructor(args) {
         super(...args);
         this.pickColorHolder =  React.createRef();
-        this.setManager = this.setManager.bind(this);
+        this.setGame = this.setGame.bind(this);
+        this.setTournament = this.setTournament.bind(this);
         this.restart = this.restart.bind(this);
+        this.eachMassage = this.eachMassage.bind(this);
+        this.next = this.next.bind(this);
+        this.prev = this.prev.bind(this);
         this.state = {
             gameState: "start",
         };
@@ -129,9 +133,15 @@ export default class BoardReact extends React.Component {
         this.setState({gameState: state});
     }
 
-    setManager(){
+    setGame(){
         this.props.manager.setStartGame(this, this.props.game);
     }
+
+    setTournament(){
+        this.props.manager.setStartTournament(this, this.props.game);
+    }
+
+
     restart(){
         this.props.manager.setRestartStartGame();
     }
@@ -139,30 +149,85 @@ export default class BoardReact extends React.Component {
 
     openingWindowRender(){
         return(
-            <div><button id="Enter_Game" type="button" onClick={this.setManager}>Enter Game</button></div>
+            <div>
+                <button id="Enter_Game" type="button" onClick={this.setGame}>Play Game</button>
+                <button id="Enter_Game" type="button" onClick={this.setTournament}>Play Tournament</button>
+            </div>
         );
     }
 
     gameRender(){
         return(
-            <div className="container-fluid" onLoad={this.setGame} onChange={console.log("change")}>
+            <div className="container-fluid">
                 <div><button id="Quit_Game" type="button" style={{visibility : "visible"}} onClick={this.props.manager.setQuitGame}>Quit Game</button></div>
                 <Statistics msg= {this.props.manager.statisticsMassages}/>
                 <OpenCards card =  {this.props.manager.openCard} open = {true} game = {this.props.game}/>
                 <CardsHolder cards = {this.props.manager.playersCards[0]} pickColorRef = {this.pickColorHolder} isDraggable = {true} open = {true} cssId = "playerCards" />
                 <CardsHolder cards = {this.props.manager.playersCards[1]} pickColorRef = {this.pickColorHolder} isDraggable = {false} open = {true} cssId = "computerCards" />
-                <PickColor visible = {this.props.manager.pickColorVidibility} ref= {this.pickColorHolder} game = {this.props.game}/>
-                <Stack  img = {this.props.manager.stackImage} pickColorRef = {this.pickColorHolder} game = {this.props.game}/>
+                <PickColor interactive = {true} visible = {this.props.manager.pickColorVidibility} ref= {this.pickColorHolder} game = {this.props.game}/>
+                <Stack  interactive = {true} img = {this.props.manager.stackImage} pickColorRef = {this.pickColorHolder} game = {this.props.game}/>
             </div>
         );
     }
 
     endGameRender(){
         return(
+            <div>
+                <div id = {"endGameMode"}>
+                    <p id ="massage">{this.props.manager.massage}</p>
+                    <button id={"restartGame"} onClick={this.restart}>Restart Game</button>
+                    <button id={"endGame"} onClick={window.close}>Exit Game</button>
+                </div>
+                <div className="container-fluid">
+                    <div><button id="Quit_Game" type="button" style={{visibility : "visible"}} onClick={this.props.manager.setQuitGame}>Quit Game</button></div>
+                    <Statistics msg= {this.props.manager.statisticsMassages}/>
+                    <OpenCards card =  {this.props.manager.openCard} open = {true} game = {this.props.game}/>
+                    <CardsHolder cards = {this.props.manager.playersCards[0]} pickColorRef = {this.pickColorHolder} isDraggable = {false} open = {true} cssId = "playerCards" />
+                    <CardsHolder cards = {this.props.manager.playersCards[1]} pickColorRef = {this.pickColorHolder} isDraggable = {false} open = {false} cssId = "computerCards" />
+                    <PickColor interactive = {false} visible = {this.props.manager.pickColorVidibility} ref= {this.pickColorHolder} game = {this.props.game}/>
+                    <Stack interactive = {false} img = {this.props.manager.stackImage} pickColorRef = {this.pickColorHolder} game = {this.props.game}/>
+                </div>
+                <div>
+                    <p id ="massage">{this.props.manager.error}</p>
+                    <button id={"next"} onClick={this.next}>this.next</button>
+                    <button id={"prev"} onClick={this.prev}>this.prev</button>
+                </div>
+            </div>
+        );
+    }
+
+    next(){
+        this.props.manager.next();
+    }
+
+    prev(){
+        this.props.manager.prev();
+    }
+
+    // TODO: change restarts options in and game/tournament
+
+    endTournamentRender(){
+        return(
+            <div id = {"endGameMode"}>
+                {this.props.manager.massage.map(this.eachMassage)}
+                {/*<p id ="massage">{this.props.manager.massage}</p>*/}
+                <button id={"restartGame"} onClick={this.restart}>Restart</button>
+                <button id={"endGame"} onClick={window.close}>Exit Game</button>
+            </div>
+        );
+    }
+
+    eachMassage(msg) {
+        return(
+            <p id="massage">{msg}</p>
+        );
+    }
+
+    endGameInTournamentRender(){
+        return(
             <div id = {"endGameMode"}>
                 <p id ="massage">{this.props.manager.massage}</p>
-                <button id={"restartGame"} onClick={this.restart}>Restart Game</button>
-                <button id={"endGame"} onClick={window.close}>Exit Game</button>
+                <button id={"restartGame"} onClick={this.restart}>Next Game</button>
             </div>
         );
     }
@@ -174,5 +239,9 @@ export default class BoardReact extends React.Component {
             return this.gameRender();
         else if(this.props.manager.gameState === "endGame")
             return this.endGameRender();
+        else if(this.props.manager.gameState === "endGameInTournamentRender")
+            return this.endGameInTournamentRender();
+        else if(this.props.manager.gameState === "endTournamentRender")
+            return this.endTournamentRender();
     }
 }

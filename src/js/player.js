@@ -10,13 +10,13 @@ export default class Player{
     htmlPlayerDiv;*/
 
     //constructor(theCards,placeHolder)
-    constructor(placeHolder){
+    constructor(){
         this.allCards = [];
         this.singleCardCounter = 0;
         this.averageTimePlayed = 0;
         this.turnsPlayedForStatistics = 0;
         this.takiMode = undefined;
-        this.htmlPlayerDiv = placeHolder;
+        //this.htmlPlayerDiv = placeHolder;
     }
 
     /*
@@ -69,6 +69,14 @@ Player.prototype.removeCardAppearances = function () {
         });
 
         return cardToReturn;
+    }
+
+    clear(){
+        this.allCards = [];
+        this.singleCardCounter = 0;
+        this.averageTimePlayed = 0;
+        this.turnsPlayedForStatistics = 0;
+        this.takiMode = undefined;
     }
 
     getHtmlDiv() {
@@ -154,5 +162,16 @@ Player.prototype.removeCardAppearances = function () {
         if (this.allCards.length === 1)
             this.singleCardCounter++;
         return promote;
+    }
+
+    //TODO: calc score
+    getLoserScore(){
+        let score;
+
+    }
+
+    //TODO: update
+    updateTournamentScore(){
+
     }
 }

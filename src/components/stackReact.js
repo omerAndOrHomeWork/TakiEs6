@@ -61,6 +61,8 @@ export default class StackReact extends React.Component {
     }
 
     handleClick(ev) {
+        if(this.props.interactive === false)
+            return false;
         ev.preventDefault();
         let changeColorReact = this.props.pickColorRef.current;
         if (changeColorReact.props.visible === "visible")

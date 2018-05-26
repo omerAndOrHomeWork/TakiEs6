@@ -69,21 +69,29 @@ export default class PickColorReact extends React.Component {
     }
 
     bluePicked(ev) {
+        if(this.props.interactive === false)
+            return false;
         ev.preventDefault();
         this.props.game.colorPicked(enumCard.enumColor.BLUE);
     }
 
     yellowPicked(ev) {
+        if(this.props.interactive === false)
+            return false;
         ev.preventDefault();
         this.props.game.colorPicked(enumCard.enumColor.YELLOW);
     }
 
     greenPicked(ev) {
+        if(this.props.interactive === false)
+            return false;
         ev.preventDefault();
         this.props.game.colorPicked(enumCard.enumColor.GREEN);
     }
 
     redPicked(ev) {
+        if(this.props.interactive === false)
+            return false;
         ev.preventDefault();
         this.props.game.colorPicked(enumCard.enumColor.RED);
     }
