@@ -12,7 +12,7 @@ export default class HumanPlayer extends Player{
 
     
     constructor(){
-        super(enumCard.dives.PLAYER_CARDS);
+        super();
         this.turnsPlayed = 0;
         this.currentTurnTime = 0;
     }
@@ -102,6 +102,12 @@ export default class HumanPlayer extends Player{
 
     isComputer() {
         return false;
+    }
+
+    clear(){
+        super.clear();
+        this.turnsPlayed = 0;
+        this.currentTurnTime = 0;
     }
 
     pickColor() {

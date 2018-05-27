@@ -3,8 +3,8 @@ import {enumCard} from './enumCard'
 
 export default class NumberCard extends Card{
 
-    constructor(theColor, theSign, theId){
-        super(theColor, theSign, theId);
+    constructor(theColor, theSign, theId, theScore){
+        super(theColor, theSign, theId,theScore);
     }
 
     doOperation() {

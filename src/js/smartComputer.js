@@ -11,7 +11,7 @@ export default class SmartComputer extends Player{
 //    let this.htmlPlayerDiv = enumCard.dives.COMPUTER_CARDS;
 
     constructor(){
-        super(enumCard.dives.COMPUTER_CARDS);
+        super();
         this.colorsCards = [[], [], [], []];
         this.typesCards = [[], [], [], [], [], [], []];
         this.numberOfPlayers = undefined;
@@ -445,6 +445,15 @@ export default class SmartComputer extends Player{
             return color;
         return enumCard.enumColor.YELLOW;
 
+    }
+
+    clear(){
+        super.clear();
+        this.colorsCards = [[], [], [], []];
+        this.typesCards = [[], [], [], [], [], [], []];
+        this.numberOfPlayers = undefined;
+        this.lastCardInTaki = undefined;
+        this.pickedColor = false;
     }
 
     setCards(cards, playersAmount){

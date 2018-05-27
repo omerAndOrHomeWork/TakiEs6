@@ -10,13 +10,14 @@ export default class Player{
     htmlPlayerDiv;*/
 
     //constructor(theCards,placeHolder)
-    constructor(placeHolder){
+    constructor(){
         this.allCards = [];
         this.singleCardCounter = 0;
+        this.score = 0;
         this.averageTimePlayed = 0;
         this.turnsPlayedForStatistics = 0;
         this.takiMode = undefined;
-        this.htmlPlayerDiv = placeHolder;
+        //this.htmlPlayerDiv = placeHolder;
     }
 
     /*
@@ -71,6 +72,14 @@ Player.prototype.removeCardAppearances = function () {
         return cardToReturn;
     }
 
+    clear(){
+        this.allCards = [];
+        this.singleCardCounter = 0;
+        this.averageTimePlayed = 0;
+        this.turnsPlayedForStatistics = 0;
+        this.takiMode = undefined;
+    }
+
     getHtmlDiv() {
         return this.htmlPlayerDiv;
     }
@@ -116,7 +125,7 @@ Player.prototype.removeCardAppearances = function () {
     addCards(cardsToAdd) {
         let cardsReact = [];
         cardsToAdd.forEach(card => {
-            this.playerManagement.playersCards[this.playerIndex].push({image: card.uniqueCardImage, id: card.id});
+            this.playerManagement.playersCards[this.playerIndex].push({image: card.uniqueCardImage, id: card.id, score: card.score});
         });
         //this.component.setCards(cardsReact);
         // this.playerManagement.playersCards[this.playerIndex].push(cardsReact);
@@ -154,5 +163,15 @@ Player.prototype.removeCardAppearances = function () {
         if (this.allCards.length === 1)
             this.singleCardCounter++;
         return promote;
+    }
+
+    //TODO: calc score
+    calcScore(){
+        this.allCards.forEach(card => {
+            this.score += card.score});
+    }
+
+    getScore(){
+        return this.score;
     }
 }

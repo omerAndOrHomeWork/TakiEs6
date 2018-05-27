@@ -4,7 +4,7 @@ import {getUniqueCss} from './operations'
 export default class SuperTaki extends Card{
 
     constructor(theColor, theSign, theId){
-        super(theColor, theSign, theId);
+        super(theColor, theSign, theId,15);
     }
 
     doOperation(player, lastCard) {

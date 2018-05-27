@@ -3,7 +3,7 @@ import {enumCard} from './enumCard'
 export default class Taki extends Card{
 
     constructor(theColor, theSign, theId){
-        super(theColor, theSign, theId);
+        super(theColor, theSign, theId,15);
     }
 
     doOperation(player) {
