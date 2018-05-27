@@ -70,7 +70,7 @@ export default class CardReact extends React.Component {
 
     onDragStart(ev) {
         let changeColorReact = this.props.pickColorRef.current;
-        if(changeColorReact.props.visible === "visible" && !this.props.isDraggable)
+        if(changeColorReact.props.visible === "visible" || !this.props.isDraggable)
             return false;
         this.draggable = true;
         ev.dataTransfer.setData("Text", this.props.id);
