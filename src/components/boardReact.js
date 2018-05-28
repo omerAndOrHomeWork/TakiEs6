@@ -219,9 +219,10 @@ export default class BoardReact extends React.Component {
 
     eachMassage(msg) {
         return(
-            <p id="massage">{msg}</p>
+            <p key={i}>{msg}</p>
         );
     }
+    //TODO: Omer need to take care on the css
 
     endGameInTournamentRender(){
         return(
@@ -239,9 +240,9 @@ export default class BoardReact extends React.Component {
             return this.gameRender();
         else if(this.props.manager.gameState === "endGame")
             return this.endGameRender();
-        else if(this.props.manager.gameState === "endGameInTournamentRender")
+        else if(this.props.manager.gameState === "endGameInTournament")
             return this.endGameInTournamentRender();
-        else if(this.props.manager.gameState === "endTournamentRender")
+        else if(this.props.manager.gameState === "endTournament")
             return this.endTournamentRender();
     }
 }

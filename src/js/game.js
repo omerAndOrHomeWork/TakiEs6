@@ -155,20 +155,28 @@ export default class Game{
             changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), game.players[1].getAllCards().length);
         };*/
     }
-
-    tournamentGameEnd(massage) {
+  
+/*
         let score = this.players[(this.turn + 1) % this.players.length].getLoserScore();
-        this.players[this.turn].updateTournamentScore();
+        this.players[this.turn].updateTournamentScore(score);
+*/
+    tournamentGameEnd(massage) {
+        this.players[(this.turn + 1) % this.players.length].calcScore();
+        this.players[this.turn].calcScore();
         this.gameNumber++;
         if(this.gameNumber === 3){
-            endTournament(massage);
+            this.endTournament(massage);
         }else
             this.stateManagement.endGameInTournamentRender(massage);
     }
 
-    //TODO: push massages on tournament
     endTournament(massage){
-        this.stateManagement.endTournamentRender(massage);
+        let massages = [];
+        massages.push(massage);
+        massages.push("The winner is:" + this.players[this.turn]);
+        massages.push("Winner's score: " + this.players[this.turn].getScore());
+        massages.push("Loser's score: " + this.players[(this.turn + 1) % this.players.length].getScore());
+        this.stateManagement.endTournament(massages);
     }
 
     prev(){
@@ -194,9 +202,10 @@ export default class Game{
         if(this.tournament)
             this.tournamentGameEnd(newMsg);
         else {
-            if(this.quitMode === undefined)
+            if(this.quitMode === undefined) {
                 this.savesStates.push(this.stateManagement.clone());
-            this.turnIndex = this.savesStates.length - 1;
+                this.turnIndex = this.savesStates.length - 1;
+            }
             // let newMsg = massage + " win!";
             this.endGame = true;
             this.stateManagement.endGame(newMsg);
@@ -343,7 +352,7 @@ export default class Game{
 
         startTournament(){
             this.tournament = true;
-            this.gameNumber = 1;
+            this.gameNumber = 0;
             this.startGame();
         }
 

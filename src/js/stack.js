@@ -20,7 +20,7 @@ let stack = (function () {
     function createDeck() {
        // let stockImage = document.createElement("img");
         //htmlStock = document.createElement("div");
-
+        let score = 1;
        // htmlStock.appendChild(stockImage);
         //stockImage.src = enumCard.images.MANY_CLOSE_CARDS;
         //htmlStock.setAttribute("id", enumCard.dives.STOCK);
@@ -29,13 +29,17 @@ let stack = (function () {
             for (let color = 0; color < colorNumber.length; ++color) {
                 css = getUniqueCss(Object.keys(enumCard.enumColor)[color], twoCardsNumber[number].toString(), '_');
 
-                cards.push(new NumberCard(colorNumber[color], enumCard.enumTypes.NUMBER, id++));
+                cards.push(new NumberCard(colorNumber[color], enumCard.enumTypes.NUMBER, id++, score));
                 cards[cards.length - 1].number = twoCardsNumber[number];
                 cards[cards.length - 1].setElement(css);
 
-                cards.push(new NumberCard(colorNumber[color], enumCard.enumTypes.NUMBER, id++));
+                cards.push(new NumberCard(colorNumber[color], enumCard.enumTypes.NUMBER, id++, score));
                 cards[cards.length - 1].number = twoCardsNumber[number];
                 cards[cards.length - 1].setElement(css);
+            }
+            score++;
+            if(number === 0){
+                score++;
             }
         }
 

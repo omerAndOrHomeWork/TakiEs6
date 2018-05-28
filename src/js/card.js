@@ -2,11 +2,12 @@ import {enumCard} from './enumCard'
 
 export default class Card{
 
-    constructor (theColor, theSign, theId){
+    constructor (theColor, theSign, theId, theScore){
         this.color = theColor;
         this.sign = theSign;
         this.active = false;
         this.id = theId;
+        this.score = theScore;
         this.htmlCard = undefined;
         this.uniqueCardImage = undefined;
         this.closeCardImage = undefined;

@@ -13,6 +13,7 @@ export default class Player{
     constructor(){
         this.allCards = [];
         this.singleCardCounter = 0;
+        this.score = 0;
         this.averageTimePlayed = 0;
         this.turnsPlayedForStatistics = 0;
         this.takiMode = undefined;
@@ -124,7 +125,7 @@ Player.prototype.removeCardAppearances = function () {
     addCards(cardsToAdd) {
         let cardsReact = [];
         cardsToAdd.forEach(card => {
-            this.playerManagement.playersCards[this.playerIndex].push({image: card.uniqueCardImage, id: card.id});
+            this.playerManagement.playersCards[this.playerIndex].push({image: card.uniqueCardImage, id: card.id, score: card.score});
         });
         //this.component.setCards(cardsReact);
         // this.playerManagement.playersCards[this.playerIndex].push(cardsReact);
@@ -165,13 +166,12 @@ Player.prototype.removeCardAppearances = function () {
     }
 
     //TODO: calc score
-    getLoserScore(){
-        let score;
-
-    }
-
-    //TODO: update
-    updateTournamentScore(){
-
+  //    updateTournamentScore(){
+    calcScore(){
+      let score;
+        this.allCards.forEach(card => {
+            score += card.score;
+        });
+      return score;
     }
 }
