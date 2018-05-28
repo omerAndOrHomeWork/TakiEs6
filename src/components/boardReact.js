@@ -121,6 +121,7 @@ export default class BoardReact extends React.Component {
         this.setGame = this.setGame.bind(this);
         this.setTournament = this.setTournament.bind(this);
         this.restart = this.restart.bind(this);
+        this.restartTournament = this.restartTournament.bind(this);
         this.eachMassage = this.eachMassage.bind(this);
         this.next = this.next.bind(this);
         this.prev = this.prev.bind(this);
@@ -141,6 +142,9 @@ export default class BoardReact extends React.Component {
         this.props.manager.setStartTournament(this, this.props.game);
     }
 
+    restartTournament(){
+        this.props.manager.setRestartTournamentStartGame();
+    }
 
     restart(){
         this.props.manager.setRestartStartGame();
@@ -209,15 +213,17 @@ export default class BoardReact extends React.Component {
     endTournamentRender(){
         return(
             <div id = {"endGameMode"}>
+                <div id={"massage"}>
                 {this.props.manager.massage.map(this.eachMassage)}
-                {/*<p id ="massage">{this.props.manager.massage}</p>*/}
-                <button id={"restartGame"} onClick={this.restart}>Restart</button>
+                </div>
+                <button id={"restartGame"} onClick={this.restart}>Start Regular Game</button>
+                <button id={"restartTournament"} onClick={this.restartTournament}>Restart Tournament</button>
                 <button id={"endGame"} onClick={window.close}>Exit Game</button>
             </div>
         );
     }
 
-    eachMassage(msg) {
+    eachMassage(msg,i) {
         return(
             <p key={i}>{msg}</p>
         );
