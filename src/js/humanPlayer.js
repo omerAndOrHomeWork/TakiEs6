@@ -11,8 +11,8 @@ export default class HumanPlayer extends Player{
  //   htmlPlayerDiv = enumCard.dives.PLAYER_CARDS;
 
     
-    constructor(){
-        super();
+    constructor(playerTurn){
+        super("HumanPlayer",playerTurn);
         this.turnsPlayed = 0;
         this.currentTurnTime = 0;
     }

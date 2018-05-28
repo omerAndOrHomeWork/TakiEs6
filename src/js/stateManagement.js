@@ -13,6 +13,7 @@ export default class  StateManagement{
         this.setStartGame = this.setStartGame.bind(this);
         this.setStartTournament = this.setStartTournament.bind(this);
         this.setRestartStartGame = this.setRestartStartGame.bind(this);
+        this.setRestartTournamentStartGame = this.setRestartTournamentStartGame.bind(this);
         this.setQuitGame = this.setQuitGame.bind(this);
 
         // this.handleClick = this.handleClick.bind(this);
@@ -56,6 +57,11 @@ export default class  StateManagement{
         this.massage = massage;
         this.gameState =  "endTournament";
         this.boardReact.changeSate(this.gameState);
+    }
+
+    setRestartTournamentStartGame(){
+        this.game.restartTournamentGame();
+        this.gameState = "gaming";
     }
 
     setRestartStartGame(){

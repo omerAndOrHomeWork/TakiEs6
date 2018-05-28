@@ -10,13 +10,15 @@ export default class Player{
     htmlPlayerDiv;*/
 
     //constructor(theCards,placeHolder)
-    constructor(){
+    constructor(theName,theTurn){
         this.allCards = [];
         this.singleCardCounter = 0;
         this.score = 0;
         this.averageTimePlayed = 0;
         this.turnsPlayedForStatistics = 0;
         this.takiMode = undefined;
+        this.name = theName;
+        this.turn = theTurn;
         //this.htmlPlayerDiv = placeHolder;
     }
 
@@ -168,10 +170,18 @@ Player.prototype.removeCardAppearances = function () {
     //TODO: calc score
   //    updateTournamentScore(){
     calcScore(){
-      let score;
+      let score = 0;
         this.allCards.forEach(card => {
             score += card.score;
         });
       return score;
+    }
+
+    updateTournamentScore(playerScore){
+        this.score += playerScore;
+    }
+
+    getScore(){
+        return this.score;
     }
 }

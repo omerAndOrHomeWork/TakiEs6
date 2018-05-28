@@ -17,7 +17,7 @@ export default class Game{
     constructor(){
         this.gameCards = [];
         this.turn = 0;
-        this.players = [new HumanPlayer(), new SmartComputer()];
+        this.players = [new HumanPlayer(0), new SmartComputer(1)];
         this.amountOfCardsToTakeFromStock = 1;
         this.endGame = false;
         this.tournament = false;
@@ -156,26 +156,29 @@ export default class Game{
         };*/
     }
   
-/*
-        let score = this.players[(this.turn + 1) % this.players.length].getLoserScore();
-        this.players[this.turn].updateTournamentScore(score);
-*/
     tournamentGameEnd(massage) {
-        this.players[(this.turn + 1) % this.players.length].calcScore();
-        this.players[this.turn].calcScore();
+        let score = this.players[(this.turn + 1) % this.players.length].calcScore();
+        this.players[this.turn].updateTournamentScore(score);
         this.gameNumber++;
         if(this.gameNumber === 3){
             this.endTournament(massage);
         }else
-            this.stateManagement.endGameInTournamentRender(massage);
+            this.stateManagement.endGameInTournament(massage);
     }
 
     endTournament(massage){
         let massages = [];
         massages.push(massage);
-        massages.push("The winner is:" + this.players[this.turn]);
-        massages.push("Winner's score: " + this.players[this.turn].getScore());
-        massages.push("Loser's score: " + this.players[(this.turn + 1) % this.players.length].getScore());
+        if(this.players[this.turn].getScore() > this.players[(this.turn + 1) % this.players.length].score) {
+            massages.push("The winner is: " + this.players[this.turn].name);
+            massages.push("Winner's score: " + this.players[this.turn].getScore());
+            massages.push("Loser's score: " + this.players[(this.turn + 1) % this.players.length].getScore());
+        }
+        else{
+            massages.push("The winner is: " + this.players[(this.turn + 1) % this.players.length].name);
+            massages.push("Winner's score: " + this.players[(this.turn + 1) % this.players.length].getScore());
+            massages.push("Loser's score: " + this.players[this.turn].getScore());
+        }
         this.stateManagement.endTournament(massages);
     }
 
@@ -204,8 +207,8 @@ export default class Game{
         else {
             if(this.quitMode === undefined) {
                 this.savesStates.push(this.stateManagement.clone());
-                this.turnIndex = this.savesStates.length - 1;
             }
+            this.turnIndex = this.savesStates.length - 1;
             // let newMsg = massage + " win!";
             this.endGame = true;
             this.stateManagement.endGame(newMsg);
@@ -352,8 +355,17 @@ export default class Game{
 
         startTournament(){
             this.tournament = true;
-            this.gameNumber = 0;
+            this.gameNumber = 2;
             this.startGame();
+        }
+
+        restartTournamentGame(){
+            this.players.forEach(player => {
+                player.score = 0;
+            });
+            this.tournament = true;
+            this.gameNumber = 1;
+            this.restartGame();
         }
 
         restartGame() {
@@ -382,9 +394,16 @@ export default class Game{
         }
 
         quitGame() {
-            this.quitMode = true;
-            this.tournament = false;
-            this.endGameMode("PLAYER quit! COMPUTER");
+            if(this.turn == this.players[0].turn) {
+                this.quitMode = true;
+                if (this.tournament) {
+                    this.turn = (this.turn + 1) % this.players.length;
+                    this.tournamentGameEnd("Player quit! Computer Win!");
+                }
+                else {
+                    this.endGameMode("PLAYER quit! COMPUTER");
+                }
+            }
         }
 
     setManager(stateManagement) {
@@ -406,7 +425,7 @@ export default class Game{
     }
 }
 
-//TODO: ONdRAGsTART OF CARD
+//TODO: ONdRAGsTART OF CARD , clock and onClick quit when the saveStateMode
 //TODO: end the methods, both tournament
 //TODO: end the methods, for scores
 //TODO: handle all restarts pf all games

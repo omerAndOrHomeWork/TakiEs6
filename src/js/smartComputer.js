@@ -10,8 +10,8 @@ export default class SmartComputer extends Player{
 //    let this.turnsPlayedForStatistics = 0;
 //    let this.htmlPlayerDiv = enumCard.dives.COMPUTER_CARDS;
 
-    constructor(){
-        super();
+    constructor(playerTurn){
+        super("ComputerPlayer",playerTurn);
         this.colorsCards = [[], [], [], []];
         this.typesCards = [[], [], [], [], [], [], []];
         this.numberOfPlayers = undefined;
