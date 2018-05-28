@@ -156,6 +156,176 @@ export default class Game{
         };*/
     }
   
+
+
+    setDrop(id){
+        let card = this.players[this.turn].getCard(id);
+        if (card !== undefined) {
+            this.dropValidation(card);
+        }
+    }
+
+    dropValidation(card) {
+        if (takiPermission(this.players[this.turn], card) && card.doValidation(this.gameCards[this.gameCards.length - 1])) {
+            let promote = this.players[this.turn].doOperation(card, this.gameCards[this.gameCards.length - 1]);
+            // document.getElementById(enumCard.dives.OPEN_CARDS).removeChild(this.gameCards[this.gameCards.length - 1].getElement());
+/*            card.setParent(enumCard.dives.OPEN_CARDS, false);
+            card.changeImage(true);*/
+            this.gameCards[this.gameCards.length - 1].setActive(false);
+            this.gameCards.push(card);
+
+            //this.openCardsComponent.setCard({image: card.uniqueCardImage, id: card.id});
+            this.stateManagement.openCard = {image: card.uniqueCardImage, id: card.id};
+
+            this.calcAmountCardsToTake(card);
+            if (this.players[this.turn].getAmountOfCards() === 0 && card.getSign() !== enumCard.enumTypes.PLUS) {
+                this.endGameMode(Object.keys(enumCard.enumPlayer)[this.turn]);
+            }
+            else if (promote !== enumCard.enumResult.CONTINUE_TURN)
+                this.changeTurn(promote);
+            else
+                this.render();
+            //setTimeout(this.computerOperation, 2000);
+            setTimeout(this.computerOperation, 2000);
+        }else{
+            if(!takiPermission(this.players[this.turn], card))
+                this.renderError(enumCard.enumErrors.CARD_NOT_IN_TAKI);
+            else
+                this.renderError(enumCard.enumErrors.CARD_NOT_AUTHORIZED);
+        }
+    }
+
+    refreshStockAndOpenCards() {
+        if (this.gameCards.length === 1) {
+
+            this.endGameMode("TIE! nobody ");
+        } else {
+            let lastCard = this.gameCards.pop();
+            stack.initializeStock(this.gameCards);
+            this.gameCards = undefined;
+            this.gameCards = [];
+            this.gameCards.push(lastCard);
+
+
+            //this.openCardsComponent.setCard({image: lastCard.uniqueCardImage, id: lastCard.id});
+            this.stateManagement.openCard = {image: lastCard.uniqueCardImage, id: lastCard.id};
+            //this.stackComponent.changeImage(stack.getLength());//TODO: take it to react
+            this.stateManagement.stackImage = stack.getStackImage();
+
+        }
+    }
+
+    pullCardValidation(player) {
+        if (player === this.players[this.turn] && player.pullApproval(this.gameCards[this.gameCards.length - 1])) {
+            //this.stackComponent.changeImage(stack.getLength());//TODO: take it to react
+            this.stateManagement.stackImage = stack.getStackImage();
+
+            this.gameCards[this.gameCards.length - 1].setActive(false);
+            player.setTakiMode(undefined);
+            let cardsFromStock = stack.getCards(this.amountOfCardsToTakeFromStock);
+            if (stack.getLength() <= this.amountOfCardsToTakeFromStock) {
+                this.refreshStockAndOpenCards();
+            }
+            this.amountOfCardsToTakeFromStock = 1;
+            player.pullCardFromStock(cardsFromStock);
+            this.changeTurn(enumCard.enumResult.NEXT_TURN);
+            setTimeout(this.computerOperation, 2000);
+        }
+        else{
+            if(player !== this.players[this.turn])
+                this.renderError(enumCard.enumErrors.PULL_CARD_NOT_IN_TURN);
+            else
+                this.renderError(enumCard.enumErrors.PULL_CARD_WITH_AVAILABLE_CARD);
+        }
+    }
+
+    computerOperation() {
+        if (!this.endGame && this.players[this.turn].isComputer()) {
+            if (this.players[this.turn].colorToPick()) {
+                let color = this.players[this.turn].getColor();
+                this.colorPicked(color);
+            } else {
+                let card = this.players[this.turn].pickCard(this.gameCards[this.gameCards.length - 1]);
+                if (card === undefined)
+                    this.pullCardValidation(this.players[this.turn]);
+                else {
+                    this.dropValidation(card);
+                }
+            }
+        }
+    }
+
+    getGameCards() {
+        let allCards = [];
+        takeCards(allCards, this.players[0].getAllCards());
+        takeCards(allCards, this.players[1].getAllCards());
+        takeCards(allCards, this.gameCards);
+        return allCards;
+    }
+
+    initialGameAndStatistics() {
+        this.turn = 0;
+        this.partition();
+        this.gameStatistics = new statistics(this.players);
+        this.gameStatistics.setManager(this.stateManagement);
+        this.gameStatistics.updateStatistics();
+        this.setEventsListener();
+        this.stateManagement.stackImage = stack.getStackImage();
+        this.stateManagement.pickColorVidibility = "hidden";
+        if(!this.tournament) {
+            this.savesStates = [];
+            this.savesStates.push(this.stateManagement.clone());
+        }
+        this.stateManagement.renderGame();
+    }
+
+        startGame() {
+            // document.getElementById("Enter_Game").style.visibility = "hidden";
+            // document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "visible";
+            stack.setGame();
+            this.initialGameAndStatistics();
+            //this.gameStatistics.initialStatisticsTitle();
+            setTimeout(this.computerOperation, 2000);
+        }
+
+        startTournament(){
+            this.tournament = true;
+            this.gameNumber = 0;
+            this.startGame();
+        }
+
+        restartTournamentGame(){
+            this.players.forEach(player => {
+                player.score = 0;
+            });
+            this.tournament = true;
+            this.gameNumber = 0;
+            this.restartGame();
+        }
+
+        restartGame() {
+            this.endGame = false;
+            let allCards;
+            allCards = this.getGameCards();
+            let playerAverageTurnTime = this.players[0].getAverageTimePlayed();
+            let playerTurn = this.players[0].getTurnsPlayed();
+            this.players[0].clear();
+            this.players[1].clear();
+            this.gameCards = undefined;
+ //           this.players = undefined;
+            this.gameCards = [];
+            stack.initializeStock(allCards);
+   //         this.players = [new HumanPlayer(), new SmartComputer()];
+            this.gameStatistics = undefined;
+            this.players[0].setAverageTimePlayed(playerAverageTurnTime);
+            this.players[0].setTurnsPlayed(playerTurn);
+       //     this.players[0].setManager(this.stateManagement, 0);
+         //   this.players[1].setManager(this.stateManagement, 1);
+            this.initialGameAndStatistics();
+            setTimeout(this.computerOperation, 2000);
+        }
+
+
     tournamentGameEnd(massage) {
         let score = this.players[(this.turn + 1) % this.players.length].calcScore();
         this.players[this.turn].updateTournamentScore(score);
@@ -179,6 +349,7 @@ export default class Game{
             massages.push("Winner's score: " + this.players[(this.turn + 1) % this.players.length].getScore());
             massages.push("Loser's score: " + this.players[this.turn].getScore());
         }
+        this.tournament = false;
         this.stateManagement.endTournament(massages);
     }
 
@@ -213,198 +384,20 @@ export default class Game{
             this.endGame = true;
             this.stateManagement.endGame(newMsg);
         }
-        // document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "hidden";
-        // document.getElementById(enumCard.dives.PICK_COLOR).style.visibility = "hidden";
-        // document.getElementById(enumCard.dives.END_GAME_MODE).style.visibility = "visible";
-        // document.getElementById(enumCard.dives.STOCK_AND_OPEN_CARDS).style.visibility = "hidden";
-        // document.getElementById(enumCard.dives.MASSAGE).innerText = massage + " win!";
     }
 
-    setDrop(id){
-        let card = this.players[this.turn].getCard(id);
-        if (card !== undefined) {
-            this.dropValidation(card);
-        }
-    }
-
-    dropValidation(card) {
-        if (takiPermission(this.players[this.turn], card) && card.doValidation(this.gameCards[this.gameCards.length - 1])) {
-            let promote = this.players[this.turn].doOperation(card, this.gameCards[this.gameCards.length - 1]);
-            // document.getElementById(enumCard.dives.OPEN_CARDS).removeChild(this.gameCards[this.gameCards.length - 1].getElement());
-/*            card.setParent(enumCard.dives.OPEN_CARDS, false);
-            card.changeImage(true);*/
-            this.gameCards[this.gameCards.length - 1].setActive(false);
-            this.gameCards.push(card);
-
-            //this.openCardsComponent.setCard({image: card.uniqueCardImage, id: card.id});
-            this.stateManagement.openCard = {image: card.uniqueCardImage, id: card.id};
-
-            this.calcAmountCardsToTake(card);
-            if (this.players[this.turn].getAmountOfCards() === 0 && card.getSign() !== enumCard.enumTypes.PLUS) {
-                this.endGameMode(Object.keys(enumCard.enumPlayer)[this.turn]);
+    quitGame() {
+        if(this.turn === this.players[0].turn) {
+            this.quitMode = true;
+            if (this.tournament) {
+                this.turn = (this.turn + 1) % this.players.length;
+                this.tournamentGameEnd("Player quit! Computer Win!");
             }
-            else if (promote !== enumCard.enumResult.CONTINUE_TURN)
-                this.changeTurn(promote);
-            else
-                this.render();
-            //setTimeout(this.computerOperation, 2000);
-            setTimeout(this.computerOperation, 2000);
-        }
-    }
-
-    refreshStockAndOpenCards() {
-        if (this.gameCards.length === 1) {
-
-            this.endGameMode("TIE! nobody ");
-        } else {
-            let lastCard = this.gameCards.pop();
-            stack.initializeStock(this.gameCards);
-            this.gameCards = undefined;
-            this.gameCards = [];
-            this.gameCards.push(lastCard);
-
-
-            //this.openCardsComponent.setCard({image: lastCard.uniqueCardImage, id: lastCard.id});
-            this.stateManagement.openCard = {image: lastCard.uniqueCardImage, id: lastCard.id};
-            //this.stackComponent.changeImage(stack.getLength());//TODO: take it to react
-            this.stateManagement.stackImage = stack.getStackImage();
-
-        }
-    }
-
-    pullCardValidation(player) {
-        if (player === this.players[this.turn] && player.pullApproval(this.gameCards[this.gameCards.length - 1])) {
-
-            //this.stackComponent.changeImage(stack.getLength());//TODO: take it to react
-            this.stateManagement.stackImage = stack.getStackImage();
-
-            this.gameCards[this.gameCards.length - 1].setActive(false);
-            player.setTakiMode(undefined);
-            let cardsFromStock = stack.getCards(this.amountOfCardsToTakeFromStock);
-            if (stack.getLength() <= this.amountOfCardsToTakeFromStock) {
-                this.refreshStockAndOpenCards();
-            }
-            this.amountOfCardsToTakeFromStock = 1;
-            player.pullCardFromStock(cardsFromStock);
-            this.changeTurn(enumCard.enumResult.NEXT_TURN);
-            setTimeout(this.computerOperation, 2000);
-        }
-    }
-
-    computerOperation() {
-        if (!this.endGame && this.players[this.turn].isComputer()) {
-            if (this.players[this.turn].colorToPick()) {
-                let color = this.players[this.turn].getColor();
-                this.colorPicked(color);
-            } else {
-                let card = this.players[this.turn].pickCard(this.gameCards[this.gameCards.length - 1]);
-                if (card === undefined)
-                    this.pullCardValidation(this.players[this.turn]);
-                else {
-                    this.dropValidation(card);
-                }
+            else {
+                this.endGameMode("PLAYER quit! COMPUTER");
             }
         }
     }
-
-    removeHTMLElements() {
-/*        removeAllCards(enumCard.dives.COMPUTER_CARDS);
-        removeAllCards(enumCard.dives.PLAYER_CARDS);
-        removeAllCards(enumCard.dives.OPEN_CARDS);
-        removeAllCards(enumCard.dives.STATISTICS);*/
-    }
-
-    resetDivsAttributes() {
-/*        document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "visible";
-        document.getElementById(enumCard.dives.END_GAME_MODE).style.visibility = "hidden";
-        document.getElementById(enumCard.dives.STOCK_AND_OPEN_CARDS).style.visibility = "visible";
-        document.getElementById(enumCard.dives.MASSAGE).innerText = '';*/
-    }
-
-    getGameCards() {
-        let allCards = [];
-        takeCards(allCards, this.players[0].getAllCards());
-        takeCards(allCards, this.players[1].getAllCards());
-        takeCards(allCards, this.gameCards);
-        return allCards;
-    }
-
-    initialGameAndStatistics() {
-        this.turn = 0;
-        this.partition();
-        this.gameStatistics = new statistics(this.players);
-        this.gameStatistics.setManager(this.stateManagement);
-        this.gameStatistics.updateStatistics();
-        this.setEventsListener();
-        this.stateManagement.stackImage = stack.getStackImage();
-        this.stateManagement.renderGame();
-        if(!this.tournament) {
-            this.savesStates = [];
-            this.savesStates.push(this.stateManagement.clone());
-        }
-    }
-
-        startGame() {
-            // document.getElementById("Enter_Game").style.visibility = "hidden";
-            // document.getElementById(enumCard.dives.QUIT_GAME).style.visibility = "visible";
-            stack.setGame();
-            this.initialGameAndStatistics();
-            //this.gameStatistics.initialStatisticsTitle();
-            setTimeout(this.computerOperation, 2000);
-        }
-
-        startTournament(){
-            this.tournament = true;
-            this.gameNumber = 2;
-            this.startGame();
-        }
-
-        restartTournamentGame(){
-            this.players.forEach(player => {
-                player.score = 0;
-            });
-            this.tournament = true;
-            this.gameNumber = 1;
-            this.restartGame();
-        }
-
-        restartGame() {
-            event.preventDefault();
-            this.endGame = false;
-            this.removeHTMLElements();
-            this.resetDivsAttributes();
-            let allCards;
-            allCards = this.getGameCards();
-            let playerAverageTurnTime = this.players[0].getAverageTimePlayed();
-            let playerTurn = this.players[0].getTurnsPlayed();
-            this.players[0].clear();
-            this.players[1].clear();
-            this.gameCards = undefined;
- //           this.players = undefined;
-            this.gameCards = [];
-            stack.initializeStock(allCards);
-   //         this.players = [new HumanPlayer(), new SmartComputer()];
-            this.gameStatistics = undefined;
-            this.players[0].setAverageTimePlayed(playerAverageTurnTime);
-            this.players[0].setTurnsPlayed(playerTurn);
-       //     this.players[0].setManager(this.stateManagement, 0);
-         //   this.players[1].setManager(this.stateManagement, 1);
-            this.initialGameAndStatistics();
-            setTimeout(this.computerOperation, 2000);
-        }
-
-        quitGame() {
-            if(this.turn == this.players[0].turn) {
-                this.quitMode = true;
-                if (this.tournament) {
-                    this.turn = (this.turn + 1) % this.players.length;
-                    this.tournamentGameEnd("Player quit! Computer Win!");
-                }
-                else {
-                    this.endGameMode("PLAYER quit! COMPUTER");
-                }
-            }
-        }
 
     setManager(stateManagement) {
         this.stateManagement = stateManagement;
@@ -419,12 +412,19 @@ export default class Game{
     }
 
     render() {
+        this.stateManagement.error = undefined;
         if(!this.tournament)
             this.savesStates.push(this.stateManagement.clone());
         this.stateManagement.renderGame();
     }
+
+    renderError(error){
+        this.stateManagement.error = error;
+        this.stateManagement.renderGame();
+    }
 }
 
+//TODO: quit game in tournament, decide on the screen to render
 //TODO: ONdRAGsTART OF CARD , clock and onClick quit when the saveStateMode
 //TODO: end the methods, both tournament
 //TODO: end the methods, for scores

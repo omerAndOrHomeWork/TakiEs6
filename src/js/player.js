@@ -127,7 +127,7 @@ Player.prototype.removeCardAppearances = function () {
     addCards(cardsToAdd) {
         let cardsReact = [];
         cardsToAdd.forEach(card => {
-            this.playerManagement.playersCards[this.playerIndex].push({image: card.uniqueCardImage, id: card.id, score: card.score});
+            this.playerManagement.playersCards[this.playerIndex].push({image: card.uniqueCardImage, id: card.id});
         });
         //this.component.setCards(cardsReact);
         // this.playerManagement.playersCards[this.playerIndex].push(cardsReact);
