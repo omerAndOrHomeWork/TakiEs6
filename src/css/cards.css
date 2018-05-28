@@ -123,10 +123,19 @@ img{
 
 #massage{
     position: absolute;
-    top: 40%;
+    top: 47%;
     left: 45%;
     font-weight: bold;
     font-size:30px;
+}
+
+#restartTournament{
+    position: absolute;
+    font-size: 15px;
+    background: #32CD32;
+    color: white;
+    top: 27%;
+    left: 25%;
 }
 
 #restartGame{
@@ -134,7 +143,7 @@ img{
     font-size: 15px;
     background: #32CD32;
     color: white;
-    top: 35%;
+    top: 27%;
     left: 40%;
 }
 
@@ -143,6 +152,6 @@ img{
     font-size: 15px;
     background: #32CD32;
     color: white;
-    top:35%;
+    top:27%;
     left: 55%;
 }
