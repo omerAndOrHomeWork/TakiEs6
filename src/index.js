@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 // import "./css/style.css";
 import BoardComponent from './components/boardReact';
 import Game from "./js/game";
-import StateManagement from "./js/stateMAnagement";
+import StateManagement from "./js/stateManagement";
 
 
 /* Directly adding react element */

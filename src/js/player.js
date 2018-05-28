@@ -166,12 +166,12 @@ Player.prototype.removeCardAppearances = function () {
     }
 
     //TODO: calc score
+  //    updateTournamentScore(){
     calcScore(){
+      let score;
         this.allCards.forEach(card => {
-            this.score += card.score});
-    }
-
-    getScore(){
-        return this.score;
+            score += card.score;
+        });
+      return score;
     }
 }

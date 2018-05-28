@@ -155,7 +155,11 @@ export default class Game{
             changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), game.players[1].getAllCards().length);
         };*/
     }
-
+  
+/*
+        let score = this.players[(this.turn + 1) % this.players.length].getLoserScore();
+        this.players[this.turn].updateTournamentScore(score);
+*/
     tournamentGameEnd(massage) {
         this.players[(this.turn + 1) % this.players.length].calcScore();
         this.players[this.turn].calcScore();
