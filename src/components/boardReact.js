@@ -163,11 +163,12 @@ export default class BoardReact extends React.Component {
     gameRender(){
         return(
             <div className="container-fluid">
+                <p id ="massage">{this.props.manager.error}</p>
                 <div><button id="Quit_Game" type="button" style={{visibility : "visible"}} onClick={this.props.manager.setQuitGame}>Quit Game</button></div>
                 <Statistics msg= {this.props.manager.statisticsMassages}/>
                 <OpenCards card =  {this.props.manager.openCard} open = {true} game = {this.props.game}/>
-                <CardsHolder cards = {this.props.manager.playersCards[0]} pickColorRef = {this.pickColorHolder} isDraggable = {true} open = {true} cssId = "playerCards" />
-                <CardsHolder cards = {this.props.manager.playersCards[1]} pickColorRef = {this.pickColorHolder} isDraggable = {false} open = {true} cssId = "computerCards" />
+                <CardsHolder game = {this.props.game} cards = {this.props.manager.playersCards[0]} pickColorRef = {this.pickColorHolder} isDraggable = {true} open = {true} cssId = "playerCards" />
+                <CardsHolder game = {this.props.game} cards = {this.props.manager.playersCards[1]} pickColorRef = {this.pickColorHolder} isDraggable = {false} open = {true} cssId = "computerCards" />
                 <PickColor interactive = {true} visible = {this.props.manager.pickColorVidibility} ref= {this.pickColorHolder} game = {this.props.game}/>
                 <Stack  interactive = {true} img = {this.props.manager.stackImage} pickColorRef = {this.pickColorHolder} game = {this.props.game}/>
             </div>
@@ -179,11 +180,11 @@ export default class BoardReact extends React.Component {
             <div>
                 <div id = {"endGameMode"}>
                     <p id ="massage">{this.props.manager.massage}</p>
-                    <button id={"restartGame"} onClick={this.restart}>Restart Game</button>
+                    <button id={"restartGame"} onClick={this.restart}>Restart Regular Game</button>
+                    <button id={"restartTournament"} onClick={this.restartTournament}>Start Tournament</button>
                     <button id={"endGame"} onClick={window.close}>Exit Game</button>
                 </div>
                 <div className="container-fluid">
-                    <div><button id="Quit_Game" type="button" style={{visibility : "visible"}} onClick={this.props.manager.setQuitGame}>Quit Game</button></div>
                     <Statistics msg= {this.props.manager.statisticsMassages}/>
                     <OpenCards card =  {this.props.manager.openCard} open = {true} game = {this.props.game}/>
                     <CardsHolder cards = {this.props.manager.playersCards[0]} pickColorRef = {this.pickColorHolder} isDraggable = {false} open = {true} cssId = "playerCards" />
@@ -193,8 +194,8 @@ export default class BoardReact extends React.Component {
                 </div>
                 <div>
                     <p id ="massage">{this.props.manager.error}</p>
-                    <button id={"next"} onClick={this.next}>this.next</button>
-                    <button id={"prev"} onClick={this.prev}>this.prev</button>
+                    <button id={"next"} onClick={this.next}>Next</button>
+                    <button id={"prev"} onClick={this.prev}>Prev</button>
                 </div>
             </div>
         );

@@ -40,7 +40,18 @@ const enumCard = (function () {
         enumResult: Object.freeze({
             EXTRA_TURN: 0, NEXT_TURN: 1, JUMP_TURN: 2,
             CONTINUE_TURN: 3
+        }),
+
+        enumErrors: Object.freeze({
+            PULL_CARD_NOT_IN_TURN:"you need to wait for your turn",
+            PULL_CARD_WITH_AVAILABLE_CARD: "you have available card in your hand",
+            DRAG_CARD_WITH_CHANGE_COLOR_PICK: "you cant drag card while you need to pick color",
+            DRAG_CARD_IN_OTHER_HAND: "you cant drag card of other player",
+            CARD_NOT_IN_TAKI: "you cant put card in taki move, that not fit with the taki",
+            CARD_NOT_AUTHORIZED: "the card not authorize to put in stack"
         })
+
+
     }
 })();
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CloseCard from './../Images/other/close_card.png'
+import {enumCard} from './../js/enumCard'
 
 export default class CardReact extends React.Component {
 
@@ -70,8 +71,13 @@ export default class CardReact extends React.Component {
 
     onDragStart(ev) {
         let changeColorReact = this.props.pickColorRef.current;
-        if(changeColorReact.props.visible === "visible" || !this.props.isDraggable)
+        if(changeColorReact.props.visible === "visible" || !this.props.isDraggable){
+            if(changeColorReact.props.visible === "visible" && !this.props.isDraggable)
+                this.props.game.renderError(enumCard.enumErrors.DRAG_CARD_WITH_CHANGE_COLOR_PICK);
+            else
+                this.props.game.renderError(enumCard.enumErrors.DRAG_CARD_IN_OTHER_HAND);
             return false;
+        }
         this.draggable = true;
         ev.dataTransfer.setData("Text", this.props.id);
     }

@@ -9,7 +9,7 @@ export default class  StateManagement{
         this.statisticsMassages = undefined;
         this.gameState =  "start";
         this.massage = [];
-        this.errors = undefined;
+        this.error = undefined;
         this.setStartGame = this.setStartGame.bind(this);
         this.setStartTournament = this.setStartTournament.bind(this);
         this.setRestartStartGame = this.setRestartStartGame.bind(this);
@@ -94,7 +94,7 @@ export default class  StateManagement{
         cloneState.statisticsMassages = this.statisticsMassages;
         cloneState.gameState =  "endGame";
         cloneState.massage = this.massage;
-        cloneState.errors = this.errors;
+        cloneState.error = this.error;
         cloneState.game = this.game;
         cloneState.boardReact = this.boardReact;
         return cloneState;
@@ -109,7 +109,7 @@ export default class  StateManagement{
         this.statisticsMassages = state.statisticsMassages;
         // this.gameState =  "endGame";
         this.massage = state.massage;
-        this.errors = state.errors;
+        this.error = state.error;
         // this.game = state.game;
         // this.boardReact = state.boardReact;
     }
