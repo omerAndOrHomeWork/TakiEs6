@@ -3,24 +3,13 @@ import {enumCard} from './enumCard'
 import {setCards} from './operations'
 
 export default class HumanPlayer extends Player{
- //   allCards = [];
-  //  averageTimePlayed = 0;
-  //  turnsPlayed = 0;
-  //  singleCardCounter = 0;
- //   takiMode = undefined;
- //   htmlPlayerDiv = enumCard.dives.PLAYER_CARDS;
-
-    
     constructor(playerTurn){
         super("HumanPlayer",playerTurn);
         this.turnsPlayed = 0;
         this.currentTurnTime = 0;
     }
 
-
-    
-    
-        removeCard(card) {
+    removeCard(card) {
         for (let i = 0; i < this.allCards.length; ++i) {
             if (this.allCards[i] === card) {
                 this.allCards.splice(i, 1);
@@ -50,7 +39,6 @@ export default class HumanPlayer extends Player{
         this.allCards = theCards;
         setInterval(this.calcCurrentTurn.bind(this),1000);
         super.setCardsPlace();
-
     }
 
     setTurnsPlayed(currentTurnsPlayed){
@@ -64,31 +52,12 @@ export default class HumanPlayer extends Player{
 
     doOperation(card, lastCard){
         this.removeCard(card);
+        if (card.sign !== enumCard.enumTypes.TWO_PLUS)
+            this.playerManagement.direction = card.direction;
+        else
+            this.playerManagement.direction = undefined;
         return super.doOperation(card, lastCard);
-
     }
-
-
-/*        doOperation: function (card, lastCard) {
-        removeCard(allCards, card);
-        changeMerging(document.getElementById(enumCard.dives.PLAYER_CARDS), allCards.length);
-        let promote = card.doOperation(this, lastCard);
-        if (takiMode !== undefined) {
-            if(takiModeChecker(allCards, takiMode)) {
-                promote = enumCard.enumResult.CONTINUE_TURN;
-                card.setActive(false);
-            }
-            else{
-                takiMode = undefined;
-                if(promote === enumCard.enumResult.CONTINUE_TURN)
-                    promote = enumCard.enumResult.NEXT_TURN;
-            }
-        }
-
-        if (allCards.length === 1)
-            singleCardCounter++;
-        return promote;
-    },*/
 
     pullCardFromStock(cardsToSet) {
         setCards(this.allCards, cardsToSet);
@@ -111,17 +80,7 @@ export default class HumanPlayer extends Player{
     }
 
     pickColor() {
-        // pickColorId.style.visibility = "visible";
-        // let pickColorId = document.getElementById(enumCard.dives.PICK_COLOR);
-
-
-        //this.pickColorComponent.setToVisible();
         this.playerManagement.pickColorVidibility = "visible";
-
         return enumCard.enumResult.CONTINUE_TURN;
-    }
-
-    setPickColorComponent(pickColorHolder) {
-        this.pickColorComponent = pickColorHolder;
     }
 }
