@@ -8,8 +8,9 @@ export default class  StateManagement{
         this.stackImage = undefined;
         this.statisticsMassages = undefined;
         this.gameState =  "start";
-        this.massage = [];
+        this.message = [];
         this.error = undefined;
+        this.direction = undefined;
         this.setStartGame = this.setStartGame.bind(this);
         this.setStartTournament = this.setStartTournament.bind(this);
         this.setRestartStartGame = this.setRestartStartGame.bind(this);
@@ -41,20 +42,20 @@ export default class  StateManagement{
         this.boardReact.changeSate(this.gameState);
     }
 
-    endGame(massage){
-        this.massage = massage;
+    endGame(message){
+        this.message = message;
         this.gameState =  "endGame";
         this.boardReact.changeSate(this.gameState);
     }
 
-    endGameInTournament(massage){
-        this.massage = massage;
+    endGameInTournament(message){
+        this.message = message;
         this.gameState =  "endGameInTournament";
         this.boardReact.changeSate(this.gameState);
     }
 
-    endTournament(massage){
-        this.massage = massage;
+    endTournament(message){
+        this.message = message;
         this.gameState =  "endTournament";
         this.boardReact.changeSate(this.gameState);
     }
@@ -93,7 +94,7 @@ export default class  StateManagement{
         cloneState.stackImage = this.stackImage;
         cloneState.statisticsMassages = this.statisticsMassages;
         cloneState.gameState =  "endGame";
-        cloneState.massage = this.massage;
+        cloneState.message = this.message;
         cloneState.error = this.error;
         cloneState.game = this.game;
         cloneState.boardReact = this.boardReact;
@@ -108,7 +109,7 @@ export default class  StateManagement{
         this.stackImage = state.stackImage;
         this.statisticsMassages = state.statisticsMassages;
         // this.gameState =  "endGame";
-        this.massage = state.massage;
+        this.message = state.message;
         this.error = state.error;
         // this.game = state.game;
         // this.boardReact = state.boardReact;

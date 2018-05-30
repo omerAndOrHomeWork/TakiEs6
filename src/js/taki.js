@@ -4,6 +4,7 @@ export default class Taki extends Card{
 
     constructor(theColor, theSign, theId){
         super(theColor, theSign, theId,15);
+        this.direction = enumCard.enumActionDirection.TAKI;
     }
 
     doOperation(player) {

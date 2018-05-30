@@ -3,13 +3,6 @@ import {enumCard} from './enumCard'
 
 export default class SmartComputer extends Player{
 
-  //  let this.allCards = [];
-//    let this.takiMode = undefined;
-
- //   let this.singleCardCounter = 0;
-//    let this.turnsPlayedForStatistics = 0;
-//    let this.htmlPlayerDiv = enumCard.dives.COMPUTER_CARDS;
-
     constructor(playerTurn){
         super("ComputerPlayer",playerTurn);
         this.colorsCards = [[], [], [], []];
@@ -95,7 +88,6 @@ export default class SmartComputer extends Player{
     }
 
     cardNumberInDifferentColor(lastGameCard) {
-        //let cards = [];
         for(let i = 0; i < this.typesCards[enumCard.enumTypes.NUMBER].length; ++i){
             let numberCard = this.typesCards[enumCard.enumTypes.NUMBER][i];
             if(numberCard.getColor() !== lastGameCard.getColor() && numberCard.number === lastGameCard.number)
@@ -340,8 +332,6 @@ export default class SmartComputer extends Player{
                 this.insertColor(cardsToAdd[i]);
             this.insertType(cardsToAdd[i]);
             this.allCards.push(cardsToAdd[i]);
-/*            cardsToAdd[i].setParent(enumCard.dives.COMPUTER_CARDS, false);
-            cardsToAdd[i].changeImage(false);*/
         }
         super.addCards(cardsToAdd);
     }
@@ -444,7 +434,6 @@ export default class SmartComputer extends Player{
         if(color !== undefined)
             return color;
         return enumCard.enumColor.YELLOW;
-
     }
 
     clear(){
@@ -480,28 +469,12 @@ export default class SmartComputer extends Player{
 
     doOperation(card, lastCard){
         this.removeAllCardAppearances(card);
+        if (card.sign !== enumCard.enumTypes.TWO_PLUS)
+            this.playerManagement.direction = undefined;
+        else
+            this.playerManagement.direction = card.direction;
         return super.doOperation(card, lastCard);
     }
-
-/*        doOperation: function(card, lastCard) {
-            removeAllCardAppearances(card);
-            changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), this.allCards.length);
-            let promote = card.doOperation(this, lastCard);
-            if (this.takiMode !== undefined) {
-                if(takiModeChecker(this.allCards, this.takiMode)) {
-                    promote = enumCard.enumResult.CONTINUE_TURN;
-                    card.setActive(false);
-                }
-                else{
-                    this.takiMode = undefined;
-                    if(promote === enumCard.enumResult.CONTINUE_TURN)
-                        promote = enumCard.enumResult.NEXT_TURN;
-                }
-            }
-            if (this.allCards.length === 1)
-                this.singleCardCounter++;
-            return promote;
-        },*/
 
     isComputer() {
         return true;
@@ -524,5 +497,4 @@ export default class SmartComputer extends Player{
     colorToPick() {
         return this.pickedColor;
     }
-
 }
