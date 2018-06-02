@@ -132,12 +132,6 @@ export default class Game{
             else
                 this.renderError(enumCard.enumErrors.PULL_CARD_WITH_AVAILABLE_CARD);
         }
-        else{
-            if(player !== this.players[this.turn])
-                this.renderError(enumCard.enumErrors.PULL_CARD_NOT_IN_TURN);
-            else
-                this.renderError(enumCard.enumErrors.PULL_CARD_WITH_AVAILABLE_CARD);
-        }
     }
 
     computerOperation() {
@@ -314,8 +308,8 @@ export default class Game{
     }
 
     animationCardEnd(){
-        this.stateManagement.stackCards.slice(0, 1);
-        if(this.stateManagement.stackCards.length === 0)
+        this.stateManagement.stackCards.splice(0, 1);
+        if(this.stateManagement.stackCards.length === 0 && !this.stateManagement.renderAnimationEnd)
             this.renderAnimation();
     }
 
@@ -326,6 +320,7 @@ export default class Game{
         //after adding new cards to stack
         if(!this.tournament)
             this.savesStates.push(this.stateManagement.clone());
+        this.stateManagement.renderAnimationEnd = true;
         this.stateManagement.renderGame();
     }
 
