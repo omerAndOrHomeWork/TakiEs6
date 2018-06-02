@@ -77,16 +77,37 @@ export default class Player{
         return this.averageTimePlayed;
     }
 
-    setCardsPlace(){
+    setCardsPlace(humanAnimation){
         this.playerManagement.playersCards[this.playerIndex] = [];
-        this.addCards(this.allCards);
+        this.addCards(this.allCards, humanAnimation);
     }
 
-    addCards(cardsToAdd) {
+    addCards(cardsToAdd, humanAnimation) {
         let cardsReact = [];
+       // this.playerManagement.stackCards = cardsToAdd;
+      //  this.playerManagement.humanAnimation = humanAnimation;
+      //  this.playerManagement.renderGame();
+      //   this.playerManagement.stackCards += cardsToAdd.length;
+        //this.playerManagement.humanAnimation = humanAnimation;
         cardsToAdd.forEach(card => {
+            this.playerManagement.stackCards.push({humanAnimation: humanAnimation, id: card.id});
+        });
+
+
+        this.saveCardsToAdd = cardsToAdd;
+    /*    cardsToAdd.forEach(card => {
             this.playerManagement.playersCards[this.playerIndex].push({image: card.uniqueCardImage, id: card.id});
         });
+    */
+    }
+
+    updateCardsToAdd() {
+        if(this.saveCardsToAdd !== undefined){
+            this.saveCardsToAdd.forEach(card => {
+                this.playerManagement.playersCards[this.playerIndex].push({image: card.uniqueCardImage, id: card.id});
+            });
+            this.saveCardsToAdd = undefined;
+        }
     }
 
     getSingleCardCounter(){

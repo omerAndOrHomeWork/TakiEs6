@@ -333,7 +333,7 @@ export default class SmartComputer extends Player{
             this.insertType(cardsToAdd[i]);
             this.allCards.push(cardsToAdd[i]);
         }
-        super.addCards(cardsToAdd);
+        super.addCards(cardsToAdd, false);
     }
 
     takiWithConnection() {
@@ -448,7 +448,7 @@ export default class SmartComputer extends Player{
     setCards(cards, playersAmount){
         this.numberOfPlayers = playersAmount;
         this.setAllCards(cards);
-        super.setCardsPlace();
+        super.setCardsPlace(false);
     }
 
     pullCardFromStock(cardsToAdd){

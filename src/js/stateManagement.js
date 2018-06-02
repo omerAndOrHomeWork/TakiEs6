@@ -8,6 +8,9 @@ export default class  StateManagement{
         this.stackImage = undefined;
         this.statisticsMassages = undefined;
         this.gameState =  "start";
+        this.openCardAnm = false;
+        this.stackCards = [];
+        // this.humanAnimation = undefined;
         this.message = [];
         this.error = undefined;
         this.direction = undefined;
@@ -89,6 +92,14 @@ export default class  StateManagement{
         cloneState.playersCards = [];
         cloneState.playersCards[0] = this.playersCards[0];
         cloneState.playersCards[1] = this.playersCards[1];
+        cloneState.playersCards[0].forEach(c => {
+            c.anm = undefined;
+            c.humanAnimation = undefined;
+        });
+        cloneState.playersCards[1].forEach(c => {
+            c.anm = undefined;
+            c.humanAnimation = undefined;
+        });
         cloneState.pickColorVidibility = this.pickColorVidibility;
         cloneState.openCard = this.openCard;
         cloneState.stackImage = this.stackImage;

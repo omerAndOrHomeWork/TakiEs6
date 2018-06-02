@@ -38,7 +38,7 @@ export default class HumanPlayer extends Player{
     setCards(theCards) {
         this.allCards = theCards;
         setInterval(this.calcCurrentTurn.bind(this),1000);
-        super.setCardsPlace();
+        super.setCardsPlace(true);
     }
 
     setTurnsPlayed(currentTurnsPlayed){
@@ -61,7 +61,7 @@ export default class HumanPlayer extends Player{
 
     pullCardFromStock(cardsToSet) {
         setCards(this.allCards, cardsToSet);
-        super.addCards(cardsToSet);
+        super.addCards(cardsToSet,true);
     }
 
 

@@ -19,13 +19,13 @@ export default class Game{
         this.next = this.next.bind(this);
     }
     
-    changeTurn(promote) {
+    changeTurn(promote, dropAnm) {
         this.players[this.turn].increasePlayerTurns();
         this.players[this.turn].calculateAVG();
         this.players[this.turn].resetPlayerClock();
         this.turn = (this.turn + promote) % this.players.length;
-        this.gameStatistics.updateStatistics();
-        this.render();
+        this.gameStatistics.updateStatistics(this.turn);
+        this.render(dropAnm);
     }
 
     calcAmountCardsToTake(card) {
@@ -47,14 +47,15 @@ export default class Game{
 
     colorPicked(pickedColor) {
         this.stateManagement.direction = undefined;
+        this.stateManagement.openCardAnm = false;
         this.stateManagement.pickColorVidibility = "hidden";
         this.gameCards[this.gameCards.length - 1].setColor(pickedColor);
         this.gameCards[this.gameCards.length - 1].setImage(getUniqueCss(Object.keys(enumCard.enumColor)[pickedColor],
             Object.keys(enumCard.enumTypes)[enumCard.enumTypes.CHANGE_COLOR], '_'));
         this.stateManagement.openCard =
             {image: this.gameCards[this.gameCards.length - 1].uniqueCardImage, id: this.gameCards[this.gameCards.length - 1].id};
-        this.changeTurn(enumCard.enumResult.NEXT_TURN);
-        setTimeout(this.computerOperation, 2000);
+        this.changeTurn(enumCard.enumResult.NEXT_TURN, false);
+        setTimeout(this.computerOperation, 2200);
     }
 
     setDrop(id){
@@ -73,13 +74,18 @@ export default class Game{
             this.calcAmountCardsToTake(card);
             if (this.players[this.turn].getAmountOfCards() === 0 && card.getSign() !== enumCard.enumTypes.PLUS) {
                 this.endGameMode(Object.keys(enumCard.enumPlayer)[this.turn]);
+            }else {
+              //  this.stateManagement.pullCardAnimation = false;
+                this.stateManagement.openCardAnm = true;
+                if (promote !== enumCard.enumResult.CONTINUE_TURN)
+                    this.changeTurn(promote, true);
+                else{
+                    this.render(true);
+                }
             }
-            else if (promote !== enumCard.enumResult.CONTINUE_TURN)
-                this.changeTurn(promote);
-            else
-                this.render();
-            setTimeout(this.computerOperation, 2000);
+            setTimeout(this.computerOperation, 2200);
         }else{
+            this.stateManagement.openCardAnm = false;
             if(!takiPermission(this.players[this.turn], card))
                 this.renderError(enumCard.enumErrors.CARD_NOT_IN_TAKI);
             else
@@ -104,8 +110,10 @@ export default class Game{
 
     pullCardValidation(player) {
         this.stateManagement.direction = undefined;
+        this.stateManagement.openCardAnm = false;
         if (player === this.players[this.turn] && player.pullApproval(this.gameCards[this.gameCards.length - 1])) {
             this.stateManagement.stackImage = stack.getStackImage();
+            this.stateManagement.pullCardAnimation = true;
             this.gameCards[this.gameCards.length - 1].setActive(false);
             player.setTakiMode(undefined);
             let cardsFromStock = stack.getCards(this.amountOfCardsToTakeFromStock);
@@ -113,9 +121,16 @@ export default class Game{
                 this.refreshStockAndOpenCards();
             }
             this.amountOfCardsToTakeFromStock = 1;
+            this.stateManagement.pullCardAnimation = true;
             player.pullCardFromStock(cardsFromStock);
-            this.changeTurn(enumCard.enumResult.NEXT_TURN);
-            setTimeout(this.computerOperation, 2000);
+            this.changeTurn(enumCard.enumResult.NEXT_TURN, false);
+            setTimeout(this.computerOperation, 2200);
+        }
+        else{
+            if(player !== this.players[this.turn])
+                this.renderError(enumCard.enumErrors.PULL_CARD_NOT_IN_TURN);
+            else
+                this.renderError(enumCard.enumErrors.PULL_CARD_WITH_AVAILABLE_CARD);
         }
         else{
             if(player !== this.players[this.turn])
@@ -127,6 +142,7 @@ export default class Game{
 
     computerOperation() {
         if (!this.endGame && this.players[this.turn].isComputer()) {
+            this.stateManagement.openCardAnm = true;
             if (this.players[this.turn].colorToPick()) {
                 let color = this.players[this.turn].getColor();
                 this.colorPicked(color);
@@ -154,7 +170,7 @@ export default class Game{
         this.partition();
         this.gameStatistics = new statistics(this.players);
         this.gameStatistics.setManager(this.stateManagement);
-        this.gameStatistics.updateStatistics();
+        this.gameStatistics.updateStatistics(0);
         this.stateManagement.stackImage = stack.getStackImage();
         this.stateManagement.pickColorVidibility = "hidden";
         if(!this.tournament) {
@@ -167,7 +183,7 @@ export default class Game{
     startGame() {
         stack.setGame();
         this.initialGameAndStatistics();
-        setTimeout(this.computerOperation, 2000);
+        setTimeout(this.computerOperation, 2200);
     }
 
     startTournament(){
@@ -177,15 +193,18 @@ export default class Game{
     }
 
     restartTournamentGame(){
+        this.stateManagement.openCardAnm = false;
         this.players.forEach(player => {
             player.score = 0;
         });
         this.tournament = true;
         this.gameNumber = 0;
+        this.renderError();
         this.restartGame();
     }
 
     restartGame() {
+        this.stateManagement.openCardAnm = false;
         this.endGame = false;
         let allCards;
         allCards = this.getGameCards();
@@ -199,8 +218,9 @@ export default class Game{
         this.gameStatistics = undefined;
         this.players[0].setAverageTimePlayed(playerAverageTurnTime);
         this.players[0].setTurnsPlayed(playerTurn);
+        this.renderError();
         this.initialGameAndStatistics();
-        setTimeout(this.computerOperation, 2000);
+        setTimeout(this.computerOperation, 2200);
     }
 
 
@@ -285,14 +305,32 @@ export default class Game{
         this.players[1].setManager(stateManagement, 1);
     }
 
-    render() {
+    render(dropAnm) {
+        this.stateManagement.openCardAnm = dropAnm;
         this.stateManagement.error = undefined;
+        if(!this.tournament && this.stateManagement.stackCards.length === 0)
+            this.savesStates.push(this.stateManagement.clone());
+        this.stateManagement.renderGame();
+    }
+
+    animationCardEnd(){
+        this.stateManagement.stackCards.slice(0, 1);
+        if(this.stateManagement.stackCards.length === 0)
+            this.renderAnimation();
+    }
+
+    renderAnimation(){
+       // this.stateManagement.stackCards = 0;
+       //  this.stateManagement.humanAnimation = undefined;
+        this.players.forEach(p => p.updateCardsToAdd());
+        //after adding new cards to stack
         if(!this.tournament)
             this.savesStates.push(this.stateManagement.clone());
         this.stateManagement.renderGame();
     }
 
     renderError(error){
+        this.stateManagement.openCardAnm = false;
         this.stateManagement.error = error;
         this.stateManagement.direction = undefined;
         this.stateManagement.renderGame();

@@ -57,16 +57,16 @@ export default class BoardReact extends React.Component {
     gameRender(){
         return(
             <div className="container-fluid">
-                <p id ="message">{this.props.manager.error}</p>
-                <p id ="message">{this.props.manager.direction}</p>
+                <p id ="errors">{this.props.manager.error}</p>
+                <p id ="directions">{this.props.manager.direction}</p>
                 {<Clock/>}
                 <div><button id="Quit_Game" type="button" style={{visibility : "visible"}} onClick={this.props.manager.setQuitGame}>Quit Game</button></div>
                 <Statistics msg= {this.props.manager.statisticsMassages}/>
-                <OpenCards card =  {this.props.manager.openCard} open = {true} game = {this.props.game}/>
+                <OpenCards anm = {this.props.manager.openCardAnm} card = {this.props.manager.openCard} open = {true} game = {this.props.game}/>
                 <CardsHolder game = {this.props.game} cards = {this.props.manager.playersCards[0]} pickColorRef = {this.pickColorHolder} isDraggable = {true} open = {true} cssId = "playerCards" />
                 <CardsHolder game = {this.props.game} cards = {this.props.manager.playersCards[1]} pickColorRef = {this.pickColorHolder} isDraggable = {false} open = {false} cssId = "computerCards" />
                 <PickColor interactive = {true} visible = {this.props.manager.pickColorVidibility} ref= {this.pickColorHolder} game = {this.props.game}/>
-                <Stack  interactive = {true} img = {this.props.manager.stackImage} pickColorRef = {this.pickColorHolder} game = {this.props.game}/>
+                <Stack cards ={this.props.manager.stackCards} interactive = {true} img = {this.props.manager.stackImage} pickColorRef = {this.pickColorHolder} game = {this.props.game}/>
             </div>
         );
     }
@@ -89,7 +89,7 @@ export default class BoardReact extends React.Component {
                     <Stack interactive = {false} img = {this.props.manager.stackImage} pickColorRef = {this.pickColorHolder} game = {this.props.game}/>
                 </div>
                 <div>
-                    <p id ="message">{this.props.manager.error}</p>
+                    <p id ="errors">{this.props.manager.error}</p>
                     <button id={"next"} onClick={this.next}>Next</button>
                     <button id={"prev"} onClick={this.prev}>Prev</button>
                 </div>
