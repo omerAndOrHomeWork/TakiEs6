@@ -1,5 +1,43 @@
+@-webkit-keyframes opencard_move {
+    from {top: 38%;}
+    to {top: 35%;}
+}
+
+@-webkit-keyframes computerPullCard_move {
+    from {top: 35%;}
+    to {top: 2%;}
+}
+
+@-webkit-keyframes humanPullCard_move {
+    from {top: 35%;}
+    to {bottom: 2%;}
+}
+
+@-webkit-keyframes blueColor {
+    from {background-color: white;}
+    to {background-color: #000080;}
+}
+
+@-webkit-keyframes redColor {
+    from {background-color: white;}
+    to {background-color: red;}
+}
+
+@-webkit-keyframes yellowColor {
+    from {background-color: white;}
+    to {background-color: yellow;}
+}
+
+@-webkit-keyframes greenColor {
+    from {background-color: white;}
+    to {background-color: green;}
+}
+
+
+
+
 body {
- background: #87CEEB;
+    background: #87CEEB;
 }
 
 @media all and (min-height: 768px) and (min-width: 680px) {
@@ -37,6 +75,7 @@ img{
 #playerCards {
     bottom: 2%;
     left: 30%;
+    height: 120px;
     position: absolute;
 }
 
@@ -121,12 +160,38 @@ img{
 }
 
 
-#massage{
+#message{
     position: absolute;
-    top: 47%;
-    left: 45%;
+    top: 65%;
+    left: 0.5%;
     font-weight: bold;
     font-size:30px;
+}
+#directions{
+    position: absolute;
+    top: 65%;
+    left: 0.5%;
+    font-weight: bold;
+    font-size:25px;
+}
+
+#errors{
+    position: absolute;
+    top: 65%;
+    left: 0.5%;
+    font-weight: bold;
+    font-size:25px;
+}
+
+#bold{
+    top: -15px;
+    position:relative;
+    transition: 0.6s;
+    animation: rotating 2s linear infinite;
+}
+
+#regular{
+    top:0%;
 }
 
 #restartTournament{
