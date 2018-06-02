@@ -49,7 +49,7 @@ export default class CardReact extends React.Component {
 
 
     render() {
-        if(this.props.pullCardAnimation !== null) {
+        if(this.props.pullCardAnimation !== undefined) {
             if (this.props.humanAnimation === true) {
                 return this.renderWithHumanAnimation();
             }
@@ -74,7 +74,7 @@ export default class CardReact extends React.Component {
             <a id="regular">
                 <img onAnimationEnd={this.endAnimation} style={{transition: "0.6s",animation: "computerPullCard_move 2s"}} draggable={false} src={CloseCard}/>
             </a>
-        )
+        );
     }
 
     renderWithHumanAnimation(){
@@ -82,7 +82,7 @@ export default class CardReact extends React.Component {
             <a id="regular">
                 <img onAnimationEnd={this.endAnimation} style={{transition: "0.6s",animation: "humanPullCard_move 2s"}} draggable={false} src={CloseCard}/>
             </a>
-        )
+        );
     }
 
     renderWithBold(){

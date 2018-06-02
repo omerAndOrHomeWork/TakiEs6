@@ -92,7 +92,7 @@ export default class Player{
         cardsToAdd.forEach(card => {
             this.playerManagement.stackCards.push({humanAnimation: humanAnimation, id: card.id});
         });
-
+        this.playerManagement.renderAnimationEnd = false;
 
         this.saveCardsToAdd = cardsToAdd;
     /*    cardsToAdd.forEach(card => {
