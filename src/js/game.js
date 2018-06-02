@@ -132,6 +132,12 @@ export default class Game{
             else
                 this.renderError(enumCard.enumErrors.PULL_CARD_WITH_AVAILABLE_CARD);
         }
+        else{
+            if(player !== this.players[this.turn])
+                this.renderError(enumCard.enumErrors.PULL_CARD_NOT_IN_TURN);
+            else
+                this.renderError(enumCard.enumErrors.PULL_CARD_WITH_AVAILABLE_CARD);
+        }
     }
 
     computerOperation() {

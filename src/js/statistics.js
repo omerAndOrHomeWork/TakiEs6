@@ -6,7 +6,6 @@ export default class statistics {
         this.turnsCounter = -1;
         this.singleCardPlayers = [];
     }
-
      updateStatistics(turn) {
         let messages = [];
         this.turnsCounter++;
