@@ -15,16 +15,9 @@ let stack = (function () {
         enumCard.enumColor.GREEN, enumCard.enumColor.YELLOW];
     var id = 0;
     let css;
-    let htmlStock;
 
     function createDeck() {
-       // let stockImage = document.createElement("img");
-        //htmlStock = document.createElement("div");
         let score = 1;
-       // htmlStock.appendChild(stockImage);
-        //stockImage.src = enumCard.images.MANY_CLOSE_CARDS;
-        //htmlStock.setAttribute("id", enumCard.dives.STOCK);
-        //document.getElementById(enumCard.dives.STOCK_AND_OPEN_CARDS).appendChild(htmlStock);
         for (let number = 0; number < twoCardsNumber.length; ++number) {
             for (let color = 0; color < colorNumber.length; ++color) {
                 css = getUniqueCss(Object.keys(enumCard.enumColor)[color], twoCardsNumber[number].toString(), '_');
@@ -78,11 +71,6 @@ let stack = (function () {
             cards.push(new SuperTaki(undefined, enumCard.enumTypes.SUPER_TAKI, id++));
             cards[cards.length - 1].setElement(css);
         }
-
-/*        let blue_change_color = "../src/Images/blue/blue_change_color.png";
-        let green_change_color = "../src/Images/green/green_change_color.png";
-        let red_change_color = "../src/Images/red/red_change_color.png";
-        let yellow_change_color = "../src/Images/yellow/yellow_change_color.png";*/
     }
 
     function getRandomInt(min, max) {
@@ -134,7 +122,7 @@ let stack = (function () {
 
                 cards.push(allCards[i]);
             }
-            shuffleDeck(getRandomInt(10, 25));//random number (the numbers not very important),amount of times to make shuffle
+            shuffleDeck(getRandomInt(10, 25));
         },
 
         getLength: function () {
@@ -145,24 +133,6 @@ let stack = (function () {
             return cards;
         },
 
-/*        changeStockImage: function () {
-            let stockHtml = document.getElementById(enumCard.dives.STOCK);
-            let stockImage = document.createElement("img");
-            while (stockHtml.firstChild) {
-                stockHtml.removeChild(stockHtml.firstChild);
-            }
-            stockHtml.appendChild(stockImage);
-            if (stack.getLength() > 30) {
-                stockImage.src = enumCard.images.MANY_CLOSE_CARDS;
-            }
-            else if (stack.getLength() > 10) {
-                stockImage.src = enumCard.images.FEW_CLOSE_CARDS;
-
-            }
-            else {
-                stockImage.src = enumCard.images.CLOSE_CARD;
-            }
-        }*/
         getStackImage: function () {
             let img;
             if (stack.getLength() > 30) {

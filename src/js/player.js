@@ -2,42 +2,15 @@ import {enumCard} from './enumCard'
 import {takiModeChecker} from './operations'
 
 export default class Player{
-/*    allCards = [];
-    singleCardCounter;
-    averageTimePlayed;
-    turnsPlayedForStatistics;
-    takiMode;
-    htmlPlayerDiv;*/
-
-    //constructor(theCards,placeHolder)
-    constructor(){
+    constructor(theName,theTurn){
         this.allCards = [];
         this.singleCardCounter = 0;
         this.score = 0;
         this.averageTimePlayed = 0;
         this.turnsPlayedForStatistics = 0;
         this.takiMode = undefined;
-        //this.htmlPlayerDiv = placeHolder;
-    }
-
-    /*
-
-Player.prototype.removeCardAppearances = function () {
-        throw new Error('You have to implement the method doSomething!');
-    };
-
-    /!*
-    /!*
-    * have to implement!!
-    * *!/
-    removeCardAppearances(){
-        throw new Error('You have to implement the method doSomething!');
-    }*!/
-
-*/
-
-    setComponent(component){
-        this.component = component;
+        this.name = theName;
+        this.turn = theTurn;
     }
 
     setManager(playerManagement, index){
@@ -80,10 +53,6 @@ Player.prototype.removeCardAppearances = function () {
         this.takiMode = undefined;
     }
 
-    getHtmlDiv() {
-        return this.htmlPlayerDiv;
-    }
-
     getTurnsPlayed(){
         return this.turnsPlayedForStatistics;
     }
@@ -104,31 +73,41 @@ Player.prototype.removeCardAppearances = function () {
         return this.takiMode;
     }
 
-
-
     getAverageTimePlayed(){
         return this.averageTimePlayed;
     }
 
-
-
-    setCardsPlace(){
-/*        let cardsReact = [];
-        this.allCards.forEach(card => {
-            cardsReact.push({image: card.uniqueCardImage, id: card.id});
-        });
-        this.component.setCards(cardsReact);*/
+    setCardsPlace(humanAnimation){
         this.playerManagement.playersCards[this.playerIndex] = [];
-        this.addCards(this.allCards);
+        this.addCards(this.allCards, humanAnimation);
     }
 
-    addCards(cardsToAdd) {
+    addCards(cardsToAdd, humanAnimation) {
         let cardsReact = [];
+       // this.playerManagement.stackCards = cardsToAdd;
+      //  this.playerManagement.humanAnimation = humanAnimation;
+      //  this.playerManagement.renderGame();
+      //   this.playerManagement.stackCards += cardsToAdd.length;
+        //this.playerManagement.humanAnimation = humanAnimation;
         cardsToAdd.forEach(card => {
-            this.playerManagement.playersCards[this.playerIndex].push({image: card.uniqueCardImage, id: card.id, score: card.score});
+            this.playerManagement.stackCards.push({humanAnimation: humanAnimation, id: card.id});
         });
-        //this.component.setCards(cardsReact);
-        // this.playerManagement.playersCards[this.playerIndex].push(cardsReact);
+
+
+        this.saveCardsToAdd = cardsToAdd;
+    /*    cardsToAdd.forEach(card => {
+            this.playerManagement.playersCards[this.playerIndex].push({image: card.uniqueCardImage, id: card.id});
+        });
+    */
+    }
+
+    updateCardsToAdd() {
+        if(this.saveCardsToAdd !== undefined){
+            this.saveCardsToAdd.forEach(card => {
+                this.playerManagement.playersCards[this.playerIndex].push({image: card.uniqueCardImage, id: card.id});
+            });
+            this.saveCardsToAdd = undefined;
+        }
     }
 
     getSingleCardCounter(){
@@ -137,14 +116,12 @@ Player.prototype.removeCardAppearances = function () {
 
 
     doOperation(card, lastCard) {
-        // this.component.removeCard(card.id);
         for(let i = 0; i < this.playerManagement.playersCards[this.playerIndex].length; ++i){
             if (this.playerManagement.playersCards[this.playerIndex][i].id === card.id) {
                 this.playerManagement.playersCards[this.playerIndex].splice(i, 1);
                 break;
             }
         }
-
 
        //TODO: CHANGE RESIZE METHOD
         // changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), this.allCards.length);
@@ -165,13 +142,19 @@ Player.prototype.removeCardAppearances = function () {
         return promote;
     }
 
-    //TODO: calc score
-  //    updateTournamentScore(){
     calcScore(){
-      let score;
+      let score = 0;
         this.allCards.forEach(card => {
             score += card.score;
         });
       return score;
+    }
+
+    updateTournamentScore(playerScore){
+        this.score += playerScore;
+    }
+
+    getScore(){
+        return this.score;
     }
 }

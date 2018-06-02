@@ -8,11 +8,16 @@ export default class  StateManagement{
         this.stackImage = undefined;
         this.statisticsMassages = undefined;
         this.gameState =  "start";
-        this.massage = [];
-        this.errors = undefined;
+        this.openCardAnm = false;
+        this.stackCards = [];
+        // this.humanAnimation = undefined;
+        this.message = [];
+        this.error = undefined;
+        this.direction = undefined;
         this.setStartGame = this.setStartGame.bind(this);
         this.setStartTournament = this.setStartTournament.bind(this);
         this.setRestartStartGame = this.setRestartStartGame.bind(this);
+        this.setRestartTournamentStartGame = this.setRestartTournamentStartGame.bind(this);
         this.setQuitGame = this.setQuitGame.bind(this);
 
         // this.handleClick = this.handleClick.bind(this);
@@ -40,22 +45,27 @@ export default class  StateManagement{
         this.boardReact.changeSate(this.gameState);
     }
 
-    endGame(massage){
-        this.massage = massage;
+    endGame(message){
+        this.message = message;
         this.gameState =  "endGame";
         this.boardReact.changeSate(this.gameState);
     }
 
-    endGameInTournament(massage){
-        this.massage = massage;
+    endGameInTournament(message){
+        this.message = message;
         this.gameState =  "endGameInTournament";
         this.boardReact.changeSate(this.gameState);
     }
 
-    endTournament(massage){
-        this.massage = massage;
+    endTournament(message){
+        this.message = message;
         this.gameState =  "endTournament";
         this.boardReact.changeSate(this.gameState);
+    }
+
+    setRestartTournamentStartGame(){
+        this.game.restartTournamentGame();
+        this.gameState = "gaming";
     }
 
     setRestartStartGame(){
@@ -82,13 +92,21 @@ export default class  StateManagement{
         cloneState.playersCards = [];
         cloneState.playersCards[0] = this.playersCards[0];
         cloneState.playersCards[1] = this.playersCards[1];
+        cloneState.playersCards[0].forEach(c => {
+            c.anm = undefined;
+            c.humanAnimation = undefined;
+        });
+        cloneState.playersCards[1].forEach(c => {
+            c.anm = undefined;
+            c.humanAnimation = undefined;
+        });
         cloneState.pickColorVidibility = this.pickColorVidibility;
         cloneState.openCard = this.openCard;
         cloneState.stackImage = this.stackImage;
         cloneState.statisticsMassages = this.statisticsMassages;
         cloneState.gameState =  "endGame";
-        cloneState.massage = this.massage;
-        cloneState.errors = this.errors;
+        cloneState.message = this.message;
+        cloneState.error = this.error;
         cloneState.game = this.game;
         cloneState.boardReact = this.boardReact;
         return cloneState;
@@ -102,8 +120,8 @@ export default class  StateManagement{
         this.stackImage = state.stackImage;
         this.statisticsMassages = state.statisticsMassages;
         // this.gameState =  "endGame";
-        this.massage = state.massage;
-        this.errors = state.errors;
+        this.message = state.message;
+        this.error = state.error;
         // this.game = state.game;
         // this.boardReact = state.boardReact;
     }

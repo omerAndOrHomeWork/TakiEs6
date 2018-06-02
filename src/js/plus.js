@@ -4,6 +4,7 @@ export default class Plus extends Card{
 
     constructor(theColor, theSign, theId){
         super(theColor, theSign, theId,10);
+        this.direction = enumCard.enumActionDirection.PLUS;
     }
 
     doOperation() {

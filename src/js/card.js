@@ -23,25 +23,6 @@ export default class Card{
         this.uniqueCardImage = "../src/Images/" + colorName + "/" + imgName.toLowerCase() + ".png";
     }
 
-    setHtmlElement(imgName) {
-/*        this.htmlCard = document.createElement("a");
-        this.htmlCard.setAttribute("id", this.id);
-        this.closeCardImage =  document.createElement("img");
-        this.closeCardImage.src = enumCard.images.CLOSE_CARD;
-        this.uniqueCardImage = document.createElement("img");*/
-        this.setUniqueImage(imgName);
-    }
-
-    setHtmlEvent(draggable) {
-/*        this.htmlCard.ondragstart = function (event) {
-            let pickColorId = document.getElementById(enumCard.dives.PICK_COLOR);
-            if(!draggable || pickColorId.style.visibility === "visible")
-                return false;
-            this.draggable = true;
-            event.dataTransfer.setData("Text", this.id);
-        };*/
-    }
-
     get HtmlCard() {
         return this.htmlCard;
     }
@@ -54,28 +35,9 @@ export default class Card{
         return this.id;
     }
 
-/*    setParent (parentHolder, draggable) {
-
-        document.getElementById(parentHolder).appendChild(this.htmlCard);
-        this.setHtmlEvent(draggable);
-    }*/
-
     setElement (theUniqueCard) {
-        this.setHtmlElement(theUniqueCard);
-        // this.setHtmlEvent(false);
-        // document.getElementById(enumCard.dives.STOCK).appendChild(this.htmlCard);
+        this.setUniqueImage(theUniqueCard);
     };
-
-/*    changeImage (openCard){
-        //careReact.changeImage(openCard);
-        while (this.htmlCard.firstChild) {
-            this.htmlCard.removeChild(this.htmlCard.firstChild);
-        }
-        if(openCard)
-            this.htmlCard.appendChild(this.uniqueCardImage);
-        else
-            this.htmlCard.appendChild(this.closeCardImage);
-    };*/
 
     getSign (){
         return this.sign;
@@ -83,10 +45,6 @@ export default class Card{
 
     getColor () {
         return this.color;
-    };
-
-    getElement() {
-        return this.htmlCard;
     };
 
     setColor(theColor) {
