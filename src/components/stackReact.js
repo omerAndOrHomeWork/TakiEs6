@@ -22,10 +22,10 @@ export default class StackReact extends React.Component {
 
     render() {
         return(
-            <a onClick={this.handleClick} id = {"stockCards"}>
+            <div onClick={this.handleClick} id = {"stockCards"}>
                 <img draggable={false} src={this.props.img}/>
                 {this.props.cards.map(this.eachCard)}
-            </a>
+            </div>
         );
     }
 

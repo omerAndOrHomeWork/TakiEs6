@@ -8,7 +8,6 @@ export default class CardReact extends React.Component {
         super(...args);
         this.state = {
             bold: false,
-            //animation: false
         };
         this.onDragStart = this.onDragStart.bind(this);
         this.mouseover = this.mouseover.bind(this);
@@ -24,32 +23,9 @@ export default class CardReact extends React.Component {
         }
         ev.dataTransfer.setData("Text", this.props.id);
     }
-/*
 
     render() {
-        if(this.state !== null) {
-            if (this.state.anm) {
-                this.state = null;
-                return this.renderWithAnimation();
-            }
-            this.state = null;
-            return this.renderWithoutAnimation();
-        }else{
-            if (this.props.anm)
-                return this.renderWithAnimation();
-            return this.renderWithoutAnimation();
-        }
-    }
-
-
-    finishAnimation(){
-        this.setState({anm: false});
-    }
-*/
-
-
-    render() {
-        if(this.props.pullCardAnimation !== null) {
+        if(this.props.pullCardAnimation !== undefined) {
             if (this.props.humanAnimation === true) {
                 return this.renderWithHumanAnimation();
             }
@@ -72,17 +48,17 @@ export default class CardReact extends React.Component {
     renderWithComputerAnimation(){
         return(
             <a id="regular">
-                <img onAnimationEnd={this.endAnimation} style={{transition: "0.6s",animation: "computerPullCard_move 2s"}} draggable={false} src={CloseCard}/>
+                <img onAnimationEnd={this.endAnimation} style={{transition: "0.6s",animation: "computerPullCard_move 2s", position: "fixed"}} draggable={false} src={CloseCard}/>
             </a>
-        )
+        );
     }
 
     renderWithHumanAnimation(){
         return(
             <a id="regular">
-                <img onAnimationEnd={this.endAnimation} style={{transition: "0.6s",animation: "humanPullCard_move 2s"}} draggable={false} src={CloseCard}/>
+                <img onAnimationEnd={this.endAnimation} style={{transition: "0.6s",animation: "humanPullCard_move 2s", position: "fixed"}} draggable={false} src={CloseCard}/>
             </a>
-        )
+        );
     }
 
     renderWithBold(){
