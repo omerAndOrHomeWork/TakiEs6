@@ -4,13 +4,25 @@
 }
 
 @-webkit-keyframes computerPullCard_move {
-    from {top: 35%;}
-    to {top: 2%;}
+    from {left: 55%;  top: 35%;}
+    to {left: 40%; top: 4%;}
 }
 
 @-webkit-keyframes humanPullCard_move {
-    from {top: 35%;}
-    to {bottom: 2%;}
+    from {left: 55%;  top: 35%;}
+    to {left: 40%; top: 80%;}
+}
+
+@keyframes rotating {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(90deg);
+    }
+    100% {
+        transform: rotate(180deg);
+    }
 }
 
 @-webkit-keyframes blueColor {
@@ -32,9 +44,6 @@
     from {background-color: white;}
     to {background-color: green;}
 }
-
-
-
 
 body {
     background: #87CEEB;
@@ -76,11 +85,11 @@ img{
     bottom: 2%;
     left: 30%;
     height: 120px;
-    position: absolute;
+    position: fixed;
 }
 
 #computerCards {
-    position: absolute;
+    position: fixed;
     top: 2%;
     left: 30%;
     margin: auto;
@@ -93,13 +102,13 @@ img{
 }
 
 #openCards{
-    position: absolute;
+    position: fixed;
     top:35%;
     left: 40%;
 }
 
 #stockCards{
-    position: absolute;
+    position: fixed;
     height: 137px;
     width: 111px;
     top:35%;
@@ -111,7 +120,7 @@ img{
 }
 
 #yellowPicker{
-    position: absolute;
+    position: fixed;
     top:42%;
     left: 29%;
     height: 30px;
@@ -120,7 +129,7 @@ img{
 }
 
 #redPicker{
-    position: absolute;
+    position: fixed;
     left: 27%;
     top:40%;
     height: 30px;
@@ -129,7 +138,7 @@ img{
 }
 
 #bluePicker{
-    position: absolute;
+    position: fixed;
     top:42%;
     left: 25%;
     height: 30px;
@@ -138,13 +147,17 @@ img{
 }
 
 #greenPicker{
-    position: absolute;
+    position: fixed;
     top:45%;
     left: 27%;
     height: 30px;
     width: 30px;
     background: #008000;
+}
 
+#CurrentTurn{
+    font-weight: bold;
+    font-size: 17px;
 }
 
 #Enter_Game{
@@ -158,17 +171,31 @@ img{
     font-size: 15px;
     color: white;
 }
+#next{
+    left: 4%;
+    position: fixed;
+    background: #32CD32;
+    color: white;
+}
 
+#prev{
+    left: 0%;
+    position: fixed;
+    background: #32CD32;
+    color: white;
+}
 
 #message{
-    position: absolute;
+    position: fixed;
     top: 65%;
     left: 0.5%;
     font-weight: bold;
+    font-style: oblique;
+    font-family: "Times New Roman", Times, serif;
     font-size:30px;
 }
 #directions{
-    position: absolute;
+    position: fixed;
     top: 65%;
     left: 0.5%;
     font-weight: bold;
@@ -176,7 +203,7 @@ img{
 }
 
 #errors{
-    position: absolute;
+    position: fixed;
     top: 65%;
     left: 0.5%;
     font-weight: bold;
@@ -195,7 +222,7 @@ img{
 }
 
 #restartTournament{
-    position: absolute;
+    position: fixed;
     font-size: 15px;
     background: #32CD32;
     color: white;
@@ -204,7 +231,7 @@ img{
 }
 
 #restartGame{
-    position: absolute;
+    position: fixed;
     font-size: 15px;
     background: #32CD32;
     color: white;
@@ -213,7 +240,7 @@ img{
 }
 
 #endGame{
-    position: absolute;
+    position: fixed;
     font-size: 15px;
     background: #32CD32;
     color: white;

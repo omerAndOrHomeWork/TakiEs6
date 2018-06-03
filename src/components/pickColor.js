@@ -16,10 +16,10 @@ export default class PickColorReact extends React.Component {
     renderWithAnimation(){
         return(
             <div id = "pickColor" style={{visibility : this.props.visible, transition: "0.6s",animation: "yellowColor 2s"}}>
-                <button onAnimationEndCapture={this.finishAnimation} id="yellowPicker" style={{transition: "0.6s",animation: "yellowColor 2s"}} onClick={this.yellowPicked}/>
-                <button onAnimationEndCapture={this.finishAnimation} id="bluePicker" style={{transition: "0.6s",animation: "blueColor 2s"}} onClick={this.bluePicked}/>
-                <button onAnimationEndCapture={this.finishAnimation} id="greenPicker" style={{transition: "0.6s",animation: "greenColor 2s"}} onClick={this.greenPicked}/>
-                <button onAnimationEndCapture={this.finishAnimation} id="redPicker" style={{transition: "0.6s",animation: "redColor 2s 1"}} onClick={this.redPicked}/>
+                <button onAnimationEndCapture={this.finishAnimation} id="yellowPicker" style={{transition: "0.6s",animation: "rotating 2s linear, yellowColor 2s"}} onClick={this.yellowPicked}/>
+                <button onAnimationEndCapture={this.finishAnimation} id="bluePicker" style={{transition: "0.6s",animation: "rotating 2s linear, blueColor 2s"}} onClick={this.bluePicked}/>
+                <button onAnimationEndCapture={this.finishAnimation} id="greenPicker" style={{transition: "0.6s",animation: "rotating 2s linear, greenColor 2s"}} onClick={this.greenPicked}/>
+                <button onAnimationEndCapture={this.finishAnimation} id="redPicker" style={{transition: "0.6s",animation: "rotating 2s linear, redColor 2s 1"}} onClick={this.redPicked}/>
             </div>
         );
     }

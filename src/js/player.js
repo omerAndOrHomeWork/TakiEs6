@@ -89,9 +89,10 @@ export default class Player{
       //  this.playerManagement.renderGame();
       //   this.playerManagement.stackCards += cardsToAdd.length;
         //this.playerManagement.humanAnimation = humanAnimation;
-        cardsToAdd.forEach(card => {
+        this.playerManagement.stackCards.push({humanAnimation: humanAnimation, id: cardsToAdd[0].id});
+        /*cardsToAdd.forEach(card => {
             this.playerManagement.stackCards.push({humanAnimation: humanAnimation, id: card.id});
-        });
+        });*/
         this.playerManagement.renderAnimationEnd = false;
 
         this.saveCardsToAdd = cardsToAdd;

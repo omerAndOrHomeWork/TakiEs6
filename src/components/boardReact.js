@@ -86,7 +86,7 @@ export default class BoardReact extends React.Component {
                     <CardsHolder cards = {this.props.manager.playersCards[0]} pickColorRef = {this.pickColorHolder} isDraggable = {false} open = {true} cssId = "playerCards" />
                     <CardsHolder cards = {this.props.manager.playersCards[1]} pickColorRef = {this.pickColorHolder} isDraggable = {false} open = {true} cssId = "computerCards" />
                     <PickColor interactive = {false} visible = {this.props.manager.pickColorVidibility} ref= {this.pickColorHolder} game = {this.props.game}/>
-                    <Stack interactive = {false} img = {this.props.manager.stackImage} pickColorRef = {this.pickColorHolder} game = {this.props.game}/>
+                    <Stack cards = {[]} interactive = {false} img = {this.props.manager.stackImage} pickColorRef = {this.pickColorHolder} game = {this.props.game}/>
                 </div>
                 <div>
                     <p id ="errors">{this.props.manager.error}</p>
