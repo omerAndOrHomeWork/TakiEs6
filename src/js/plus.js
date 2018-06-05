@@ -1,5 +1,6 @@
 import Card from "./card";
 import {enumCard} from './enumCard'
+
 export default class Plus extends Card{
 
     constructor(theColor, theSign, theId){

@@ -1,5 +1,5 @@
-import ReactDOM from 'react-dom';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Statistics from './statisticsReact'
 import OpenCards from './openCardsReact'
 import Stack from './stackReact'
@@ -43,6 +43,7 @@ export default class BoardReact extends React.Component {
     restart(){
         this.props.manager.setRestartStartGame();
     }
+
 
     openingWindowRender(){
         return(
