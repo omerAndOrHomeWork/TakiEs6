@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 export default class ClockReact extends React.Component {
 
@@ -14,11 +13,6 @@ export default class ClockReact extends React.Component {
         this.intervalID = setInterval(() => this.updateTime(1), 1000);
     }
 
-/*
-    componentDidMount() {
-        this.intervalID = this.updateTime(1),1000);
-    }
-*/
     componentWillUnmount() {
         clearInterval(this.intervalID);
     }
@@ -49,21 +43,6 @@ export default class ClockReact extends React.Component {
             seconds : seconds
         });
     }
-
-/*
-            run: function () {
-                setInterval(this.update.bind(this), 1000);
-            },
-
-            update: function () {
-                clockHtml.innerHTML = "Game clock: " + hours + ":" + minutes + ":" + seconds;
-                this.updateTime(1);
-            },
-
-
-        }
-    };
-*/
 
     render() {
         return(

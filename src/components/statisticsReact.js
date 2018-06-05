@@ -1,7 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Clock from './clockReact'
-
 
 export default class StatisticsReact extends React.Component {
     constructor(args) {

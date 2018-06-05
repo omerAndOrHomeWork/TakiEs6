@@ -1,6 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import CardReact from './cardReact';
 import {enumCard} from './../js/enumCard'
 
 export default class PickColorReact extends React.Component {

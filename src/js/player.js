@@ -83,23 +83,9 @@ export default class Player{
     }
 
     addCards(cardsToAdd, humanAnimation) {
-        let cardsReact = [];
-       // this.playerManagement.stackCards = cardsToAdd;
-      //  this.playerManagement.humanAnimation = humanAnimation;
-      //  this.playerManagement.renderGame();
-      //   this.playerManagement.stackCards += cardsToAdd.length;
-        //this.playerManagement.humanAnimation = humanAnimation;
         this.playerManagement.stackCards.push({humanAnimation: humanAnimation, id: cardsToAdd[0].id});
-        /*cardsToAdd.forEach(card => {
-            this.playerManagement.stackCards.push({humanAnimation: humanAnimation, id: card.id});
-        });*/
         this.playerManagement.renderAnimationEnd = false;
-
         this.saveCardsToAdd = cardsToAdd;
-    /*    cardsToAdd.forEach(card => {
-            this.playerManagement.playersCards[this.playerIndex].push({image: card.uniqueCardImage, id: card.id});
-        });
-    */
     }
 
     updateCardsToAdd() {
@@ -124,8 +110,6 @@ export default class Player{
             }
         }
 
-       //TODO: CHANGE RESIZE METHOD
-        // changeMerging(document.getElementById(enumCard.dives.COMPUTER_CARDS), this.allCards.length);
         let promote = card.doOperation(this, lastCard);
         if (this.takiMode !== undefined) {
             if(takiModeChecker(this.allCards, this.takiMode)) {

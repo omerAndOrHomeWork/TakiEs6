@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Statistics from './statisticsReact'
 import OpenCards from './openCardsReact'
 import Stack from './stackReact'
@@ -43,7 +42,6 @@ export default class BoardReact extends React.Component {
     restart(){
         this.props.manager.setRestartStartGame();
     }
-
 
     openingWindowRender(){
         return(
@@ -105,8 +103,6 @@ export default class BoardReact extends React.Component {
         this.props.manager.prev();
     }
 
-    // TODO: change restarts options in and game/tournament
-
     endTournamentRender(){
         return(
             <div id = {"endGameMode"}>
@@ -125,7 +121,6 @@ export default class BoardReact extends React.Component {
             <p key={i + 600}>{msg}</p>
         );
     }
-    //TODO: Omer need to take care on the css
 
     endGameInTournamentRender(){
         return(

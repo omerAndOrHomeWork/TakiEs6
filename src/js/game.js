@@ -75,7 +75,6 @@ export default class Game{
             if (this.players[this.turn].getAmountOfCards() === 0 && card.getSign() !== enumCard.enumTypes.PLUS) {
                 this.endGameMode(Object.keys(enumCard.enumPlayer)[this.turn]);
             }else {
-              //  this.stateManagement.pullCardAnimation = false;
                 this.stateManagement.openCardAnm = true;
                 if (promote !== enumCard.enumResult.CONTINUE_TURN)
                     this.changeTurn(promote, true);
@@ -169,7 +168,6 @@ export default class Game{
         this.stateManagement.pickColorVidibility = "hidden";
         if(!this.tournament) {
             this.savesStates = [];
-            //this.savesStates.push(this.stateManagement.clone());
         }
         this.stateManagement.renderGame();
     }
@@ -314,10 +312,7 @@ export default class Game{
     }
 
     renderAnimation(){
-       // this.stateManagement.stackCards = 0;
-       //  this.stateManagement.humanAnimation = undefined;
         this.players.forEach(p => p.updateCardsToAdd());
-        //after adding new cards to stack
         if(!this.tournament)
             this.savesStates.push(this.stateManagement.clone());
         this.stateManagement.renderAnimationEnd = true;
@@ -331,7 +326,3 @@ export default class Game{
         this.stateManagement.renderGame();
     }
 }
-
-//TODO: hivvuy
-//TODO: animation
-//TODO: debug

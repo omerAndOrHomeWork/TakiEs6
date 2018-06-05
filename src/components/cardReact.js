@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import CloseCard from './../Images/other/close_card.png'
 import {enumCard} from './../js/enumCard'
 
@@ -77,13 +76,13 @@ export default class CardReact extends React.Component {
         );
     }
 
-    mouseover(ev){
+    mouseover(){
         if(this.props.isDraggable){
             this.setState({bold: true});
         }
     }
 
-    onmouseout(ev){
+    onmouseout(){
         if(this.props.isDraggable){
             this.setState({bold: false});
         }
