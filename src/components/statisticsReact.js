@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 export default class StatisticsReact extends React.Component {
     constructor(args) {
