@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom';
 import React from 'react';
 import CloseCard from './../Images/other/close_card.png'
 import {enumCard} from './../js/enumCard'

@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom';
 import React from 'react';
 import Statistics from './statisticsReact'
 import OpenCards from './openCardsReact'
