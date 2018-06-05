@@ -1,7 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Clock from './clockReact'
-
 
 export default class StatisticsReact extends React.Component {
     constructor(args) {
@@ -29,7 +26,7 @@ export default class StatisticsReact extends React.Component {
 
     eachMassage(msg, i) {
         return(
-            <p key={i}>{msg}</p>
+            <p key={i + 200}>{msg}</p>
         );
     }
 }

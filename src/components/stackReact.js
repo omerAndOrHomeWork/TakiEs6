@@ -1,8 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import MANY_CLOSE_CARDS from './../Images/other/many_close_cards.png'
-import FEW_CLOSE_CARDS from './../Images/other/few_close_cards.png'
-import CLOSE_CARDS from './../Images/other/close_card.png'
 import {enumCard} from './../js/enumCard'
 import CardReact from './cardReact';
 
@@ -16,7 +12,7 @@ export default class StackReact extends React.Component {
 
     eachCard(card, i) {
         return(
-            <CardReact humanAnimation = {card.humanAnimation} pullCardAnimation ={true} game = {this.props.game} key = {card.id}/>
+            <CardReact humanAnimation = {card.humanAnimation} pullCardAnimation ={true} game = {this.props.game} key = {i + 400}/>
         );
     }
 
@@ -28,10 +24,6 @@ export default class StackReact extends React.Component {
             </div>
         );
     }
-
-    /*
-    * game.endAnimation();
-    * */
 
     handleClick(ev) {
         if(this.props.interactive === false)
@@ -47,7 +39,7 @@ export default class StackReact extends React.Component {
         }
     }
 
-    dragStart(ev) {
+    dragStart() {
          return false;
     }
 }

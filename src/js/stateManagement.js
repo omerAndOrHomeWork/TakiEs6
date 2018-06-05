@@ -1,5 +1,3 @@
-import Game from "./game";
-
 export default class  StateManagement{
     constructor(){
         this.playersCards = [];
@@ -10,7 +8,6 @@ export default class  StateManagement{
         this.gameState =  "start";
         this.openCardAnm = false;
         this.stackCards = [];
-        // this.humanAnimation = undefined;
         this.message = [];
         this.error = undefined;
         this.direction = undefined;
@@ -19,9 +16,6 @@ export default class  StateManagement{
         this.setRestartStartGame = this.setRestartStartGame.bind(this);
         this.setRestartTournamentStartGame = this.setRestartTournamentStartGame.bind(this);
         this.setQuitGame = this.setQuitGame.bind(this);
-
-        // this.handleClick = this.handleClick.bind(this);
-
     }
 
     setStartGame(boardReact, game){
@@ -41,7 +35,6 @@ export default class  StateManagement{
     }
 
     renderGame(){
-        //this.boardReact.render();
         this.boardReact.changeSate(this.gameState);
     }
 
@@ -92,14 +85,6 @@ export default class  StateManagement{
         cloneState.playersCards = [];
         cloneState.playersCards[0] = this.playersCards[0];
         cloneState.playersCards[1] = this.playersCards[1];
-/*        cloneState.playersCards[0].forEach(c => {
-            c.anm = undefined;
-            c.humanAnimation = undefined;
-        });
-        cloneState.playersCards[1].forEach(c => {
-            c.anm = undefined;
-            c.humanAnimation = undefined;
-        });*/
         cloneState.pickColorVidibility = this.pickColorVidibility;
         cloneState.openCard = this.openCard;
         cloneState.stackImage = this.stackImage;
@@ -119,11 +104,8 @@ export default class  StateManagement{
         this.openCard = state.openCard;
         this.stackImage = state.stackImage;
         this.statisticsMassages = state.statisticsMassages;
-        // this.gameState =  "endGame";
         this.message = state.message;
         this.error = state.error;
-        // this.game = state.game;
-        // this.boardReact = state.boardReact;
     }
 }
 

@@ -1,6 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import CardReact from './cardReact';
 import {enumCard} from './../js/enumCard'
 
 export default class PickColorReact extends React.Component {
@@ -36,10 +34,28 @@ export default class PickColorReact extends React.Component {
     }
 
     render() {
-        if(this.props.visible == "visible")
+        if(!this.props.interactive)
+            return this.endGameRender();
+        else
+            return this.gameRender();
+    }
+
+    gameRender() {
+        if(this.props.visible === "visible")
             return this.renderWithAnimation();
         else
             return this.renderWithoutAnimation();
+    }
+
+    endGameRender() {
+        return(
+            <div id = "pickColor" style={{visibility : this.props.visible}}>
+                <button id="yellowPicker" disabled={true}/>
+                <button id="bluePicker" disabled={true}/>
+                <button id="greenPicker" disabled={true}/>
+                <button id="redPicker" disabled={true}/>
+            </div>
+        );
     }
 
     finishAnimation(){

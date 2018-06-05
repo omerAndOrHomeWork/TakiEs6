@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import CardReact from './cardReact';
 
 export default class CardHolderReact extends React.Component {

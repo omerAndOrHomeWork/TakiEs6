@@ -8,10 +8,7 @@ export default class Card{
         this.active = false;
         this.id = theId;
         this.score = theScore;
-        this.htmlCard = undefined;
         this.uniqueCardImage = undefined;
-        this.closeCardImage = undefined;
-        this.currentParent = undefined;
     }
 
     setUniqueImage(imgName) {
@@ -21,10 +18,6 @@ export default class Card{
         else
             colorName = "other";
         this.uniqueCardImage = "../src/Images/" + colorName + "/" + imgName.toLowerCase() + ".png";
-    }
-
-    get HtmlCard() {
-        return this.htmlCard;
     }
 
     isActive (){
