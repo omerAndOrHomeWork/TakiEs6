@@ -122,7 +122,7 @@ export default class BoardReact extends React.Component {
 
     eachMassage(msg,i) {
         return(
-            <p key={i}>{msg}</p>
+            <p key={i + 600}>{msg}</p>
         );
     }
     //TODO: Omer need to take care on the css

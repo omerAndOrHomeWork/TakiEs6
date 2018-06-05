@@ -169,7 +169,7 @@ export default class Game{
         this.stateManagement.pickColorVidibility = "hidden";
         if(!this.tournament) {
             this.savesStates = [];
-            this.savesStates.push(this.stateManagement.clone());
+            //this.savesStates.push(this.stateManagement.clone());
         }
         this.stateManagement.renderGame();
     }

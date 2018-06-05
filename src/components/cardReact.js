@@ -48,7 +48,7 @@ export default class CardReact extends React.Component {
     renderWithComputerAnimation(){
         return(
             <a id="regular">
-                <img onAnimationEnd={this.endAnimation} style={{transition: "0.6s",animation: "computerPullCard_move 2s", position: "fixed"}} draggable={false} src={CloseCard}/>
+                <img onAnimationEnd={this.endAnimation} style={{transition: "0.4s",animation: "computerPullCard_move 2s", position: "fixed"}} draggable={false} src={CloseCard}/>
             </a>
         );
     }
@@ -56,7 +56,7 @@ export default class CardReact extends React.Component {
     renderWithHumanAnimation(){
         return(
             <a id="regular">
-                <img onAnimationEnd={this.endAnimation} style={{transition: "0.6s",animation: "humanPullCard_move 2s", position: "fixed"}} draggable={false} src={CloseCard}/>
+                <img onAnimationEnd={this.endAnimation} style={{transition: "0.4s",animation: "humanPullCard_move 2s", position: "fixed"}} draggable={false} src={CloseCard}/>
             </a>
         );
     }

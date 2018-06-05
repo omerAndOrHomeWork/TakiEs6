@@ -16,7 +16,7 @@ export default class StackReact extends React.Component {
 
     eachCard(card, i) {
         return(
-            <CardReact humanAnimation = {card.humanAnimation} pullCardAnimation ={true} game = {this.props.game} key = {card.id}/>
+            <CardReact humanAnimation = {card.humanAnimation} pullCardAnimation ={true} game = {this.props.game} key = {i + 400}/>
         );
     }
 
