@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {enumCard} from '../js/enumCard'
+import {enumCard} from './../js/enumCard'
 import CardReact from './cardReact';
 
 export default class StackReact extends React.Component {
@@ -29,7 +29,6 @@ export default class StackReact extends React.Component {
     handleClick(ev) {
         if(this.props.interactive === false)
             return false;
-        ev.preventDefault();
         let changeColorReact = this.props.pickColorRef.current;
         if (changeColorReact.props.visible === "visible")
             return false;

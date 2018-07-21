@@ -55,7 +55,7 @@ export default class HumanPlayer extends Player{
         if (card.sign !== enumCard.enumTypes.TWO_PLUS)
             this.playerManagement.direction = card.direction;
         else
-            this.playerManagement.direction = undefined;
+            this.playerManagement.directiondirection = undefined;
         return super.doOperation(card, lastCard);
     }
 

@@ -196,7 +196,7 @@ export default class Game{
     }
 
     restartGame() {
-        this.stateManagement.openCardAnm = false;
+//        this.stateManagement.openCardAnm = false;
         this.endGame = false;
         let allCards;
         allCards = this.getGameCards();
@@ -217,6 +217,7 @@ export default class Game{
 
 
     tournamentGameEnd(message) {
+        this.stateManagement.error = undefined;
         let score = this.players[(this.turn + 1) % this.players.length].calcScore();
         this.players[this.turn].updateTournamentScore(score);
         this.gameNumber++;
@@ -266,6 +267,7 @@ export default class Game{
     endGameMode(message) {
         let newMsg = [];
         newMsg[0] = message + " win!";
+        this.stateManagement.error = undefined;
         if(this.tournament)
             this.tournamentGameEnd(newMsg);
         else {
@@ -312,6 +314,7 @@ export default class Game{
     }
 
     renderAnimation(){
+        this.stateManagement.message = undefined;
         this.players.forEach(p => p.updateCardsToAdd());
         if(!this.tournament)
             this.savesStates.push(this.stateManagement.clone());
